@@ -141,8 +141,8 @@ body{font-family:system-ui,sans-serif;font-size:14px;line-height:1.5;background:
       <div class="en" style="background:var(--crl);color:var(--cr);border-color:var(--crb)" id="ern-rq1">Project Request</div>
     </div>
     <div class="er-detail">
-      <div><strong id="lbl-linked2">Linked by:</strong> <code>ProjectRequest.education_level + year = Programme.education_level + year</code> &nbsp;<span class="b calc">Soft match</span></div>
-      <div id="er-r2" style="margin-top:4px">IO Admin can raise as many requests as needed — no limit per PC or per year. No hard FK — reconciled by matching education level and year. A request covers all education levels as child line rows.</div>
+      <div><strong id="lbl-linked2">Linked by:</strong> <code>education_level (+ year) overlap only — no FK, no dependency</code> &nbsp;<span class="b calc">Incidental</span></div>
+      <div id="er-r2" style="margin-top:4px">Incidental — not a real relationship. A Project Request is raised by education level and does not need a programme to exist (IO can raise any number of requests, no limit per PC or year). They merely share the same education_level + year. The matching that does real work happens downstream: an approved Project is attached to an Intake (which belongs to a programme) when education level matches and the project's internship period falls within the intake's period.</div>
     </div>
   </div>
 
@@ -535,7 +535,7 @@ en: {
   "tl-er":"ER Diagram","tl-logic":"App Logic","tl-ent":"Entity Fields","tl-status":"Status Flows",
   "er-title":"Entity Relationships",
   "ern-p1":"Programme","ern-i1":"Intake","lbl-linked":"Linked by:","er-r1":"One programme (e.g. University 2025) can have multiple intakes (e.g. Jan–Jun, Jun–Dec). Intake inherits the education_level from its parent programme.",
-  "ern-p2":"Programme","ern-rq1":"Project Request","lbl-linked2":"Linked by:","er-r2":"IO Admin can raise as many requests as needed — no limit per PC or per year. No hard FK — reconciled by matching education level and year. A request covers all education levels as child line rows.",
+  "ern-p2":"Programme","ern-rq1":"Project Request","lbl-linked2":"Linked by:","er-r2":"Incidental — not a real relationship. A Project Request is raised by education level and does not need a programme to exist (IO can raise any number of requests, no limit per PC or year). They merely share the same education_level + year. The matching that does real work happens downstream: an approved Project is attached to an Intake (which belongs to a programme) when education level matches and the project's internship period falls within the intake's period.",
   "ern-rq2":"Project Request","ern-pr1":"Project","lbl-linked3":"Linked by:","er-r3":"AD(P&C) submits multiple projects against one request. System sums placement counts per pc_code + education_level to track fulfilment. A project can exist without a request.",
   "ern-i2":"Intake","ern-pr2":"Project","lbl-linked4":"Linked by:","er-r4":"An intake can have many projects attached. A project starts unattached (intake_id = null) and is linked by IO Admin. The link is optional — projects can exist independently.",
   "lbl-match":"Conditions to attach a project to an intake:","er-match":"① education_level must match &nbsp;② review_status = Approved &nbsp;③ project internship period falls within intake period",
@@ -585,7 +585,7 @@ zh: {
   "tl-er":"ER 关系图","tl-logic":"应用逻辑","tl-ent":"实体字段","tl-status":"状态流程",
   "er-title":"实体关系",
   "ern-p1":"项目计划","ern-i1":"招募批次","lbl-linked":"关联方式：","er-r1":"一个项目计划（例如：大学 2025）可以有多个招募批次（例如：1月–6月、6月–12月）。招募批次继承其上级项目计划的 education_level。",
-  "ern-p2":"项目计划","ern-rq1":"项目需求","lbl-linked2":"关联方式：","er-r2":"IO 管理员可以根据需要发起任意数量的需求 — 每个 PC 或每年都没有数量限制。无硬外键 — 通过匹配教育层级和年份进行核对。一个需求以子明细行的形式涵盖所有教育层级。",
+  "ern-p2":"项目计划","ern-rq1":"项目需求","lbl-linked2":"关联方式：","er-r2":"附带关系 — 并非真正的关系。项目需求按教育层级发起，无需存在项目计划即可创建（IO 可发起任意数量的需求，每个 PC 或每年都没有限制）。二者只是共享相同的 education_level + year。真正起作用的匹配发生在下游：当教育层级匹配且项目的实习期落在招募批次期间内时，已批准的项目会被附加到（隶属于项目计划的）招募批次。",
   "ern-rq2":"项目需求","ern-pr1":"项目","lbl-linked3":"关联方式：","er-r3":"AD(P&C) 针对一个需求提交多个项目。系统按 pc_code + education_level 汇总名额数量以跟踪完成情况。项目可以在没有需求的情况下存在。",
   "ern-i2":"招募批次","ern-pr2":"项目","lbl-linked4":"关联方式：","er-r4":"一个招募批次可以附加多个项目。项目最初处于未附加状态（intake_id = null），由 IO 管理员进行关联。该关联是可选的 — 项目可以独立存在。",
   "lbl-match":"将项目附加到招募批次的条件：","er-match":"① education_level 必须匹配 &nbsp;② review_status = 已批准 &nbsp;③ 项目实习期落在招募批次期间内",
