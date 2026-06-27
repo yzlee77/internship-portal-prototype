@@ -142,7 +142,7 @@ body{font-family:system-ui,sans-serif;font-size:14px;line-height:1.5;background:
     </div>
     <div class="er-detail">
       <div><strong id="lbl-linked2">Linked by:</strong> <code>ProjectRequest.education_level + year = Programme.education_level + year</code> &nbsp;<span class="b calc">Soft match</span></div>
-      <div id="er-r2" style="margin-top:4px">IO Admin sends one request per PC per year. No hard FK — reconciled by matching education level and year. A request covers all education levels as child line rows.</div>
+      <div id="er-r2" style="margin-top:4px">IO Admin can raise as many requests as needed — no limit per PC or per year. No hard FK — reconciled by matching education level and year. A request covers all education levels as child line rows.</div>
     </div>
   </div>
 
@@ -401,7 +401,7 @@ body{font-family:system-ui,sans-serif;font-size:14px;line-height:1.5;background:
         <div class="frow sr"><span class="flbl s" id="s-r8">System</span><div class="fn">created_at</div><div class="ft">TIMESTAMP</div><span class="b aut" id="b-r11">Auto</span></div>
       </div>
     </div>
-    <div class="nb" id="nb-req">One request per PC covers all education levels as child line rows · Output rendered as email · Reconciled against projects via pc_code + education_level (soft match, no FK)</div>
+    <div class="nb" id="nb-req">A PC can have multiple requests; each covers education levels as child line rows · Output rendered as email · Reconciled against projects via pc_code + education_level (soft match, no FK)</div>
   </div>
 
   <!-- PROJECT -->
@@ -535,7 +535,7 @@ en: {
   "tl-er":"ER Diagram","tl-logic":"App Logic","tl-ent":"Entity Fields","tl-status":"Status Flows",
   "er-title":"Entity Relationships",
   "ern-p1":"Programme","ern-i1":"Intake","lbl-linked":"Linked by:","er-r1":"One programme (e.g. University 2025) can have multiple intakes (e.g. Jan–Jun, Jun–Dec). Intake inherits the education_level from its parent programme.",
-  "ern-p2":"Programme","ern-rq1":"Project Request","lbl-linked2":"Linked by:","er-r2":"IO Admin sends one request per PC per year. No hard FK — reconciled by matching education level and year. A request covers all education levels as child line rows.",
+  "ern-p2":"Programme","ern-rq1":"Project Request","lbl-linked2":"Linked by:","er-r2":"IO Admin can raise as many requests as needed — no limit per PC or per year. No hard FK — reconciled by matching education level and year. A request covers all education levels as child line rows.",
   "ern-rq2":"Project Request","ern-pr1":"Project","lbl-linked3":"Linked by:","er-r3":"AD(P&C) submits multiple projects against one request. System sums placement counts per pc_code + education_level to track fulfilment. A project can exist without a request.",
   "ern-i2":"Intake","ern-pr2":"Project","lbl-linked4":"Linked by:","er-r4":"An intake can have many projects attached. A project starts unattached (intake_id = null) and is linked by IO Admin. The link is optional — projects can exist independently.",
   "lbl-match":"Conditions to attach a project to an intake:","er-match":"① education_level must match &nbsp;② review_status = Approved &nbsp;③ project internship period falls within intake period",
@@ -568,7 +568,7 @@ en: {
   "e-req":"Project Request","sl-rq-uh":"User Fields — Header","sl-rq-ul":"User Fields — Lines","sl-rq-s":"System Fields",
   "u-r1":"User","u-r2":"User","u-r3":"User","u-r4":"User","u-r5":"User","s-r1":"System","s-r2":"System","s-r3":"System","s-r4":"System","s-r5":"System","s-r6":"System","s-r7":"System","s-r8":"System",
   "b-r1":"Required","b-r2":"Required","b-r3":"Optional","b-r4":"Required","b-r5":"Required","b-r6":"Auto","b-r7":"Calculated","b-r8":"Calculated","b-r9":"Calculated","b-r10":"FK → User","b-r11":"Auto",
-  "nb-req":"One request per PC covers all education levels as child line rows · Output rendered as email · Reconciled against projects via pc_code + education_level (soft match, no FK)",
+  "nb-req":"A PC can have multiple requests; each covers education levels as child line rows · Output rendered as email · Reconciled against projects via pc_code + education_level (soft match, no FK)",
   "e-proj":"Project","sl-pr-u1":"User Fields — Project Info","sl-pr-u2":"User Fields — Internship Period","sl-pr-u3":"User Fields — Mentor","sl-pr-u4":"User Fields — Matching Tags","sl-pr-s":"System Fields",
   "u-j1":"User","u-j2":"User","u-j3":"User","u-j4":"User","u-j5":"User","u-j6":"User","u-j7":"User","u-j8":"User","u-j9":"User","u-j10":"User","u-j11":"User","u-j12":"User","u-j13":"User","u-j14":"User","u-j15":"User","u-j16":"User",
   "s-j1":"System","s-j2":"System","s-j3":"System","s-j4":"System","s-j5":"System","s-j6":"System",
@@ -585,7 +585,7 @@ zh: {
   "tl-er":"ER 关系图","tl-logic":"应用逻辑","tl-ent":"实体字段","tl-status":"状态流程",
   "er-title":"实体关系",
   "ern-p1":"项目计划","ern-i1":"招募批次","lbl-linked":"关联方式：","er-r1":"一个项目计划（例如：大学 2025）可以有多个招募批次（例如：1月–6月、6月–12月）。招募批次继承其上级项目计划的 education_level。",
-  "ern-p2":"项目计划","ern-rq1":"项目需求","lbl-linked2":"关联方式：","er-r2":"IO 管理员每年为每个 PC 发送一个需求。无硬外键 — 通过匹配教育层级和年份进行核对。一个需求以子明细行的形式涵盖所有教育层级。",
+  "ern-p2":"项目计划","ern-rq1":"项目需求","lbl-linked2":"关联方式：","er-r2":"IO 管理员可以根据需要发起任意数量的需求 — 每个 PC 或每年都没有数量限制。无硬外键 — 通过匹配教育层级和年份进行核对。一个需求以子明细行的形式涵盖所有教育层级。",
   "ern-rq2":"项目需求","ern-pr1":"项目","lbl-linked3":"关联方式：","er-r3":"AD(P&C) 针对一个需求提交多个项目。系统按 pc_code + education_level 汇总名额数量以跟踪完成情况。项目可以在没有需求的情况下存在。",
   "ern-i2":"招募批次","ern-pr2":"项目","lbl-linked4":"关联方式：","er-r4":"一个招募批次可以附加多个项目。项目最初处于未附加状态（intake_id = null），由 IO 管理员进行关联。该关联是可选的 — 项目可以独立存在。",
   "lbl-match":"将项目附加到招募批次的条件：","er-match":"① education_level 必须匹配 &nbsp;② review_status = 已批准 &nbsp;③ 项目实习期落在招募批次期间内",
@@ -618,7 +618,7 @@ zh: {
   "e-req":"项目需求","sl-rq-uh":"用户字段 — 表头","sl-rq-ul":"用户字段 — 明细行","sl-rq-s":"系统字段",
   "u-r1":"用户","u-r2":"用户","u-r3":"用户","u-r4":"用户","u-r5":"用户","s-r1":"系统","s-r2":"系统","s-r3":"系统","s-r4":"系统","s-r5":"系统","s-r6":"系统","s-r7":"系统","s-r8":"系统",
   "b-r1":"必填","b-r2":"必填","b-r3":"可选","b-r4":"必填","b-r5":"必填","b-r6":"自动","b-r7":"计算得出","b-r8":"计算得出","b-r9":"计算得出","b-r10":"FK → User","b-r11":"自动",
-  "nb-req":"每个 PC 一个需求，以子明细行形式涵盖所有教育层级 · 输出渲染为邮件 · 通过 pc_code + education_level 与项目核对（软匹配，无外键）",
+  "nb-req":"一个 PC 可以有多个需求；每个需求以子明细行形式涵盖各教育层级 · 输出渲染为邮件 · 通过 pc_code + education_level 与项目核对（软匹配，无外键）",
   "e-proj":"项目","sl-pr-u1":"用户字段 — 项目信息","sl-pr-u2":"用户字段 — 实习期","sl-pr-u3":"用户字段 — 导师","sl-pr-u4":"用户字段 — 匹配标签","sl-pr-s":"系统字段",
   "u-j1":"用户","u-j2":"用户","u-j3":"用户","u-j4":"用户","u-j5":"用户","u-j6":"用户","u-j7":"用户","u-j8":"用户","u-j9":"用户","u-j10":"用户","u-j11":"用户","u-j12":"用户","u-j13":"用户","u-j14":"用户","u-j15":"用户","u-j16":"用户",
   "s-j1":"系统","s-j2":"系统","s-j3":"系统","s-j4":"系统","s-j5":"系统","s-j6":"系统",
