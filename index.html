@@ -222,10 +222,7 @@ body{font-family:system-ui,sans-serif;font-size:14px;line-height:1.5;background:
       <rect x="132" y="118" width="44" height="17" rx="4" fill="white" stroke="#E5E7EB" stroke-width="0.5"/>
       <text x="154" y="130" text-anchor="middle" font-size="10" font-weight="600" fill="#6B7280">1 : N</text>
 
-      <!-- Lines: Programme → Project Request (soft) -->
-      <line x1="358" y1="88" x2="460" y2="170" stroke="#D1D5DB" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ahs)"/>
-      <rect x="374" y="116" width="44" height="17" rx="4" fill="white" stroke="#E5E7EB" stroke-width="0.5"/>
-      <text x="396" y="128" text-anchor="middle" font-size="10" font-weight="600" fill="#9CA3AF">1 : N</text>
+      <!-- Programme → Project Request: intentionally NOT drawn (incidental, no relationship) -->
 
       <!-- Lines: Project Request → Project (soft) -->
       <line x1="440" y1="262" x2="382" y2="268" stroke="#D1D5DB" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ahs)"/>
@@ -280,7 +277,7 @@ body{font-family:system-ui,sans-serif;font-size:14px;line-height:1.5;background:
     <div class="steps">
       <div class="step">
         <div class="step-num" style="background:var(--cpl);color:var(--cp)">1</div>
-        <div class="step-body"><span class="role role-io" id="r-io1">IO / IO Admin</span> <span id="fl2-s1">creates a Programme by selecting education level, adding a title and optional description. Year is auto-filled. Only one programme per education level per year is allowed.</span></div>
+        <div class="step-body"><span class="role role-io" id="r-io1">IO / IO Admin</span> <span id="fl2-s1">creates a Programme by selecting education level, adding a title and optional description. Year is auto-filled. Multiple programmes can be created for the same education level and year — no restriction.</span></div>
       </div>
       <div class="step">
         <div class="step-num" style="background:var(--cpl);color:var(--cp)">2</div>
@@ -354,7 +351,7 @@ body{font-family:system-ui,sans-serif;font-size:14px;line-height:1.5;background:
       <div class="frow sr"><span class="flbl s" id="s-p2">System</span><div class="fn">year</div><div class="ft">INT(4)</div><span class="b aut" id="b-p4">Auto</span></div>
       <div class="frow sr"><span class="flbl s" id="s-p3">System</span><div class="fn">created_by</div><div class="ft">UUID</div><span class="b fk" id="b-p5">FK → User</span></div>
       <div class="frow sr"><span class="flbl s" id="s-p4">System</span><div class="fn">created_at</div><div class="ft">TIMESTAMP</div><span class="b aut" id="b-p6">Auto</span></div>
-      <div class="nb" id="nb-prog">Unique: one per education_level per year · Max 5 per year</div>
+      <div class="nb" id="nb-prog">year auto-filled · multiple programmes per education_level / year allowed — no cap</div>
     </div>
     <!-- INTAKE -->
     <div class="card">
@@ -547,7 +544,7 @@ en: {
   "sv-lg1":"Hard / nullable FK","sv-lg2":"Soft match (no FK)",
   "al-title":"Application Logic — End to End",
   "fl1-t":"Project Request Flow","r-ioadmin":"IO Admin","fl1-s1":"creates a Project Request in the system, specifying the PC code, recipient (PC Head), CC (AD(P&C)), and the number of placements needed per education level (e.g. PC11: 3 Uni, 4 JC, 2 Poly).","r-pc":"PC Head","fl1-s2":"receives the request (via system notification or email output). Disseminates to their team to consolidate project submissions.","r-ad":"AD(P&C)","fl1-s3":"submits projects into the system — either manually (one by one) or via Excel upload. Each project includes education level, internship period, duration, placement count, mentor info, and matching tags.","r-ioadmin2":"IO Admin","fl1-s4":"reviews submitted projects and approves or rejects each one. System automatically tracks fulfilment: compares total submitted placement count vs requested count per PC + education level.","fl1-n4":"⚠️ System flags Shortfall or Over-allocation automatically.",
-  "fl2-t":"Programme & Intake Setup (order-independent with Flow ①)","r-io1":"IO / IO Admin","fl2-s1":"creates a Programme by selecting education level, adding a title and optional description. Year is auto-filled. Only one programme per education level per year is allowed.","r-io2":"IO / IO Admin","fl2-s2":"adds Intakes to the programme. Each intake has a title (auto-generated), internship period (month/year), and application open/close dates. Multiple intakes per programme allowed; periods can overlap.","r-io3":"IO / IO Admin","fl2-s3":"optionally attaches approved projects to an intake. The system shows only eligible projects: matching education level, Approved status, and internship period falls within intake period.","fl2-n3":"This step is optional — can be done later from the intake page or from a project's own page.","r-io4":"IO Admin","fl2-s4":"sets the intake status to Open when ready to receive applicants. Status: Draft → Open → Closed → Completed.",
+  "fl2-t":"Programme & Intake Setup (order-independent with Flow ①)","r-io1":"IO / IO Admin","fl2-s1":"creates a Programme by selecting education level, adding a title and optional description. Year is auto-filled. Multiple programmes can be created for the same education level and year — no restriction.","r-io2":"IO / IO Admin","fl2-s2":"adds Intakes to the programme. Each intake has a title (auto-generated), internship period (month/year), and application open/close dates. Multiple intakes per programme allowed; periods can overlap.","r-io3":"IO / IO Admin","fl2-s3":"optionally attaches approved projects to an intake. The system shows only eligible projects: matching education level, Approved status, and internship period falls within intake period.","fl2-n3":"This step is optional — can be done later from the intake page or from a project's own page.","r-io4":"IO Admin","fl2-s4":"sets the intake status to Open when ready to receive applicants. Status: Draft → Open → Closed → Completed.",
   "fl3-t":"Applicant Flow","r-app1":"Applicant","fl3-s1":"views open intakes matching their education level. Application window must be active (between application_open and application_close dates).","r-app2":"Applicant","fl3-s2":"submits application with personal info, academic background, and optional project preferences (ranked list from projects available in that intake).","r-io5":"IO / IO Admin","fl3-s3":"reviews applications and shortlists candidates. Makes offers to shortlisted applicants.","r-app3":"Applicant","fl3-s4":"accepts or rejects the offer. On acceptance, project is marked Assigned and applicant status updates to Accepted.",
   "kl-t":"Key System Rules",
   "kl-1":"Programme and Project flows are <strong>order-independent</strong> — IO Admin can create programmes or approve projects in any order; they are linked at intake setup time.",
@@ -560,7 +557,7 @@ en: {
   "e-prog":"Programme","sl-prog-u":"User Fields","sl-prog-s":"System Fields",
   "u-p1":"User","u-p2":"User","u-p3":"User","s-p1":"System","s-p2":"System","s-p3":"System","s-p4":"System",
   "b-p1":"Required","b-p2":"Required","b-p3":"Optional","b-p4":"Auto","b-p5":"FK → User","b-p6":"Auto",
-  "nb-prog":"Unique: one per education_level per year · Max 5 per year",
+  "nb-prog":"year auto-filled · multiple programmes per education_level / year allowed — no cap",
   "e-intake":"Intake","sl-int-u":"User Fields","sl-int-s":"System Fields",
   "u-i1":"User","u-i2":"User","u-i3":"User","u-i4":"User","u-i5":"User","u-i6":"User","s-i1":"System","s-i2":"System","s-i3":"System","s-i4":"System","s-i5":"System",
   "b-i1":"Auto, editable","ft-i1":"MONTH/YEAR","ft-i2":"MONTH/YEAR","b-i2":"Required","b-i3":"Required","b-i4":"Required","b-i5":"Required","b-i6":"Required","b-i7":"FK → Programme","b-i8":"Calculated","b-i9":"FK → User","b-i10":"Auto",
@@ -597,7 +594,7 @@ zh: {
   "sv-lg1":"硬 / 可空外键","sv-lg2":"软匹配（无外键）",
   "al-title":"应用逻辑 — 端到端",
   "fl1-t":"项目需求流程","r-ioadmin":"IO 管理员","fl1-s1":"在系统中创建项目需求，指定 PC 代码、收件人（PC 主管）、抄送（AD(P&C)），以及每个教育层级所需的名额数量（例如 PC11：3 大学，4 初级学院，2 理工学院）。","r-pc":"PC 主管","fl1-s2":"接收需求（通过系统通知或邮件输出）。分发给团队以整合项目提交。","r-ad":"AD(P&C)","fl1-s3":"将项目提交到系统 — 可手动逐个提交或通过 Excel 上传。每个项目包括教育层级、实习期、时长、名额数量、导师信息和匹配标签。","r-ioadmin2":"IO 管理员","fl1-s4":"审核已提交的项目并逐一批准或拒绝。系统自动跟踪完成情况：按 PC + 教育层级比较已提交名额总数与需求数量。","fl1-n4":"⚠️ 系统自动标记名额不足或超额分配。",
-  "fl2-t":"项目计划与招募批次设置（与流程 ① 顺序无关）","r-io1":"IO / IO 管理员","fl2-s1":"通过选择教育层级、添加标题和可选描述来创建项目计划。年份自动填充。每年每个教育层级只允许一个项目计划。","r-io2":"IO / IO 管理员","fl2-s2":"为项目计划添加招募批次。每个批次有一个标题（自动生成）、实习期（月/年）和申请开放/截止日期。每个项目计划允许多个批次；期间可以重叠。","r-io3":"IO / IO 管理员","fl2-s3":"可选地将已批准的项目附加到招募批次。系统仅显示符合条件的项目：教育层级匹配、状态为已批准，且实习期落在批次期间内。","fl2-n3":"此步骤为可选 — 可稍后在批次页面或项目自身页面进行。","r-io4":"IO 管理员","fl2-s4":"准备好接收申请人时，将批次状态设为开放。状态：草稿 → 开放 → 关闭 → 完成。",
+  "fl2-t":"项目计划与招募批次设置（与流程 ① 顺序无关）","r-io1":"IO / IO 管理员","fl2-s1":"通过选择教育层级、添加标题和可选描述来创建项目计划。年份自动填充。同一教育层级和年份可创建多个项目计划 — 没有限制。","r-io2":"IO / IO 管理员","fl2-s2":"为项目计划添加招募批次。每个批次有一个标题（自动生成）、实习期（月/年）和申请开放/截止日期。每个项目计划允许多个批次；期间可以重叠。","r-io3":"IO / IO 管理员","fl2-s3":"可选地将已批准的项目附加到招募批次。系统仅显示符合条件的项目：教育层级匹配、状态为已批准，且实习期落在批次期间内。","fl2-n3":"此步骤为可选 — 可稍后在批次页面或项目自身页面进行。","r-io4":"IO 管理员","fl2-s4":"准备好接收申请人时，将批次状态设为开放。状态：草稿 → 开放 → 关闭 → 完成。",
   "fl3-t":"申请人流程","r-app1":"申请人","fl3-s1":"查看符合其教育层级的开放批次。申请窗口必须处于活动状态（在 application_open 和 application_close 日期之间）。","r-app2":"申请人","fl3-s2":"提交申请，包含个人信息、学术背景和可选的项目偏好（从该批次可用项目中排序的列表）。","r-io5":"IO / IO 管理员","fl3-s3":"审核申请并筛选候选人。向入围申请人发出录取。","r-app3":"申请人","fl3-s4":"接受或拒绝录取。接受后，项目标记为已分配，申请人状态更新为已接受。",
   "kl-t":"关键系统规则",
   "kl-1":"项目计划与项目流程<strong>顺序无关</strong> — IO 管理员可以按任意顺序创建项目计划或批准项目；它们在招募批次设置时关联。",
@@ -610,7 +607,7 @@ zh: {
   "e-prog":"项目计划","sl-prog-u":"用户字段","sl-prog-s":"系统字段",
   "u-p1":"用户","u-p2":"用户","u-p3":"用户","s-p1":"系统","s-p2":"系统","s-p3":"系统","s-p4":"系统",
   "b-p1":"必填","b-p2":"必填","b-p3":"可选","b-p4":"自动","b-p5":"FK → User","b-p6":"自动",
-  "nb-prog":"唯一：每年每个 education_level 一个 · 每年最多 5 个",
+  "nb-prog":"year 自动填充 · 同一 education_level / year 可创建多个项目计划 — 无上限",
   "e-intake":"招募批次","sl-int-u":"用户字段","sl-int-s":"系统字段",
   "u-i1":"用户","u-i2":"用户","u-i3":"用户","u-i4":"用户","u-i5":"用户","u-i6":"用户","s-i1":"系统","s-i2":"系统","s-i3":"系统","s-i4":"系统","s-i5":"系统",
   "b-i1":"自动，可编辑","ft-i1":"月/年","ft-i2":"月/年","b-i2":"必填","b-i3":"必填","b-i4":"必填","b-i5":"必填","b-i6":"必填","b-i7":"FK → Programme","b-i8":"计算得出","b-i9":"FK → User","b-i10":"自动",
