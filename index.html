@@ -111,6 +111,37 @@ body{font-family:system-ui,sans-serif;font-size:14px;line-height:1.5;background:
 .ex-pool{border:1.5px dashed var(--bd);border-radius:10px;background:#FAFAFA;padding:10px}
 .ex-pool-h{font-size:11px;font-weight:600;color:var(--mu);margin-bottom:8px}
 .ex-why{margin-top:12px;padding:10px 12px;background:#FFFBEB;border:1px solid #FDE68A;border-radius:8px;font-size:11px;color:#92400E;line-height:1.75}
+
+/* interactive workflow */
+.wf-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--wh);border:1px solid var(--bd);border-radius:10px;padding:10px 12px;margin-bottom:12px}
+.wf-roles{display:flex;border:1px solid var(--bd);border-radius:8px;overflow:hidden}
+.wf-role{padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;border:none;background:var(--wh);color:var(--mu)}
+.wf-role.on{background:#2563A8;color:#fff}
+.wf-reset{margin-left:auto;font-size:11px;color:var(--mu);background:none;border:1px solid var(--bd);border-radius:6px;padding:5px 10px;cursor:pointer}
+.wf-hint{background:#EFF6FF;border:1px solid #BFDBFE;color:#1D4ED8;border-radius:8px;padding:9px 12px;font-size:12px;font-weight:500;margin-bottom:12px}
+.wf-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+@media(max-width:620px){.wf-grid{grid-template-columns:1fr}}
+.wf-card{background:var(--wh);border:1px solid var(--bd);border-radius:10px;padding:12px}
+.wf-card h4{font-size:12px;font-weight:600;color:#1A3A5C;margin-bottom:8px}
+.wf-meta{font-size:11px;color:var(--mu);margin-bottom:8px}
+.wf-counter{display:flex;gap:8px;margin:8px 0}
+.wf-num{flex:1;text-align:center;background:#F9FAFB;border:1px solid #F3F4F6;border-radius:8px;padding:6px}
+.wf-num b{display:block;font-size:17px;color:var(--tx)}
+.wf-num span{font-size:9px;color:var(--mu);text-transform:uppercase;letter-spacing:.04em}
+.wf-proj{border:1px solid var(--bd);border-radius:8px;padding:9px 10px;margin-bottom:8px}
+.wf-proj:last-child{margin-bottom:0}
+.wf-proj-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.wf-proj-t{font-weight:600;font-size:12px;color:var(--tx)}
+.wf-proj-m{font-size:10px;color:var(--mu);margin-top:1px}
+.wf-acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.wf-btn{font-size:11px;font-weight:600;padding:5px 11px;border-radius:6px;border:none;cursor:pointer}
+.wf-btn:disabled{opacity:.45;cursor:not-allowed}
+.wf-b-pri{background:#2563A8;color:#fff}
+.wf-b-ok{background:#166534;color:#fff}
+.wf-b-no{background:#991B1B;color:#fff}
+.wf-why{font-size:10px;color:#92400E;background:#FFFBEB;border:1px solid #FDE68A;border-radius:6px;padding:5px 8px;margin-top:7px}
+.wf-note{font-size:10px;color:var(--mu);margin-top:6px;font-style:italic}
+.wf-pill{font-size:9px;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap;display:inline-block}
 </style>
 </head>
 <body>
@@ -129,6 +160,7 @@ body{font-family:system-ui,sans-serif;font-size:14px;line-height:1.5;background:
 <div class="tabs">
   <div class="tab on" id="tab-er" onclick="showTab('er')"><span id="tl-er">ER Diagram</span></div>
   <div class="tab" id="tab-logic" onclick="showTab('logic')"><span id="tl-logic">App Logic</span></div>
+  <div class="tab" id="tab-wf" onclick="showTab('wf')"><span id="tl-wf">Workflow ▶</span></div>
   <div class="tab" id="tab-ent" onclick="showTab('ent')"><span id="tl-ent">Entity Fields</span></div>
   <div class="tab" id="tab-status" onclick="showTab('status')"><span id="tl-status">Status Flows 🚧</span></div>
 </div>
@@ -400,6 +432,26 @@ body{font-family:system-ui,sans-serif;font-size:14px;line-height:1.5;background:
   </div>
 </div>
 
+<!-- INTERACTIVE WORKFLOW -->
+<div class="pane" id="pane-wf">
+  <div style="font-size:13px;font-weight:600;color:#1A3A5C;margin-bottom:4px" id="wf-title">Interactive Workflow — try it</div>
+  <div style="font-size:12px;color:var(--mu);margin-bottom:12px" id="wf-sub">Switch roles and take actions.</div>
+  <div class="wf-bar">
+    <span style="font-size:11px;color:var(--mu)" id="wf-role-label">You are acting as:</span>
+    <div class="wf-roles">
+      <button class="wf-role on" id="wf-role-io" onclick="wfSetRole('io')">IO Admin</button>
+      <button class="wf-role" id="wf-role-ad" onclick="wfSetRole('ad')">AD(P&amp;C)</button>
+    </div>
+    <button class="wf-reset" id="wf-reset" onclick="wfReset()">Reset demo</button>
+  </div>
+  <div class="wf-hint" id="wf-hint"></div>
+  <div class="wf-grid">
+    <div class="wf-card" id="wf-req"></div>
+    <div class="wf-card" id="wf-intake"></div>
+  </div>
+  <div class="wf-card" id="wf-projects"></div>
+</div>
+
 <!-- ENTITY FIELDS -->
 <div class="pane" id="pane-ent">
   <div class="leg">
@@ -576,7 +628,7 @@ body{font-family:system-ui,sans-serif;font-size:14px;line-height:1.5;background:
 </div>
 
 <script>
-const TABS = ['er','logic','ent','status'];
+const TABS = ['er','logic','wf','ent','status'];
 
 function showTab(name) {
   TABS.forEach(t => {
@@ -586,6 +638,7 @@ function showTab(name) {
 }
 
 function setLang(l) {
+  LANG = l;
   document.getElementById('btn-en').classList.toggle('on', l === 'en');
   document.getElementById('btn-zh').classList.toggle('on', l === 'zh');
   const d = T[l];
@@ -593,12 +646,13 @@ function setLang(l) {
     const el = document.getElementById(id);
     if (el) el.innerHTML = d[id];
   });
+  if (WFS) renderWF();
 }
 
 const T = {
 en: {
   "ht":"Internship Portal — Data Model v6","hs":"Programme · Intake · Project · Project Request · Applicant",
-  "tl-er":"ER Diagram","tl-logic":"App Logic","tl-ent":"Entity Fields","tl-status":"Status Flows 🚧",
+  "tl-er":"ER Diagram","tl-logic":"App Logic","tl-wf":"Workflow ▶","tl-ent":"Entity Fields","tl-status":"Status Flows 🚧",
   "er-title":"Entity Relationships",
   "ern-p1":"Programme","ern-i1":"Intake","lbl-linked":"Linked by:","er-r1":"One programme (e.g. University 2025) can have multiple intakes (e.g. Jan–Jun, Jun–Dec). Intake inherits the education_level from its parent programme.",
   "ern-p2":"Programme","ern-rq1":"Project Request","lbl-linked2":"Linked by:","er-r2":"Incidental — not a real relationship. A Project Request is raised by education level and does not need a programme to exist (IO can raise any number of requests, no limit per PC or year). They merely share the same education_level + year. The matching that does real work happens downstream: an approved Project is attached to an Intake (which belongs to a programme) when education level matches and the project's internship period falls within the intake's period.",
@@ -656,7 +710,7 @@ en: {
 },
 zh: {
   "ht":"实习门户 — 数据模型 v6","hs":"项目计划 · 招募批次 · 项目 · 项目需求 · 申请人",
-  "tl-er":"ER 关系图","tl-logic":"应用逻辑","tl-ent":"实体字段","tl-status":"状态流程 🚧",
+  "tl-er":"ER 关系图","tl-logic":"应用逻辑","tl-wf":"工作流 ▶","tl-ent":"实体字段","tl-status":"状态流程 🚧",
   "er-title":"实体关系",
   "ern-p1":"项目计划","ern-i1":"招募批次","lbl-linked":"关联方式：","er-r1":"一个项目计划（例如：大学 2025）可以有多个招募批次（例如：1月–6月、6月–12月）。招募批次继承其上级项目计划的 education_level。",
   "ern-p2":"项目计划","ern-rq1":"项目需求","lbl-linked2":"关联方式：","er-r2":"附带关系 — 并非真正的关系。项目需求按教育层级发起，无需存在项目计划即可创建（IO 可发起任意数量的需求，每个 PC 或每年都没有限制）。二者只是共享相同的 education_level + year。真正起作用的匹配发生在下游：当教育层级匹配且项目的实习期落在招募批次期间内时，已批准的项目会被附加到（隶属于项目计划的）招募批次。",
@@ -713,6 +767,183 @@ zh: {
   "wip-status":"🚧 <strong>进行中（WIP）</strong> — 以下状态流程仍在完善中，尚未最终确定，请暂时忽略。"
 }
 };
+
+/* ===== interactive workflow ===== */
+let LANG = 'en';
+let WFS = null;
+const WF_INTAKE = { edu:'University', start:2025*12+7, end:2025*12+12 }; // Jul–Dec 2025
+const WF_REQUESTED = 3;
+
+const WF = {
+en: {
+  title:"Interactive Workflow — try it",
+  sub:"Switch roles and take actions. The system only lets you attach a project to the intake when every rule is met — so the data-model rules become tangible.",
+  roleLabel:"You are acting as:", roleIO:"IO Admin", roleAD:"AD(P&C)", reset:"↺ Reset demo",
+  hintRaise:"Step 1 — As IO Admin, raise the project request.",
+  hintSubmit:"Step 2 — Switch to AD(P&C) and submit projects.",
+  hintReview:"Step 3 — As IO Admin, approve or reject the submitted projects.",
+  hintAttach:"Step 4 — As IO Admin, attach an approved & eligible project to the intake.",
+  hintOpen:"Step 5 — Open the intake to receive applicants.",
+  hintDone:"✅ Done — the intake is Open with attached projects. Reset to try again.",
+  reqTitle:"Project Request", reqNone:"No request raised yet.", reqMeta:"PC11 · University · requested 3 placements",
+  raiseBtn:"Raise Project Request", fulRequested:"Requested", fulSubmitted:"Submitted", fulGap:"Gap",
+  ffPending:"Pending", ffShort:"Shortfall", ffFull:"Fulfilled", ffOver:"Over-allocated",
+  intakeTitle:"Intake · Jun–Dec 2025", intakeMeta:"University · internship Jul–Dec 2025", intakeStatusW:"Status",
+  stDraft:"Draft", stOpen:"Open", openBtn:"Open intake", intakeEmpty:"No projects attached yet.",
+  projTitle:"Projects (submitted by AD(P&C))",
+  submit:"Submit", approve:"Approve", reject:"Reject", attach:"Attach to intake",
+  rvNot:"Not submitted", rvPending:"Pending Review", rvApproved:"Approved", rvRejected:"Rejected",
+  attached:"Attached to intake ✓", cantWrongRole:"— switch role to act here", why:"Can't attach:",
+  r_edu:"education level ≠ intake (Polytechnic, not University)",
+  r_dates:"internship dates fall outside the intake period",
+  placements:"placements", eduUniversity:"University", eduPoly:"Polytechnic"
+},
+zh: {
+  title:"交互式工作流 — 试一试",
+  sub:"切换角色并执行操作。只有当所有规则都满足时，系统才允许把项目附加到招募批次 — 让数据模型的规则变得可感知。",
+  roleLabel:"当前角色：", roleIO:"IO 管理员", roleAD:"AD(P&C)", reset:"↺ 重置演示",
+  hintRaise:"第 1 步 — 以 IO 管理员身份发起项目需求。",
+  hintSubmit:"第 2 步 — 切换到 AD(P&C) 并提交项目。",
+  hintReview:"第 3 步 — 以 IO 管理员身份批准或拒绝已提交的项目。",
+  hintAttach:"第 4 步 — 以 IO 管理员身份，将已批准且符合条件的项目附加到招募批次。",
+  hintOpen:"第 5 步 — 开放招募批次以接收申请人。",
+  hintDone:"✅ 完成 — 招募批次已开放并附加了项目。点击重置可再试一次。",
+  reqTitle:"项目需求", reqNone:"尚未发起需求。", reqMeta:"PC11 · 大学 · 需求 3 个名额",
+  raiseBtn:"发起项目需求", fulRequested:"需求", fulSubmitted:"已提交", fulGap:"差额",
+  ffPending:"待处理", ffShort:"名额不足", ffFull:"已完成", ffOver:"超额分配",
+  intakeTitle:"招募批次 · Jun–Dec 2025", intakeMeta:"大学 · 实习期 Jul–Dec 2025", intakeStatusW:"状态",
+  stDraft:"草稿", stOpen:"开放", openBtn:"开放批次", intakeEmpty:"尚未附加任何项目。",
+  projTitle:"项目（由 AD(P&C) 提交）",
+  submit:"提交", approve:"批准", reject:"拒绝", attach:"附加到批次",
+  rvNot:"未提交", rvPending:"待审核", rvApproved:"已批准", rvRejected:"已拒绝",
+  attached:"已附加到批次 ✓", cantWrongRole:"— 切换角色以在此操作", why:"无法附加：",
+  r_edu:"教育层级 ≠ 批次（理工学院，非大学）",
+  r_dates:"实习日期超出批次期间",
+  placements:"个名额", eduUniversity:"大学", eduPoly:"理工学院"
+}
+};
+
+function wfInitState() {
+  return {
+    role:'io', requestRaised:false, intakeStatus:'Draft',
+    projects:[
+      { id:'p1', title:'AI Customer Chatbot',      pc:'PC11', edu:'University',  placements:2, start:2025*12+8, end:2025*12+12, period:'Aug–Dec 2025',    submitted:false, review:'none', attached:false },
+      { id:'p2', title:'Data Pipeline Automation', pc:'PC11', edu:'University',  placements:1, start:2025*12+9, end:2026*12+1,  period:'Sep 2025–Jan 2026', submitted:false, review:'none', attached:false },
+      { id:'p3', title:'Robotics R&D',             pc:'PC11', edu:'University',  placements:2, start:2025*12+7, end:2025*12+11, period:'Jul–Nov 2025',    submitted:false, review:'none', attached:false },
+      { id:'p4', title:'Cyber Defence (Poly)',     pc:'PC11', edu:'Polytechnic',placements:1, start:2025*12+7, end:2025*12+12, period:'Jul–Dec 2025',    submitted:false, review:'none', attached:false }
+    ]
+  };
+}
+function wfReset(){ WFS = wfInitState(); renderWF(); }
+function wfSetRole(r){ if(WFS){ WFS.role=r; renderWF(); } }
+function wfRaise(){ WFS.requestRaised=true; renderWF(); }
+function wfSubmit(id){ const p=WFS.projects.find(x=>x.id===id); if(p){ p.submitted=true; p.review='pending'; } renderWF(); }
+function wfReview(id,d){ const p=WFS.projects.find(x=>x.id===id); if(p) p.review=d; renderWF(); }
+function wfAttach(id){ const p=WFS.projects.find(x=>x.id===id); if(p && wfEligible(p).ok) p.attached=true; renderWF(); }
+function wfOpen(){ WFS.intakeStatus='Open'; renderWF(); }
+
+function wfEligible(p){
+  const reasons=[];
+  if(p.edu!==WF_INTAKE.edu) reasons.push('edu');
+  if(p.review!=='approved') reasons.push('approved');
+  if(!(p.start>=WF_INTAKE.start && p.end<=WF_INTAKE.end)) reasons.push('dates');
+  return { ok:reasons.length===0, reasons };
+}
+function wfSubCount(){
+  return WFS.projects.filter(p=>p.submitted && p.edu==='University' && p.pc==='PC11').reduce((s,p)=>s+p.placements,0);
+}
+function wfHint(W){
+  const s=WFS;
+  if(!s.requestRaised) return W.hintRaise;
+  if(!s.projects.some(p=>p.submitted)) return W.hintSubmit;
+  if(s.projects.some(p=>p.submitted && p.review==='pending')) return W.hintReview;
+  if(s.projects.some(p=>p.attached)) return s.intakeStatus==='Draft' ? W.hintOpen : W.hintDone;
+  if(s.projects.some(p=>p.review==='approved')) return W.hintAttach;
+  return W.hintReview;
+}
+function wfReqHTML(W){
+  const s=WFS;
+  if(!s.requestRaised){
+    const act = s.role==='io'
+      ? `<button class="wf-btn wf-b-pri" onclick="wfRaise()">${W.raiseBtn}</button>`
+      : `<div class="wf-note">${W.cantWrongRole}</div>`;
+    return `<h4>${W.reqTitle}</h4><div class="wf-meta">${W.reqNone}</div>${act}`;
+  }
+  const sub=wfSubCount(), gap=WF_REQUESTED-sub;
+  let key,bg,col;
+  if(sub===0){key='ffPending';bg='#F3F4F6';col='#374151';}
+  else if(sub<WF_REQUESTED){key='ffShort';bg='#FEF9C3';col='#854D0E';}
+  else if(sub===WF_REQUESTED){key='ffFull';bg='#DCFCE7';col='#166534';}
+  else {key='ffOver';bg='#FEE2E2';col='#991B1B';}
+  return `<h4>${W.reqTitle}</h4><div class="wf-meta">${W.reqMeta}</div>
+    <div class="wf-counter">
+      <div class="wf-num"><b>${WF_REQUESTED}</b><span>${W.fulRequested}</span></div>
+      <div class="wf-num"><b>${sub}</b><span>${W.fulSubmitted}</span></div>
+      <div class="wf-num"><b>${gap}</b><span>${W.fulGap}</span></div>
+    </div>
+    <span class="wf-pill" style="background:${bg};color:${col}">${W[key]}</span>`;
+}
+function wfIntakeHTML(W){
+  const s=WFS, open=s.intakeStatus==='Open';
+  const stLabel=open?W.stOpen:W.stDraft, stBg=open?'#DBEAFE':'#F3F4F6', stCol=open?'#1E40AF':'#374151';
+  const openBtn=(s.role==='io'&&!open)?`<button class="wf-btn wf-b-pri" style="margin-left:8px" onclick="wfOpen()">${W.openBtn}</button>`:'';
+  const att=s.projects.filter(p=>p.attached);
+  const list=att.length
+    ? `<div class="wf-acts">${att.map(p=>`<span class="wf-pill" style="background:var(--cjl);color:var(--cj)">${p.title}</span>`).join('')}</div>`
+    : `<div class="wf-note">${W.intakeEmpty}</div>`;
+  return `<h4>${W.intakeTitle}</h4><div class="wf-meta">${W.intakeMeta}</div>
+    <div style="margin-bottom:8px"><span class="wf-pill" style="background:${stBg};color:${stCol}">${W.intakeStatusW}: ${stLabel}</span>${openBtn}</div>${list}`;
+}
+function wfProjActions(p,W){
+  const r=WFS.role;
+  if(!p.submitted) return r==='ad'
+    ? `<div class="wf-acts"><button class="wf-btn wf-b-pri" onclick="wfSubmit('${p.id}')">${W.submit}</button></div>`
+    : `<div class="wf-note">${W.cantWrongRole}</div>`;
+  if(p.review==='pending') return r==='io'
+    ? `<div class="wf-acts"><button class="wf-btn wf-b-ok" onclick="wfReview('${p.id}','approved')">${W.approve}</button><button class="wf-btn wf-b-no" onclick="wfReview('${p.id}','rejected')">${W.reject}</button></div>`
+    : `<div class="wf-note">${W.cantWrongRole}</div>`;
+  if(p.review==='rejected') return '';
+  if(p.review==='approved'){
+    if(p.attached) return `<div class="wf-note" style="color:#166534;font-style:normal;font-weight:600">${W.attached}</div>`;
+    if(r==='io'){
+      const e=wfEligible(p);
+      let h=`<div class="wf-acts"><button class="wf-btn wf-b-pri" onclick="wfAttach('${p.id}')" ${e.ok?'':'disabled'}>${W.attach}</button></div>`;
+      if(!e.ok){ const rs=e.reasons.filter(x=>x!=='approved').map(x=>W['r_'+x]).join('; '); h+=`<div class="wf-why">${W.why} ${rs}</div>`; }
+      return h;
+    }
+    return `<div class="wf-note">${W.cantWrongRole}</div>`;
+  }
+  return '';
+}
+function wfProjHTML(p,W){
+  const edu=p.edu==='University'?W.eduUniversity:W.eduPoly;
+  let rk,rb,rc;
+  if(!p.submitted){rk='rvNot';rb='#F3F4F6';rc='#374151';}
+  else if(p.review==='pending'){rk='rvPending';rb='#FEF9C3';rc='#854D0E';}
+  else if(p.review==='approved'){rk='rvApproved';rb='#DCFCE7';rc='#166534';}
+  else {rk='rvRejected';rb='#FEE2E2';rc='#991B1B';}
+  return `<div class="wf-proj">
+    <div class="wf-proj-top">
+      <div><div class="wf-proj-t">${p.title}</div><div class="wf-proj-m">${p.pc} · ${edu} · ${p.period} · ${p.placements} ${W.placements}</div></div>
+      <span class="wf-pill" style="background:${rb};color:${rc}">${W[rk]}</span>
+    </div>${wfProjActions(p,W)}</div>`;
+}
+function renderWF(){
+  if(!WFS) return;
+  const W=WF[LANG];
+  document.getElementById('wf-title').textContent=W.title;
+  document.getElementById('wf-sub').textContent=W.sub;
+  document.getElementById('wf-role-label').textContent=W.roleLabel;
+  const io=document.getElementById('wf-role-io'), ad=document.getElementById('wf-role-ad');
+  io.textContent=W.roleIO; ad.textContent=W.roleAD;
+  io.classList.toggle('on',WFS.role==='io'); ad.classList.toggle('on',WFS.role==='ad');
+  document.getElementById('wf-reset').textContent=W.reset;
+  document.getElementById('wf-hint').textContent=wfHint(W);
+  document.getElementById('wf-req').innerHTML=wfReqHTML(W);
+  document.getElementById('wf-intake').innerHTML=wfIntakeHTML(W);
+  document.getElementById('wf-projects').innerHTML=`<h4>${W.projTitle}</h4>`+WFS.projects.map(p=>wfProjHTML(p,W)).join('');
+}
+wfReset();
 </script>
 </body>
 </html>
