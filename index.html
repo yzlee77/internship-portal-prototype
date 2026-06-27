@@ -130,7 +130,7 @@ body{font-family:system-ui,sans-serif;font-size:14px;line-height:1.5;background:
   <div class="tab on" id="tab-er" onclick="showTab('er')"><span id="tl-er">ER Diagram</span></div>
   <div class="tab" id="tab-logic" onclick="showTab('logic')"><span id="tl-logic">App Logic</span></div>
   <div class="tab" id="tab-ent" onclick="showTab('ent')"><span id="tl-ent">Entity Fields</span></div>
-  <div class="tab" id="tab-status" onclick="showTab('status')"><span id="tl-status">Status Flows</span></div>
+  <div class="tab" id="tab-status" onclick="showTab('status')"><span id="tl-status">Status Flows 🚧</span></div>
 </div>
 
 <!-- ER DIAGRAM -->
@@ -509,6 +509,7 @@ body{font-family:system-ui,sans-serif;font-size:14px;line-height:1.5;background:
 
 <!-- STATUS FLOWS -->
 <div class="pane" id="pane-status">
+  <div style="padding:11px 14px;margin-bottom:14px;background:#FEF9C3;border:1px solid #FDE68A;border-radius:10px;font-size:12px;color:#854D0E;line-height:1.6" id="wip-status">🚧 <strong>Work in Progress</strong> — the status flows below are still being refined and are not finalised. Please disregard for now.</div>
   <div class="flow-card">
     <div class="flow-title" id="sf1-t">Project Review Status</div>
     <div class="sf">
@@ -594,7 +595,7 @@ function setLang(l) {
 const T = {
 en: {
   "ht":"Internship Portal — Data Model v6","hs":"Programme · Intake · Project · Project Request · Applicant",
-  "tl-er":"ER Diagram","tl-logic":"App Logic","tl-ent":"Entity Fields","tl-status":"Status Flows",
+  "tl-er":"ER Diagram","tl-logic":"App Logic","tl-ent":"Entity Fields","tl-status":"Status Flows 🚧",
   "er-title":"Entity Relationships",
   "ern-p1":"Programme","ern-i1":"Intake","lbl-linked":"Linked by:","er-r1":"One programme (e.g. University 2025) can have multiple intakes (e.g. Jan–Jun, Jun–Dec). Intake inherits the education_level from its parent programme.",
   "ern-p2":"Programme","ern-rq1":"Project Request","lbl-linked2":"Linked by:","er-r2":"Incidental — not a real relationship. A Project Request is raised by education level and does not need a programme to exist (IO can raise any number of requests, no limit per PC or year). They merely share the same education_level + year. The matching that does real work happens downstream: an approved Project is attached to an Intake (which belongs to a programme) when education level matches and the project's internship period falls within the intake's period.",
@@ -647,11 +648,12 @@ en: {
   "ex-i1-l":"INTAKE","ex-i1-st":"Open","ex-i1-sub":"Applications 1 Nov 2024 – 15 Dec 2024",
   "ex-i2-l":"INTAKE","ex-i2-st":"Draft","ex-i2-sub":"Applications not yet opened",
   "ex-pool-l":"POOL · approved but not yet attached (intake_id = null)",
-  "ex-why":"<strong>Reading it:</strong> 'University 2025' holds two intakes. 'Cyber Defence Dashboard' sits inside Jun–Dec 2025 because it is University level, Approved, and its internship dates fall within that intake's period. 'Robotics R&amp;D' and 'Cloud Migration' are approved but still in the pool — not yet placed into an intake. A Polytechnic or JC project would never appear here, because its education level would not match this University programme."
+  "ex-why":"<strong>Reading it:</strong> 'University 2025' holds two intakes. 'Cyber Defence Dashboard' sits inside Jun–Dec 2025 because it is University level, Approved, and its internship dates fall within that intake's period. 'Robotics R&amp;D' and 'Cloud Migration' are approved but still in the pool — not yet placed into an intake. A Polytechnic or JC project would never appear here, because its education level would not match this University programme.",
+  "wip-status":"🚧 <strong>Work in Progress</strong> — the status flows below are still being refined and are not finalised. Please disregard for now."
 },
 zh: {
   "ht":"实习门户 — 数据模型 v6","hs":"项目计划 · 招募批次 · 项目 · 项目需求 · 申请人",
-  "tl-er":"ER 关系图","tl-logic":"应用逻辑","tl-ent":"实体字段","tl-status":"状态流程",
+  "tl-er":"ER 关系图","tl-logic":"应用逻辑","tl-ent":"实体字段","tl-status":"状态流程 🚧",
   "er-title":"实体关系",
   "ern-p1":"项目计划","ern-i1":"招募批次","lbl-linked":"关联方式：","er-r1":"一个项目计划（例如：大学 2025）可以有多个招募批次（例如：1月–6月、6月–12月）。招募批次继承其上级项目计划的 education_level。",
   "ern-p2":"项目计划","ern-rq1":"项目需求","lbl-linked2":"关联方式：","er-r2":"附带关系 — 并非真正的关系。项目需求按教育层级发起，无需存在项目计划即可创建（IO 可发起任意数量的需求，每个 PC 或每年都没有限制）。二者只是共享相同的 education_level + year。真正起作用的匹配发生在下游：当教育层级匹配且项目的实习期落在招募批次期间内时，已批准的项目会被附加到（隶属于项目计划的）招募批次。",
@@ -704,7 +706,8 @@ zh: {
   "ex-i1-l":"招募批次","ex-i1-st":"开放","ex-i1-sub":"申请时间 2024年11月1日 – 2024年12月15日",
   "ex-i2-l":"招募批次","ex-i2-st":"草稿","ex-i2-sub":"申请尚未开放",
   "ex-pool-l":"项目池 · 已批准但尚未附加（intake_id = null）",
-  "ex-why":"<strong>如何解读：</strong>“University 2025”包含两个招募批次。“Cyber Defence Dashboard”位于 Jun–Dec 2025 之中，因为它是大学层级、已批准，且其实习日期落在该批次期间内。“Robotics R&amp;D”和“Cloud Migration”虽已批准，但仍在项目池中 — 尚未放入任何批次。理工学院（Poly）或初级学院（JC）的项目永远不会出现在这里，因为其教育层级与这个大学项目计划不匹配。"
+  "ex-why":"<strong>如何解读：</strong>“University 2025”包含两个招募批次。“Cyber Defence Dashboard”位于 Jun–Dec 2025 之中，因为它是大学层级、已批准，且其实习日期落在该批次期间内。“Robotics R&amp;D”和“Cloud Migration”虽已批准，但仍在项目池中 — 尚未放入任何批次。理工学院（Poly）或初级学院（JC）的项目永远不会出现在这里，因为其教育层级与这个大学项目计划不匹配。",
+  "wip-status":"🚧 <strong>进行中（WIP）</strong> — 以下状态流程仍在完善中，尚未最终确定，请暂时忽略。"
 }
 };
 </script>
