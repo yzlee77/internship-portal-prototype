@@ -94,6 +94,23 @@ body{font-family:system-ui,sans-serif;font-size:14px;line-height:1.5;background:
 .rl li{padding:4px 0;font-size:12px;display:flex;align-items:flex-start;gap:8px;border-bottom:1px solid #F9FAFB}
 .rl li:last-child{border-bottom:none}
 .rl li::before{content:"✓";color:#1D8A5A;font-weight:700;flex-shrink:0;margin-top:1px}
+
+/* worked example (nested containers) */
+.ex-prog{border:1.5px solid var(--cpb);border-radius:12px;background:var(--cpl);padding:12px;margin-bottom:14px}
+.ex-prog-h{font-weight:600;color:var(--cp);font-size:13px;margin-bottom:2px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.ex-prog-sub{font-size:11px;color:var(--cp);opacity:.85;margin-bottom:10px}
+.ex-intake{border:1.5px solid var(--cib);border-radius:10px;background:var(--cil);padding:10px;margin-bottom:10px}
+.ex-intake:last-child{margin-bottom:0}
+.ex-intake-h{font-weight:600;color:var(--ci);font-size:12px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.ex-intake-sub{font-size:10px;color:var(--ci);opacity:.85;margin:3px 0 8px}
+.ex-projs{display:flex;gap:8px;flex-wrap:wrap}
+.ex-proj{border:1px solid var(--cjb);border-radius:8px;background:var(--cjl);padding:6px 10px;min-width:128px}
+.ex-proj-t{font-weight:600;color:var(--cj);font-size:11px}
+.ex-proj-m{font-size:10px;color:var(--cj);opacity:.8;margin-top:1px}
+.ex-pill{font-size:9px;font-weight:700;letter-spacing:.04em;padding:1px 7px;border-radius:10px;background:#fff;border:1px solid rgba(0,0,0,.08);white-space:nowrap}
+.ex-pool{border:1.5px dashed var(--bd);border-radius:10px;background:#FAFAFA;padding:10px}
+.ex-pool-h{font-size:11px;font-weight:600;color:var(--mu);margin-bottom:8px}
+.ex-why{margin-top:12px;padding:10px 12px;background:#FFFBEB;border:1px solid #FDE68A;border-radius:8px;font-size:11px;color:#92400E;line-height:1.75}
 </style>
 </head>
 <body>
@@ -119,6 +136,54 @@ body{font-family:system-ui,sans-serif;font-size:14px;line-height:1.5;background:
 <!-- ER DIAGRAM -->
 <div class="pane on" id="pane-er">
   <div style="font-size:13px;font-weight:600;color:#1A3A5C;margin-bottom:12px" id="er-title">Entity Relationships</div>
+
+  <!-- Worked example: Programme > Intake > Project nesting -->
+  <div class="er-card" style="background:#FCFCFD">
+    <div style="font-size:13px;font-weight:600;color:#1A3A5C;margin-bottom:6px" id="ex-h">A worked example — how it nests together</div>
+    <div style="font-size:12px;color:var(--mu);line-height:1.7;margin-bottom:14px" id="ex-lead">In plain words: one <strong>Programme</strong> → many <strong>Intakes</strong> → many <strong>Projects</strong>. Approved projects wait in a shared pool until they are placed into an intake whose education level and dates match.</div>
+
+    <!-- Programme container -->
+    <div class="ex-prog">
+      <div class="ex-prog-h">🎓 <span>University 2025</span> <span class="ex-pill" style="color:var(--cp)" id="ex-prog-l">PROGRAMME</span></div>
+      <div class="ex-prog-sub" id="ex-prog-sub">Education level: University · Year: 2025 (auto-filled)</div>
+
+      <!-- Intake 1 -->
+      <div class="ex-intake">
+        <div class="ex-intake-h">📅 <span>Jan–Jun 2025</span>
+          <span class="ex-pill" style="color:var(--ci)" id="ex-i1-l">INTAKE</span>
+          <span class="ex-pill" style="background:#DBEAFE;color:#1E40AF;border-color:transparent" id="ex-i1-st">Open</span>
+        </div>
+        <div class="ex-intake-sub" id="ex-i1-sub">Applications 1 Nov 2024 – 15 Dec 2024</div>
+        <div class="ex-projs">
+          <div class="ex-proj"><div class="ex-proj-t">AI Customer Chatbot</div><div class="ex-proj-m">PC11 · Uni · 2 placements</div></div>
+          <div class="ex-proj"><div class="ex-proj-t">Data Pipeline Automation</div><div class="ex-proj-m">PC07 · Uni · 1 placement</div></div>
+        </div>
+      </div>
+
+      <!-- Intake 2 -->
+      <div class="ex-intake">
+        <div class="ex-intake-h">📅 <span>Jun–Dec 2025</span>
+          <span class="ex-pill" style="color:var(--ci)" id="ex-i2-l">INTAKE</span>
+          <span class="ex-pill" style="background:#F3F4F6;color:#374151;border-color:transparent" id="ex-i2-st">Draft</span>
+        </div>
+        <div class="ex-intake-sub" id="ex-i2-sub">Applications not yet opened</div>
+        <div class="ex-projs">
+          <div class="ex-proj"><div class="ex-proj-t">Cyber Defence Dashboard</div><div class="ex-proj-m">PC11 · Uni · 3 placements</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pool of approved-but-unattached projects -->
+    <div class="ex-pool">
+      <div class="ex-pool-h" id="ex-pool-l">POOL · approved but not yet attached (intake_id = null)</div>
+      <div class="ex-projs">
+        <div class="ex-proj"><div class="ex-proj-t">Robotics R&amp;D</div><div class="ex-proj-m">PC03 · Uni · 2 placements</div></div>
+        <div class="ex-proj"><div class="ex-proj-t">Cloud Migration</div><div class="ex-proj-m">PC11 · Uni · 1 placement</div></div>
+      </div>
+    </div>
+
+    <div class="ex-why" id="ex-why"><strong>Reading it:</strong> 'University 2025' holds two intakes. 'Cyber Defence Dashboard' sits inside Jun–Dec 2025 because it is University level, Approved, and its internship dates fall within that intake's period. 'Robotics R&amp;D' and 'Cloud Migration' are approved but still in the pool — not yet placed into an intake. A Polytechnic or JC project would never appear here, because its education level would not match this University programme.</div>
+  </div>
 
   <!-- Programme → Intake -->
   <div class="er-card">
@@ -575,7 +640,14 @@ en: {
   "sf1-t":"Project Review Status","sp-pend":"⏳ Pending Review","sp-appr":"✅ Approved","sp-rej":"❌ Rejected","s-ifa":"→ if approved","sp-una":"🔵 Unassigned","sp-asgn":"🟣 Assigned","sf1-nb":"Submitted by AD(P&C) · Approved by IO Admin · Unassigned = in pool, intake_id null · Assigned = attached to an intake",
   "sf2-t":"Project Request Fulfilment","sp-fpend":"📋 Pending","sp-sfall":"⚠️ Shortfall","sp-over":"🔺 Over-allocated","sp-ful":"✅ Fulfilled","sf2-nb":"Auto-calculated · Shortfall = submitted &lt; requested · Over-allocated = submitted &gt; requested · Fulfilled = exact match",
   "sf3-t":"Intake Status","sp-dft":"📋 Draft","sp-opn":"🔵 Open","sp-cls":"🔒 Closed","sp-cmp":"✅ Completed","sf3-nb":"Draft = not visible to applicants · Open = application window live · Closed = past close date · Completed = internship concluded",
-  "sf4-t":"Applicant Application Status","sp-sub":"📝 Submitted","sp-shl":"🔵 Shortlisted","sp-off":"💬 Offered","sp-acc":"✅ Accepted","sp-rjc":"❌ Rejected","sp-wdr":"↩ Withdrawn"
+  "sf4-t":"Applicant Application Status","sp-sub":"📝 Submitted","sp-shl":"🔵 Shortlisted","sp-off":"💬 Offered","sp-acc":"✅ Accepted","sp-rjc":"❌ Rejected","sp-wdr":"↩ Withdrawn",
+  "ex-h":"A worked example — how it nests together",
+  "ex-lead":"In plain words: one <strong>Programme</strong> → many <strong>Intakes</strong> → many <strong>Projects</strong>. Approved projects wait in a shared pool until they are placed into an intake whose education level and dates match.",
+  "ex-prog-l":"PROGRAMME","ex-prog-sub":"Education level: University · Year: 2025 (auto-filled)",
+  "ex-i1-l":"INTAKE","ex-i1-st":"Open","ex-i1-sub":"Applications 1 Nov 2024 – 15 Dec 2024",
+  "ex-i2-l":"INTAKE","ex-i2-st":"Draft","ex-i2-sub":"Applications not yet opened",
+  "ex-pool-l":"POOL · approved but not yet attached (intake_id = null)",
+  "ex-why":"<strong>Reading it:</strong> 'University 2025' holds two intakes. 'Cyber Defence Dashboard' sits inside Jun–Dec 2025 because it is University level, Approved, and its internship dates fall within that intake's period. 'Robotics R&amp;D' and 'Cloud Migration' are approved but still in the pool — not yet placed into an intake. A Polytechnic or JC project would never appear here, because its education level would not match this University programme."
 },
 zh: {
   "ht":"实习门户 — 数据模型 v6","hs":"项目计划 · 招募批次 · 项目 · 项目需求 · 申请人",
@@ -625,7 +697,14 @@ zh: {
   "sf1-t":"项目审核状态","sp-pend":"⏳ 待审核","sp-appr":"✅ 已批准","sp-rej":"❌ 已拒绝","s-ifa":"→ 若已批准","sp-una":"🔵 未分配","sp-asgn":"🟣 已分配","sf1-nb":"由 AD(P&C) 提交 · 由 IO 管理员批准 · 未分配 = 在池中，intake_id 为 null · 已分配 = 已附加到批次",
   "sf2-t":"项目需求完成情况","sp-fpend":"📋 待处理","sp-sfall":"⚠️ 名额不足","sp-over":"🔺 超额分配","sp-ful":"✅ 已完成","sf2-nb":"自动计算 · 名额不足 = 已提交 &lt; 已需求 · 超额分配 = 已提交 &gt; 已需求 · 已完成 = 完全匹配",
   "sf3-t":"招募批次状态","sp-dft":"📋 草稿","sp-opn":"🔵 开放","sp-cls":"🔒 关闭","sp-cmp":"✅ 完成","sf3-nb":"草稿 = 申请人不可见 · 开放 = 申请窗口生效 · 关闭 = 已过截止日期 · 完成 = 实习已结束",
-  "sf4-t":"申请人申请状态","sp-sub":"📝 已提交","sp-shl":"🔵 已入围","sp-off":"💬 已录取","sp-acc":"✅ 已接受","sp-rjc":"❌ 已拒绝","sp-wdr":"↩ 已撤回"
+  "sf4-t":"申请人申请状态","sp-sub":"📝 已提交","sp-shl":"🔵 已入围","sp-off":"💬 已录取","sp-acc":"✅ 已接受","sp-rjc":"❌ 已拒绝","sp-wdr":"↩ 已撤回",
+  "ex-h":"实例演示 — 它们如何层层嵌套",
+  "ex-lead":"用大白话说：一个<strong>项目计划（Programme）</strong> → 多个<strong>招募批次（Intake）</strong> → 多个<strong>项目（Project）</strong>。已批准的项目先放在共享池中，直到被放入教育层级和日期都匹配的招募批次。",
+  "ex-prog-l":"项目计划","ex-prog-sub":"教育层级：大学 · 年份：2025（自动填充）",
+  "ex-i1-l":"招募批次","ex-i1-st":"开放","ex-i1-sub":"申请时间 2024年11月1日 – 2024年12月15日",
+  "ex-i2-l":"招募批次","ex-i2-st":"草稿","ex-i2-sub":"申请尚未开放",
+  "ex-pool-l":"项目池 · 已批准但尚未附加（intake_id = null）",
+  "ex-why":"<strong>如何解读：</strong>“University 2025”包含两个招募批次。“Cyber Defence Dashboard”位于 Jun–Dec 2025 之中，因为它是大学层级、已批准，且其实习日期落在该批次期间内。“Robotics R&amp;D”和“Cloud Migration”虽已批准，但仍在项目池中 — 尚未放入任何批次。理工学院（Poly）或初级学院（JC）的项目永远不会出现在这里，因为其教育层级与这个大学项目计划不匹配。"
 }
 };
 </script>
