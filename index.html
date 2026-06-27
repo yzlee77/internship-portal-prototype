@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Internship Portal — Data Model v6</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cp:#0F5C3A;--cpl:#E6F4EE;--cpb:#1D8A5A;
+  --ci:#854D0E;--cil:#FEF9EC;--cib:#CA8A04;
+  --cj:#7C2D12;--cjl:#FEF0E8;--cjb:#C2440E;
+  --cr:#1D4ED8;--crl:#EFF6FF;--crb:#2563EB;
+  --bg:#F7F8FA;--bd:#D1D5DB;--tx:#111827;--mu:#6B7280;--wh:#fff;
+  --rad:10px;
+}
+body{font-family:system-ui,sans-serif;font-size:14px;line-height:1.5;background:var(--bg);color:var(--tx);min-height:100vh}
+.hdr{background:var(--wh);border-bottom:1px solid var(--bd);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.hdr-t{font-size:15px;font-weight:600;color:#1A3A5C}
+.hdr-s{font-size:11px;color:var(--mu);margin-top:1px}
+.ltog{display:flex;border:1px solid var(--bd);border-radius:6px;overflow:hidden}
+.lbtn{padding:5px 14px;font-size:12px;font-weight:500;cursor:pointer;border:none;background:var(--wh);color:var(--mu)}
+.lbtn.on{background:#2563A8;color:#fff}
+.tabs{display:flex;background:var(--wh);border-bottom:1px solid var(--bd);padding:0 16px;overflow-x:auto;gap:0}
+.tab{padding:10px 14px;font-size:13px;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;color:var(--mu);white-space:nowrap;user-select:none}
+.tab.on{color:#2563A8;border-bottom-color:#2563A8}
+.pane{padding:16px;display:none}
+.pane.on{display:block}
+
+/* cards */
+.card{background:var(--wh);border-radius:var(--rad);border:1px solid var(--bd);overflow:hidden;margin-bottom:14px}
+.card-hdr{padding:10px 14px;display:flex;align-items:center;gap:8px;font-weight:600;font-size:13px}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.slbl{font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--mu);padding:6px 14px 3px;background:#FAFAFA;border-top:1px solid #F3F4F6}
+.slbl.sys{background:#F0F4FF;color:#3730A3}
+.frow{display:grid;grid-template-columns:52px 1fr 80px 115px;align-items:center;padding:5px 14px;border-top:1px solid #F3F4F6;gap:6px;font-size:12px}
+.frow.sr{background:#FAFBFF}
+.frow.hl{background:#FFFBEB}
+.frow.mt{background:#FFF8F5}
+.flbl{font-size:9px;font-weight:600;padding:1px 5px;border-radius:3px;white-space:nowrap;text-align:center}
+.flbl.u{background:#E6F4EE;color:#0F5C3A}
+.flbl.s{background:#EEF2FF;color:#3730A3}
+.fn{font-weight:500;color:var(--tx);font-family:monospace;font-size:11px}
+.ft{color:var(--mu);font-size:11px}
+.b{font-size:10px;padding:1px 7px;border-radius:4px;font-weight:500;white-space:nowrap;text-align:center}
+.pk{background:#FEF3C7;color:#92400E}
+.fk{background:#E0E7FF;color:#3730A3}
+.req{background:#FCE7F3;color:#9D174D}
+.opt{background:#F0FDF4;color:#166534}
+.calc{background:#F3F4F6;color:#374151}
+.aut{background:#ECFDF5;color:#065F46}
+.ae{background:#FEF9C3;color:#854D0E}
+.mul{background:#FEF0E8;color:#7C2D12}
+.nb{padding:8px 14px 10px;font-size:11px;color:var(--mu);line-height:1.8;background:#FAFAFA;border-top:1px solid #F3F4F6}
+
+/* layout */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:620px){.g2{grid-template-columns:1fr}}
+.leg{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px;font-size:11px;color:var(--mu)}
+.li{display:flex;align-items:center;gap:5px}
+.ld{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+
+/* ER diagram */
+.er-card{background:var(--wh);border-radius:var(--rad);border:1px solid var(--bd);padding:16px;margin-bottom:12px}
+.er-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.en{padding:7px 16px;border-radius:8px;font-size:12px;font-weight:600;border:1.5px solid}
+.cm{font-size:16px;font-weight:700;color:#9CA3AF}
+.er-detail{font-size:12px;color:var(--mu);line-height:1.7}
+.er-detail strong{color:var(--tx)}
+.match-box{margin-top:8px;padding:7px 10px;background:#FFFBEB;border-radius:6px;font-size:11px;color:#92400E;border:1px solid #FDE68A}
+
+/* app logic */
+.flow-card{background:var(--wh);border-radius:var(--rad);border:1px solid var(--bd);padding:16px;margin-bottom:12px}
+.flow-title{font-size:13px;font-weight:600;color:#1A3A5C;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.flow-icon{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.steps{display:flex;flex-direction:column;gap:0}
+.step{display:flex;gap:12px;padding:8px 0;border-bottom:1px solid #F3F4F6}
+.step:last-child{border-bottom:none}
+.step-num{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px}
+.step-body{font-size:12px;color:var(--tx);line-height:1.6}
+.step-body .role{font-size:10px;font-weight:600;padding:1px 6px;border-radius:3px;margin-right:4px;vertical-align:middle}
+.step-body .note{color:var(--mu);font-size:11px;margin-top:2px}
+.role-io{background:#E6F4EE;color:#0F5C3A}
+.role-ad{background:#EFF6FF;color:#1D4ED8}
+.role-pc{background:#FEF9EC;color:#854D0E}
+.role-app{background:#EEEDFB;color:#3730A3}
+
+/* status */
+.sf{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 0}
+.sp{padding:5px 14px;border-radius:20px;font-size:12px;font-weight:500}
+.sa{color:var(--mu);font-size:16px}
+.sg{display:flex;gap:6px;flex-wrap:wrap}
+.rl{list-style:none}
+.rl li{padding:4px 0;font-size:12px;display:flex;align-items:flex-start;gap:8px;border-bottom:1px solid #F9FAFB}
+.rl li:last-child{border-bottom:none}
+.rl li::before{content:"✓";color:#1D8A5A;font-weight:700;flex-shrink:0;margin-top:1px}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div>
+    <div class="hdr-t" id="ht">Internship Portal — Data Model v6</div>
+    <div class="hdr-s" id="hs">Programme · Intake · Project · Project Request · Applicant</div>
+  </div>
+  <div class="ltog">
+    <button class="lbtn on" id="btn-en" onclick="setLang('en')">EN</button>
+    <button class="lbtn" id="btn-zh" onclick="setLang('zh')">中文</button>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab on" id="tab-er" onclick="showTab('er')"><span id="tl-er">ER Diagram</span></div>
+  <div class="tab" id="tab-logic" onclick="showTab('logic')"><span id="tl-logic">App Logic</span></div>
+  <div class="tab" id="tab-ent" onclick="showTab('ent')"><span id="tl-ent">Entity Fields</span></div>
+  <div class="tab" id="tab-status" onclick="showTab('status')"><span id="tl-status">Status Flows</span></div>
+</div>
+
+<!-- ER DIAGRAM -->
+<div class="pane on" id="pane-er">
+  <div style="font-size:13px;font-weight:600;color:#1A3A5C;margin-bottom:12px" id="er-title">Entity Relationships</div>
+
+  <!-- Programme → Intake -->
+  <div class="er-card">
+    <div class="er-row">
+      <div class="en" style="background:var(--cpl);color:var(--cp);border-color:var(--cpb)" id="ern-p1">Programme</div>
+      <div class="cm">1</div><div style="font-size:18px;color:#D1D5DB">────</div><div class="cm">N</div>
+      <div class="en" style="background:var(--cil);color:var(--ci);border-color:var(--cib)" id="ern-i1">Intake</div>
+    </div>
+    <div class="er-detail">
+      <div><strong id="lbl-linked">Linked by:</strong> <code>Intake.programme_id → Programme.programme_id</code> &nbsp;<span class="b fk">Hard FK</span></div>
+      <div id="er-r1" style="margin-top:4px">One programme (e.g. University 2025) can have multiple intakes (e.g. Jan–Jun, Jun–Dec). Intake inherits the education_level from its parent programme.</div>
+    </div>
+  </div>
+
+  <!-- Programme → Project Request -->
+  <div class="er-card">
+    <div class="er-row">
+      <div class="en" style="background:var(--cpl);color:var(--cp);border-color:var(--cpb)" id="ern-p2">Programme</div>
+      <div class="cm">1</div><div style="font-size:18px;color:#D1D5DB;border-bottom:1px dashed #D1D5DB">────</div><div class="cm">N</div>
+      <div class="en" style="background:var(--crl);color:var(--cr);border-color:var(--crb)" id="ern-rq1">Project Request</div>
+    </div>
+    <div class="er-detail">
+      <div><strong id="lbl-linked2">Linked by:</strong> <code>ProjectRequest.education_level + year = Programme.education_level + year</code> &nbsp;<span class="b calc">Soft match</span></div>
+      <div id="er-r2" style="margin-top:4px">IO Admin sends one request per PC per year. No hard FK — reconciled by matching education level and year. A request covers all education levels as child line rows.</div>
+    </div>
+  </div>
+
+  <!-- Project Request → Project -->
+  <div class="er-card">
+    <div class="er-row">
+      <div class="en" style="background:var(--crl);color:var(--cr);border-color:var(--crb)" id="ern-rq2">Project Request</div>
+      <div class="cm">1</div><div style="font-size:18px;color:#D1D5DB">────</div><div class="cm">N</div>
+      <div class="en" style="background:var(--cjl);color:var(--cj);border-color:var(--cjb)" id="ern-pr1">Project</div>
+    </div>
+    <div class="er-detail">
+      <div><strong id="lbl-linked3">Linked by:</strong> <code>Project.pc_code + education_level = ProjectRequestLine.pc_code + education_level</code> &nbsp;<span class="b calc">Soft match</span></div>
+      <div id="er-r3" style="margin-top:4px">AD(P&amp;C) submits multiple projects against one request. System sums placement counts per pc_code + education_level to track fulfilment. A project can exist without a request.</div>
+    </div>
+  </div>
+
+  <!-- Intake → Project -->
+  <div class="er-card">
+    <div class="er-row">
+      <div class="en" style="background:var(--cil);color:var(--ci);border-color:var(--cib)" id="ern-i2">Intake</div>
+      <div class="cm">1</div><div style="font-size:18px;color:#D1D5DB">────</div><div class="cm">N</div>
+      <div class="en" style="background:var(--cjl);color:var(--cj);border-color:var(--cjb)" id="ern-pr2">Project</div>
+    </div>
+    <div class="er-detail">
+      <div><strong id="lbl-linked4">Linked by:</strong> <code>Project.intake_id → Intake.intake_id</code> (nullable) &nbsp;<span class="b fk">Nullable FK</span></div>
+      <div id="er-r4" style="margin-top:4px">An intake can have many projects attached. A project starts unattached (intake_id = null) and is linked by IO Admin. The link is optional — projects can exist independently.</div>
+      <div class="match-box"><strong id="lbl-match">Conditions to attach a project to an intake:</strong><br>
+        <span id="er-match">① education_level must match &nbsp;② review_status = Approved &nbsp;③ project internship period falls within intake period</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SVG entity map -->
+  <div class="card" style="padding:16px">
+    <div style="font-size:11px;font-weight:600;color:var(--mu);text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px" id="map-ttl">Entity map</div>
+    <svg width="100%" viewBox="0 0 620 310" style="overflow:visible;display:block">
+      <defs>
+        <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M1 1L9 5L1 9" fill="none" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+        <marker id="ahs" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M1 1L9 5L1 9" fill="none" stroke="#D1D5DB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <!-- Programme -->
+      <rect x="200" y="10" width="170" height="78" rx="10" fill="#E6F4EE" stroke="#1D8A5A" stroke-width="1.5"/>
+      <text x="285" y="34" text-anchor="middle" font-size="12" font-weight="600" fill="#0F5C3A" id="sv-p">Programme</text>
+      <text x="285" y="51" text-anchor="middle" font-size="10" fill="#6B7280" id="sv-pf1">education_level · year</text>
+      <text x="285" y="66" text-anchor="middle" font-size="10" fill="#6B7280" id="sv-pf2">programme_title</text>
+      <text x="285" y="81" text-anchor="middle" font-size="10" fill="#6B7280" id="sv-pf3">programme_desc</text>
+
+      <!-- Intake -->
+      <rect x="30" y="170" width="175" height="92" rx="10" fill="#FEF9EC" stroke="#CA8A04" stroke-width="1.5"/>
+      <text x="117" y="194" text-anchor="middle" font-size="12" font-weight="600" fill="#854D0E" id="sv-i">Intake</text>
+      <text x="117" y="210" text-anchor="middle" font-size="10" fill="#6B7280" id="sv-if1">programme_id (FK)</text>
+      <text x="117" y="225" text-anchor="middle" font-size="10" fill="#6B7280" id="sv-if2">internship_start / end</text>
+      <text x="117" y="240" text-anchor="middle" font-size="10" fill="#6B7280" id="sv-if3">application_open / close</text>
+      <text x="117" y="255" text-anchor="middle" font-size="10" fill="#6B7280" id="sv-if4">status</text>
+
+      <!-- Project Request -->
+      <rect x="400" y="170" width="185" height="92" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+      <text x="492" y="194" text-anchor="middle" font-size="12" font-weight="600" fill="#1D4ED8" id="sv-r">Project Request</text>
+      <text x="492" y="210" text-anchor="middle" font-size="10" fill="#6B7280" id="sv-rf1">pc_code · to · cc</text>
+      <text x="492" y="225" text-anchor="middle" font-size="10" fill="#6B7280" id="sv-rf2">Line: education_level</text>
+      <text x="492" y="240" text-anchor="middle" font-size="10" fill="#6B7280" id="sv-rf3">placements_requested</text>
+      <text x="492" y="255" text-anchor="middle" font-size="10" fill="#6B7280" id="sv-rf4">fulfilment_status</text>
+
+      <!-- Project -->
+      <rect x="195" y="245" width="185" height="58" rx="10" fill="#FEF0E8" stroke="#C2440E" stroke-width="1.5"/>
+      <text x="287" y="268" text-anchor="middle" font-size="12" font-weight="600" fill="#7C2D12" id="sv-j">Project</text>
+      <text x="287" y="284" text-anchor="middle" font-size="10" fill="#6B7280" id="sv-jf1">education_level · pc_code · placement</text>
+      <text x="287" y="299" text-anchor="middle" font-size="10" fill="#6B7280" id="sv-jf2">internship_start / end · duration · intake_id</text>
+
+      <!-- Lines: Programme → Intake (hard FK) -->
+      <line x1="220" y1="88" x2="130" y2="170" stroke="#9CA3AF" stroke-width="1.5" marker-end="url(#ah)"/>
+      <rect x="132" y="118" width="44" height="17" rx="4" fill="white" stroke="#E5E7EB" stroke-width="0.5"/>
+      <text x="154" y="130" text-anchor="middle" font-size="10" font-weight="600" fill="#6B7280">1 : N</text>
+
+      <!-- Lines: Programme → Project Request (soft) -->
+      <line x1="358" y1="88" x2="460" y2="170" stroke="#D1D5DB" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ahs)"/>
+      <rect x="374" y="116" width="44" height="17" rx="4" fill="white" stroke="#E5E7EB" stroke-width="0.5"/>
+      <text x="396" y="128" text-anchor="middle" font-size="10" font-weight="600" fill="#9CA3AF">1 : N</text>
+
+      <!-- Lines: Project Request → Project (soft) -->
+      <line x1="440" y1="262" x2="382" y2="268" stroke="#D1D5DB" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ahs)"/>
+      <rect x="392" y="254" width="44" height="17" rx="4" fill="white" stroke="#E5E7EB" stroke-width="0.5"/>
+      <text x="414" y="266" text-anchor="middle" font-size="10" font-weight="600" fill="#9CA3AF">1 : N</text>
+
+      <!-- Lines: Intake → Project (nullable FK) -->
+      <line x1="185" y1="246" x2="220" y2="260" stroke="#9CA3AF" stroke-width="1.5" marker-end="url(#ah)"/>
+      <rect x="175" y="238" width="44" height="17" rx="4" fill="white" stroke="#E5E7EB" stroke-width="0.5"/>
+      <text x="197" y="250" text-anchor="middle" font-size="10" font-weight="600" fill="#6B7280">1 : N</text>
+
+      <!-- Legend -->
+      <line x1="30" y1="280" x2="58" y2="280" stroke="#9CA3AF" stroke-width="1.5" marker-end="url(#ah)"/>
+      <text x="64" y="284" font-size="10" fill="#6B7280" id="sv-lg1">Hard / nullable FK</text>
+      <line x1="30" y1="298" x2="58" y2="298" stroke="#D1D5DB" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ahs)"/>
+      <text x="64" y="302" font-size="10" fill="#9CA3AF" id="sv-lg2">Soft match (no FK)</text>
+    </svg>
+  </div>
+</div>
+
+<!-- APP LOGIC -->
+<div class="pane" id="pane-logic">
+  <div style="font-size:13px;font-weight:600;color:#1A3A5C;margin-bottom:12px" id="al-title">Application Logic — End to End</div>
+
+  <!-- Flow 1: Project Request -->
+  <div class="flow-card">
+    <div class="flow-title"><div class="flow-icon" style="background:var(--crl);color:var(--cr)">①</div><span id="fl1-t">Project Request Flow</span></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num" style="background:var(--cpl);color:var(--cp)">1</div>
+        <div class="step-body"><span class="role role-io" id="r-ioadmin">IO Admin</span> <span id="fl1-s1">creates a Project Request in the system, specifying the PC code, recipient (PC Head), CC (AD(P&C)), and the number of placements needed per education level (e.g. PC11: 3 Uni, 4 JC, 2 Poly).</span></div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:var(--cil);color:var(--ci)">2</div>
+        <div class="step-body"><span class="role role-pc" id="r-pc">PC Head</span> <span id="fl1-s2">receives the request (via system notification or email output). Disseminates to their team to consolidate project submissions.</span></div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:var(--crl);color:var(--cr)">3</div>
+        <div class="step-body"><span class="role role-ad" id="r-ad">AD(P&amp;C)</span> <span id="fl1-s3">submits projects into the system — either manually (one by one) or via Excel upload. Each project includes education level, internship period, duration, placement count, mentor info, and matching tags.</span></div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:var(--cpl);color:var(--cp)">4</div>
+        <div class="step-body"><span class="role role-io" id="r-ioadmin2">IO Admin</span> <span id="fl1-s4">reviews submitted projects and approves or rejects each one. System automatically tracks fulfilment: compares total submitted placement count vs requested count per PC + education level.</span>
+        <div class="note" id="fl1-n4">⚠️ System flags Shortfall or Over-allocation automatically.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flow 2: Programme + Intake -->
+  <div class="flow-card">
+    <div class="flow-title"><div class="flow-icon" style="background:var(--cpl);color:var(--cp)">②</div><span id="fl2-t">Programme & Intake Setup (order-independent with Flow ①)</span></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num" style="background:var(--cpl);color:var(--cp)">1</div>
+        <div class="step-body"><span class="role role-io" id="r-io1">IO / IO Admin</span> <span id="fl2-s1">creates a Programme by selecting education level, adding a title and optional description. Year is auto-filled. Only one programme per education level per year is allowed.</span></div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:var(--cpl);color:var(--cp)">2</div>
+        <div class="step-body"><span class="role role-io" id="r-io2">IO / IO Admin</span> <span id="fl2-s2">adds Intakes to the programme. Each intake has a title (auto-generated), internship period (month/year), and application open/close dates. Multiple intakes per programme allowed; periods can overlap.</span></div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:var(--cil);color:var(--ci)">3</div>
+        <div class="step-body"><span class="role role-io" id="r-io3">IO / IO Admin</span> <span id="fl2-s3">optionally attaches approved projects to an intake. The system shows only eligible projects: matching education level, Approved status, and internship period falls within intake period.</span>
+        <div class="note" id="fl2-n3">This step is optional — can be done later from the intake page or from a project's own page.</div></div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:var(--cil);color:var(--ci)">4</div>
+        <div class="step-body"><span class="role role-io" id="r-io4">IO Admin</span> <span id="fl2-s4">sets the intake status to Open when ready to receive applicants. Status: Draft → Open → Closed → Completed.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flow 3: Application -->
+  <div class="flow-card">
+    <div class="flow-title"><div class="flow-icon" style="background:#EEEDFB;color:#3730A3">③</div><span id="fl3-t">Applicant Flow</span></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num" style="background:#EEEDFB;color:#3730A3">1</div>
+        <div class="step-body"><span class="role role-app" id="r-app1">Applicant</span> <span id="fl3-s1">views open intakes matching their education level. Application window must be active (between application_open and application_close dates).</span></div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:#EEEDFB;color:#3730A3">2</div>
+        <div class="step-body"><span class="role role-app" id="r-app2">Applicant</span> <span id="fl3-s2">submits application with personal info, academic background, and optional project preferences (ranked list from projects available in that intake).</span></div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:var(--cpl);color:var(--cp)">3</div>
+        <div class="step-body"><span class="role role-io" id="r-io5">IO / IO Admin</span> <span id="fl3-s3">reviews applications and shortlists candidates. Makes offers to shortlisted applicants.</span></div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:#EEEDFB;color:#3730A3">4</div>
+        <div class="step-body"><span class="role role-app" id="r-app3">Applicant</span> <span id="fl3-s4">accepts or rejects the offer. On acceptance, project is marked Assigned and applicant status updates to Accepted.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key rules -->
+  <div class="flow-card">
+    <div class="flow-title"><div class="flow-icon" style="background:#FEF9EC;color:#854D0E">⚡</div><span id="kl-t">Key System Rules</span></div>
+    <ul class="rl">
+      <li><span id="kl-1">Programme and Project flows are <strong>order-independent</strong> — IO Admin can create programmes or approve projects in any order; they are linked at intake setup time.</span></li>
+      <li><span id="kl-2">A project can only be attached to an intake if: <strong>education_level matches · review_status = Approved · internship period falls within intake period.</strong></span></li>
+      <li><span id="kl-3">Project has a <strong>hosting period</strong> (window mentor is available) and a separate <strong>duration</strong> (how long the intern stays) — duration is manually entered, not calculated from the period.</span></li>
+      <li><span id="kl-4">Project Request fulfilment is tracked automatically: <strong>placements_submitted</strong> (sum of project headcounts per PC + edu level) vs <strong>placements_requested</strong>. Flags Shortfall or Over-allocation.</span></li>
+      <li><span id="kl-5">AD(P&amp;C) can submit projects via <strong>manual form</strong> or <strong>Excel upload</strong>. Excel field names must exactly match the form. Multi-select fields use comma-separated values.</span></li>
+      <li><span id="kl-6">Applicants only see intakes where <strong>education_level matches</strong> and <strong>application window is open</strong>.</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ENTITY FIELDS -->
+<div class="pane" id="pane-ent">
+  <div class="leg">
+    <div class="li"><div class="ld" style="background:#0F5C3A"></div><span id="lg-u">User-facing field</span></div>
+    <div class="li"><div class="ld" style="background:#3730A3"></div><span id="lg-s">System field (auto-captured)</span></div>
+  </div>
+  <div class="g2">
+    <!-- PROGRAMME -->
+    <div class="card">
+      <div class="card-hdr" style="background:var(--cpl);color:var(--cp)"><div class="dot" style="background:var(--cpb)"></div><span id="e-prog">Programme</span></div>
+      <div class="slbl" id="sl-prog-u">User Fields</div>
+      <div class="frow"><span class="flbl u" id="u-p1">User</span><div class="fn">education_level</div><div class="ft">ENUM</div><span class="b req" id="b-p1">Required</span></div>
+      <div class="frow"><span class="flbl u" id="u-p2">User</span><div class="fn">programme_title</div><div class="ft">VARCHAR</div><span class="b req" id="b-p2">Required</span></div>
+      <div class="frow"><span class="flbl u" id="u-p3">User</span><div class="fn">programme_desc</div><div class="ft">TEXT</div><span class="b opt" id="b-p3">Optional</span></div>
+      <div class="slbl sys" id="sl-prog-s">System Fields</div>
+      <div class="frow sr"><span class="flbl s" id="s-p1">System</span><div class="fn">programme_id</div><div class="ft">UUID</div><span class="b pk">PK</span></div>
+      <div class="frow sr"><span class="flbl s" id="s-p2">System</span><div class="fn">year</div><div class="ft">INT(4)</div><span class="b aut" id="b-p4">Auto</span></div>
+      <div class="frow sr"><span class="flbl s" id="s-p3">System</span><div class="fn">created_by</div><div class="ft">UUID</div><span class="b fk" id="b-p5">FK → User</span></div>
+      <div class="frow sr"><span class="flbl s" id="s-p4">System</span><div class="fn">created_at</div><div class="ft">TIMESTAMP</div><span class="b aut" id="b-p6">Auto</span></div>
+      <div class="nb" id="nb-prog">Unique: one per education_level per year · Max 5 per year</div>
+    </div>
+    <!-- INTAKE -->
+    <div class="card">
+      <div class="card-hdr" style="background:var(--cil);color:var(--ci)"><div class="dot" style="background:var(--cib)"></div><span id="e-intake">Intake</span></div>
+      <div class="slbl" id="sl-int-u">User Fields</div>
+      <div class="frow"><span class="flbl u" id="u-i1">User</span><div class="fn">intake_title</div><div class="ft">VARCHAR</div><span class="b ae" id="b-i1">Auto, editable</span></div>
+      <div class="frow hl"><span class="flbl u" id="u-i2">User</span><div class="fn">internship_start</div><div class="ft" id="ft-i1">MONTH/YEAR</div><span class="b req" id="b-i2">Required</span></div>
+      <div class="frow hl"><span class="flbl u" id="u-i3">User</span><div class="fn">internship_end</div><div class="ft" id="ft-i2">MONTH/YEAR</div><span class="b req" id="b-i3">Required</span></div>
+      <div class="frow"><span class="flbl u" id="u-i4">User</span><div class="fn">application_open</div><div class="ft">DATE</div><span class="b req" id="b-i4">Required</span></div>
+      <div class="frow"><span class="flbl u" id="u-i5">User</span><div class="fn">application_close</div><div class="ft">DATE</div><span class="b req" id="b-i5">Required</span></div>
+      <div class="frow"><span class="flbl u" id="u-i6">User</span><div class="fn">status</div><div class="ft">ENUM</div><span class="b req" id="b-i6">Required</span></div>
+      <div class="slbl sys" id="sl-int-s">System Fields</div>
+      <div class="frow sr"><span class="flbl s" id="s-i1">System</span><div class="fn">intake_id</div><div class="ft">UUID</div><span class="b pk">PK</span></div>
+      <div class="frow sr"><span class="flbl s" id="s-i2">System</span><div class="fn">programme_id</div><div class="ft">UUID</div><span class="b fk" id="b-i7">FK → Programme</span></div>
+      <div class="frow sr"><span class="flbl s" id="s-i3">System</span><div class="fn">duration_months</div><div class="ft">INT</div><span class="b calc" id="b-i8">Calculated</span></div>
+      <div class="frow sr"><span class="flbl s" id="s-i4">System</span><div class="fn">created_by</div><div class="ft">UUID</div><span class="b fk" id="b-i9">FK → User</span></div>
+      <div class="frow sr"><span class="flbl s" id="s-i5">System</span><div class="fn">created_at</div><div class="ft">TIMESTAMP</div><span class="b aut" id="b-i10">Auto</span></div>
+      <div class="nb" id="nb-int">intake_title auto-generated from period (e.g. "Jun–Dec 2025") but editable · Overlapping intakes allowed · internship_start/end stored as first/last day of month</div>
+    </div>
+  </div>
+
+  <!-- PROJECT REQUEST -->
+  <div class="card">
+    <div class="card-hdr" style="background:var(--crl);color:var(--cr)"><div class="dot" style="background:var(--crb)"></div><span id="e-req">Project Request</span></div>
+    <div class="g2" style="gap:0">
+      <div>
+        <div class="slbl" id="sl-rq-uh">User Fields — Header</div>
+        <div class="frow"><span class="flbl u" id="u-r1">User</span><div class="fn">pc_code</div><div class="ft">VARCHAR</div><span class="b req" id="b-r1">Required</span></div>
+        <div class="frow"><span class="flbl u" id="u-r2">User</span><div class="fn">to (recipients)</div><div class="ft">UUID[]</div><span class="b req" id="b-r2">Required</span></div>
+        <div class="frow"><span class="flbl u" id="u-r3">User</span><div class="fn">cc (recipients)</div><div class="ft">UUID[]</div><span class="b opt" id="b-r3">Optional</span></div>
+        <div class="slbl" id="sl-rq-ul">User Fields — Lines</div>
+        <div class="frow"><span class="flbl u" id="u-r4">User</span><div class="fn">education_level</div><div class="ft">ENUM</div><span class="b req" id="b-r4">Required</span></div>
+        <div class="frow"><span class="flbl u" id="u-r5">User</span><div class="fn">placements_requested</div><div class="ft">INT</div><span class="b req" id="b-r5">Required</span></div>
+      </div>
+      <div>
+        <div class="slbl sys" id="sl-rq-s">System Fields</div>
+        <div class="frow sr"><span class="flbl s" id="s-r1">System</span><div class="fn">request_id</div><div class="ft">UUID</div><span class="b pk">PK</span></div>
+        <div class="frow sr"><span class="flbl s" id="s-r2">System</span><div class="fn">line_id</div><div class="ft">UUID</div><span class="b pk">PK (line)</span></div>
+        <div class="frow sr"><span class="flbl s" id="s-r3">System</span><div class="fn">year</div><div class="ft">INT(4)</div><span class="b aut" id="b-r6">Auto</span></div>
+        <div class="frow sr"><span class="flbl s" id="s-r4">System</span><div class="fn">placements_submitted</div><div class="ft">INT</div><span class="b calc" id="b-r7">Calculated</span></div>
+        <div class="frow sr"><span class="flbl s" id="s-r5">System</span><div class="fn">placements_gap</div><div class="ft">INT</div><span class="b calc" id="b-r8">Calculated</span></div>
+        <div class="frow sr"><span class="flbl s" id="s-r6">System</span><div class="fn">fulfilment_status</div><div class="ft">ENUM</div><span class="b calc" id="b-r9">Calculated</span></div>
+        <div class="frow sr"><span class="flbl s" id="s-r7">System</span><div class="fn">requested_by</div><div class="ft">UUID</div><span class="b fk" id="b-r10">FK → User</span></div>
+        <div class="frow sr"><span class="flbl s" id="s-r8">System</span><div class="fn">created_at</div><div class="ft">TIMESTAMP</div><span class="b aut" id="b-r11">Auto</span></div>
+      </div>
+    </div>
+    <div class="nb" id="nb-req">One request per PC covers all education levels as child line rows · Output rendered as email · Reconciled against projects via pc_code + education_level (soft match, no FK)</div>
+  </div>
+
+  <!-- PROJECT -->
+  <div class="card">
+    <div class="card-hdr" style="background:var(--cjl);color:var(--cj)"><div class="dot" style="background:var(--cjb)"></div><span id="e-proj">Project</span></div>
+    <div class="g2" style="gap:0">
+      <div>
+        <div class="slbl" id="sl-pr-u1">User Fields — Project Info</div>
+        <div class="frow"><span class="flbl u" id="u-j1">User</span><div class="fn">project_title</div><div class="ft">VARCHAR</div><span class="b req" id="b-j1">Required</span></div>
+        <div class="frow"><span class="flbl u" id="u-j2">User</span><div class="fn">project_scope</div><div class="ft">TEXT</div><span class="b req" id="b-j2">Required</span></div>
+        <div class="frow"><span class="flbl u" id="u-j3">User</span><div class="fn">pc_code</div><div class="ft">VARCHAR</div><span class="b req" id="b-j3">Required</span></div>
+        <div class="frow"><span class="flbl u" id="u-j4">User</span><div class="fn">education_level</div><div class="ft">ENUM</div><span class="b req" id="b-j4">Required</span></div>
+        <div class="frow"><span class="flbl u" id="u-j5">User</span><div class="fn">placement</div><div class="ft">INT</div><span class="b req" id="b-j5">Required</span></div>
+        <div class="slbl" id="sl-pr-u2">User Fields — Internship Period</div>
+        <div class="frow hl"><span class="flbl u" id="u-j6">User</span><div class="fn">internship_start</div><div class="ft" id="ft-j1">MONTH/YEAR</div><span class="b req" id="b-j6">Required</span></div>
+        <div class="frow hl"><span class="flbl u" id="u-j7">User</span><div class="fn">internship_end</div><div class="ft" id="ft-j2">MONTH/YEAR</div><span class="b req" id="b-j7">Required</span></div>
+        <div class="frow"><span class="flbl u" id="u-j8">User</span><div class="fn">duration_months</div><div class="ft">INT</div><span class="b req" id="b-j8">Required</span></div>
+        <div class="slbl" id="sl-pr-u3">User Fields — Mentor</div>
+        <div class="frow"><span class="flbl u" id="u-j9">User</span><div class="fn">mentor_name</div><div class="ft">VARCHAR</div><span class="b req" id="b-j9">Required</span></div>
+        <div class="frow"><span class="flbl u" id="u-j10">User</span><div class="fn">mentor_email</div><div class="ft">VARCHAR</div><span class="b req" id="b-j10">Required</span></div>
+        <div class="frow"><span class="flbl u" id="u-j11">User</span><div class="fn">mentor_designation</div><div class="ft">VARCHAR</div><span class="b req" id="b-j11">Required</span></div>
+        <div class="frow"><span class="flbl u" id="u-j12">User</span><div class="fn">mentor_writeup</div><div class="ft">TEXT</div><span class="b opt" id="b-j12">Optional</span></div>
+      </div>
+      <div>
+        <div class="slbl" id="sl-pr-u4">User Fields — Matching Tags</div>
+        <div class="frow mt"><span class="flbl u" id="u-j13">User</span><div class="fn">discipline_of_study</div><div class="ft">ENUM[]</div><span class="b mul" id="b-j13">Multi-select</span></div>
+        <div class="frow mt"><span class="flbl u" id="u-j14">User</span><div class="fn">skills</div><div class="ft">ENUM[]</div><span class="b mul" id="b-j14">Multi-select</span></div>
+        <div class="frow mt"><span class="flbl u" id="u-j15">User</span><div class="fn">tech_domain</div><div class="ft">ENUM</div><span class="b req" id="b-j15">Single select</span></div>
+        <div class="frow mt"><span class="flbl u" id="u-j16">User</span><div class="fn">emerging_areas</div><div class="ft">ENUM</div><span class="b req" id="b-j16">Single select</span></div>
+        <div class="nb" style="background:#FFF8F5;border-top:none" id="nb-tags">Predefined lists required for consistent matching. In Excel: discipline_of_study and skills use comma-separated values.</div>
+        <div class="slbl sys" id="sl-pr-s">System Fields</div>
+        <div class="frow sr"><span class="flbl s" id="s-j1">System</span><div class="fn">project_id</div><div class="ft">UUID</div><span class="b pk">PK</span></div>
+        <div class="frow sr"><span class="flbl s" id="s-j2">System</span><div class="fn">intake_id</div><div class="ft">UUID</div><span class="b fk" id="b-j17">Nullable FK → Intake</span></div>
+        <div class="frow sr"><span class="flbl s" id="s-j3">System</span><div class="fn">review_status</div><div class="ft">ENUM</div><span class="b calc" id="b-j18">System-set</span></div>
+        <div class="frow sr"><span class="flbl s" id="s-j4">System</span><div class="fn">submitted_by</div><div class="ft">UUID</div><span class="b fk" id="b-j19">FK → User (AD)</span></div>
+        <div class="frow sr"><span class="flbl s" id="s-j5">System</span><div class="fn">reviewed_by</div><div class="ft">UUID</div><span class="b fk" id="b-j20">FK → User (IO Admin)</span></div>
+        <div class="frow sr"><span class="flbl s" id="s-j6">System</span><div class="fn">submitted_at</div><div class="ft">TIMESTAMP</div><span class="b aut" id="b-j21">Auto</span></div>
+        <div class="nb" id="nb-proj-sys">No FK to Project Request — reconciled via pc_code + education_level · intake_id null until attached</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STATUS FLOWS -->
+<div class="pane" id="pane-status">
+  <div class="flow-card">
+    <div class="flow-title" id="sf1-t">Project Review Status</div>
+    <div class="sf">
+      <div class="sp" style="background:#FEF9C3;color:#854D0E"><span id="sp-pend">⏳ Pending Review</span></div>
+      <span class="sa">→</span>
+      <div class="sg">
+        <div class="sp" style="background:#DCFCE7;color:#166534"><span id="sp-appr">✅ Approved</span></div>
+        <div class="sp" style="background:#FEE2E2;color:#991B1B"><span id="sp-rej">❌ Rejected</span></div>
+      </div>
+      <span class="sa" id="s-ifa">→ if approved</span>
+      <div class="sg">
+        <div class="sp" style="background:#DBEAFE;color:#1E40AF"><span id="sp-una">🔵 Unassigned</span></div>
+        <span class="sa">→</span>
+        <div class="sp" style="background:#F3E8FF;color:#6B21A8"><span id="sp-asgn">🟣 Assigned</span></div>
+      </div>
+    </div>
+    <div class="nb" id="sf1-nb">Submitted by AD(P&C) · Approved by IO Admin · Unassigned = in pool, intake_id null · Assigned = attached to an intake</div>
+  </div>
+  <div class="flow-card">
+    <div class="flow-title" id="sf2-t">Project Request Fulfilment</div>
+    <div class="sf">
+      <div class="sp" style="background:#F3F4F6;color:#374151"><span id="sp-fpend">📋 Pending</span></div>
+      <span class="sa">→</span>
+      <div class="sg">
+        <div class="sp" style="background:#FEF9C3;color:#854D0E"><span id="sp-sfall">⚠️ Shortfall</span></div>
+        <div class="sp" style="background:#FEE2E2;color:#991B1B"><span id="sp-over">🔺 Over-allocated</span></div>
+        <div class="sp" style="background:#DCFCE7;color:#166534"><span id="sp-ful">✅ Fulfilled</span></div>
+      </div>
+    </div>
+    <div class="nb" id="sf2-nb">Auto-calculated · Shortfall = submitted &lt; requested · Over-allocated = submitted &gt; requested · Fulfilled = exact match</div>
+  </div>
+  <div class="flow-card">
+    <div class="flow-title" id="sf3-t">Intake Status</div>
+    <div class="sf">
+      <div class="sp" style="background:#F3F4F6;color:#374151"><span id="sp-dft">📋 Draft</span></div>
+      <span class="sa">→</span>
+      <div class="sp" style="background:#DBEAFE;color:#1E40AF"><span id="sp-opn">🔵 Open</span></div>
+      <span class="sa">→</span>
+      <div class="sp" style="background:#FEF9C3;color:#854D0E"><span id="sp-cls">🔒 Closed</span></div>
+      <span class="sa">→</span>
+      <div class="sp" style="background:#DCFCE7;color:#166534"><span id="sp-cmp">✅ Completed</span></div>
+    </div>
+    <div class="nb" id="sf3-nb">Draft = not visible to applicants · Open = application window live · Closed = past close date · Completed = internship concluded</div>
+  </div>
+  <div class="flow-card">
+    <div class="flow-title" id="sf4-t">Applicant Application Status</div>
+    <div class="sf" style="flex-wrap:wrap">
+      <div class="sp" style="background:#F3F4F6;color:#374151"><span id="sp-sub">📝 Submitted</span></div>
+      <span class="sa">→</span>
+      <div class="sp" style="background:#DBEAFE;color:#1E40AF"><span id="sp-shl">🔵 Shortlisted</span></div>
+      <span class="sa">→</span>
+      <div class="sp" style="background:#FEF9C3;color:#854D0E"><span id="sp-off">💬 Offered</span></div>
+      <span class="sa">→</span>
+      <div class="sg">
+        <div class="sp" style="background:#DCFCE7;color:#166534"><span id="sp-acc">✅ Accepted</span></div>
+        <div class="sp" style="background:#FEE2E2;color:#991B1B"><span id="sp-rjc">❌ Rejected</span></div>
+        <div class="sp" style="background:#F3F4F6;color:#374151"><span id="sp-wdr">↩ Withdrawn</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const TABS = ['er','logic','ent','status'];
+
+function showTab(name) {
+  TABS.forEach(t => {
+    document.getElementById('tab-' + t).classList.toggle('on', t === name);
+    document.getElementById('pane-' + t).classList.toggle('on', t === name);
+  });
+}
+
+function setLang(l) {
+  document.getElementById('btn-en').classList.toggle('on', l === 'en');
+  document.getElementById('btn-zh').classList.toggle('on', l === 'zh');
+  const d = T[l];
+  Object.keys(d).forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = d[id];
+  });
+}
+
+const T = {
+en: {
+  "ht":"Internship Portal — Data Model v6","hs":"Programme · Intake · Project · Project Request · Applicant",
+  "tl-er":"ER Diagram","tl-logic":"App Logic","tl-ent":"Entity Fields","tl-status":"Status Flows",
+  "er-title":"Entity Relationships",
+  "ern-p1":"Programme","ern-i1":"Intake","lbl-linked":"Linked by:","er-r1":"One programme (e.g. University 2025) can have multiple intakes (e.g. Jan–Jun, Jun–Dec). Intake inherits the education_level from its parent programme.",
+  "ern-p2":"Programme","ern-rq1":"Project Request","lbl-linked2":"Linked by:","er-r2":"IO Admin sends one request per PC per year. No hard FK — reconciled by matching education level and year. A request covers all education levels as child line rows.",
+  "ern-rq2":"Project Request","ern-pr1":"Project","lbl-linked3":"Linked by:","er-r3":"AD(P&C) submits multiple projects against one request. System sums placement counts per pc_code + education_level to track fulfilment. A project can exist without a request.",
+  "ern-i2":"Intake","ern-pr2":"Project","lbl-linked4":"Linked by:","er-r4":"An intake can have many projects attached. A project starts unattached (intake_id = null) and is linked by IO Admin. The link is optional — projects can exist independently.",
+  "lbl-match":"Conditions to attach a project to an intake:","er-match":"① education_level must match &nbsp;② review_status = Approved &nbsp;③ project internship period falls within intake period",
+  "map-ttl":"Entity map",
+  "sv-p":"Programme","sv-pf1":"education_level · year","sv-pf2":"programme_title","sv-pf3":"programme_desc",
+  "sv-i":"Intake","sv-if1":"programme_id (FK)","sv-if2":"internship_start / end","sv-if3":"application_open / close","sv-if4":"status",
+  "sv-r":"Project Request","sv-rf1":"pc_code · to · cc","sv-rf2":"Line: education_level","sv-rf3":"placements_requested","sv-rf4":"fulfilment_status",
+  "sv-j":"Project","sv-jf1":"education_level · pc_code · placement","sv-jf2":"internship_start / end · duration · intake_id",
+  "sv-lg1":"Hard / nullable FK","sv-lg2":"Soft match (no FK)",
+  "al-title":"Application Logic — End to End",
+  "fl1-t":"Project Request Flow","r-ioadmin":"IO Admin","fl1-s1":"creates a Project Request in the system, specifying the PC code, recipient (PC Head), CC (AD(P&C)), and the number of placements needed per education level (e.g. PC11: 3 Uni, 4 JC, 2 Poly).","r-pc":"PC Head","fl1-s2":"receives the request (via system notification or email output). Disseminates to their team to consolidate project submissions.","r-ad":"AD(P&C)","fl1-s3":"submits projects into the system — either manually (one by one) or via Excel upload. Each project includes education level, internship period, duration, placement count, mentor info, and matching tags.","r-ioadmin2":"IO Admin","fl1-s4":"reviews submitted projects and approves or rejects each one. System automatically tracks fulfilment: compares total submitted placement count vs requested count per PC + education level.","fl1-n4":"⚠️ System flags Shortfall or Over-allocation automatically.",
+  "fl2-t":"Programme & Intake Setup (order-independent with Flow ①)","r-io1":"IO / IO Admin","fl2-s1":"creates a Programme by selecting education level, adding a title and optional description. Year is auto-filled. Only one programme per education level per year is allowed.","r-io2":"IO / IO Admin","fl2-s2":"adds Intakes to the programme. Each intake has a title (auto-generated), internship period (month/year), and application open/close dates. Multiple intakes per programme allowed; periods can overlap.","r-io3":"IO / IO Admin","fl2-s3":"optionally attaches approved projects to an intake. The system shows only eligible projects: matching education level, Approved status, and internship period falls within intake period.","fl2-n3":"This step is optional — can be done later from the intake page or from a project's own page.","r-io4":"IO Admin","fl2-s4":"sets the intake status to Open when ready to receive applicants. Status: Draft → Open → Closed → Completed.",
+  "fl3-t":"Applicant Flow","r-app1":"Applicant","fl3-s1":"views open intakes matching their education level. Application window must be active (between application_open and application_close dates).","r-app2":"Applicant","fl3-s2":"submits application with personal info, academic background, and optional project preferences (ranked list from projects available in that intake).","r-io5":"IO / IO Admin","fl3-s3":"reviews applications and shortlists candidates. Makes offers to shortlisted applicants.","r-app3":"Applicant","fl3-s4":"accepts or rejects the offer. On acceptance, project is marked Assigned and applicant status updates to Accepted.",
+  "kl-t":"Key System Rules",
+  "kl-1":"Programme and Project flows are <strong>order-independent</strong> — IO Admin can create programmes or approve projects in any order; they are linked at intake setup time.",
+  "kl-2":"A project can only be attached to an intake if: <strong>education_level matches · review_status = Approved · internship period falls within intake period.</strong>",
+  "kl-3":"Project has a <strong>hosting period</strong> (window mentor is available) and a separate <strong>duration</strong> (how long the intern stays) — duration is manually entered, not calculated from the period.",
+  "kl-4":"Project Request fulfilment is tracked automatically: <strong>placements_submitted</strong> (sum of project headcounts per PC + edu level) vs <strong>placements_requested</strong>. Flags Shortfall or Over-allocation.",
+  "kl-5":"AD(P&C) can submit projects via <strong>manual form</strong> or <strong>Excel upload</strong>. Excel field names must exactly match the form. Multi-select fields use comma-separated values.",
+  "kl-6":"Applicants only see intakes where <strong>education_level matches</strong> and <strong>application window is open</strong>.",
+  "lg-u":"User-facing field","lg-s":"System field (auto-captured)",
+  "e-prog":"Programme","sl-prog-u":"User Fields","sl-prog-s":"System Fields",
+  "u-p1":"User","u-p2":"User","u-p3":"User","s-p1":"System","s-p2":"System","s-p3":"System","s-p4":"System",
+  "b-p1":"Required","b-p2":"Required","b-p3":"Optional","b-p4":"Auto","b-p5":"FK → User","b-p6":"Auto",
+  "nb-prog":"Unique: one per education_level per year · Max 5 per year",
+  "e-intake":"Intake","sl-int-u":"User Fields","sl-int-s":"System Fields",
+  "u-i1":"User","u-i2":"User","u-i3":"User","u-i4":"User","u-i5":"User","u-i6":"User","s-i1":"System","s-i2":"System","s-i3":"System","s-i4":"System","s-i5":"System",
+  "b-i1":"Auto, editable","ft-i1":"MONTH/YEAR","ft-i2":"MONTH/YEAR","b-i2":"Required","b-i3":"Required","b-i4":"Required","b-i5":"Required","b-i6":"Required","b-i7":"FK → Programme","b-i8":"Calculated","b-i9":"FK → User","b-i10":"Auto",
+  "nb-int":"intake_title auto-generated from period (e.g. \"Jun–Dec 2025\") but editable · Overlapping intakes allowed · internship_start/end stored as first/last day of month",
+  "e-req":"Project Request","sl-rq-uh":"User Fields — Header","sl-rq-ul":"User Fields — Lines","sl-rq-s":"System Fields",
+  "u-r1":"User","u-r2":"User","u-r3":"User","u-r4":"User","u-r5":"User","s-r1":"System","s-r2":"System","s-r3":"System","s-r4":"System","s-r5":"System","s-r6":"System","s-r7":"System","s-r8":"System",
+  "b-r1":"Required","b-r2":"Required","b-r3":"Optional","b-r4":"Required","b-r5":"Required","b-r6":"Auto","b-r7":"Calculated","b-r8":"Calculated","b-r9":"Calculated","b-r10":"FK → User","b-r11":"Auto",
+  "nb-req":"One request per PC covers all education levels as child line rows · Output rendered as email · Reconciled against projects via pc_code + education_level (soft match, no FK)",
+  "e-proj":"Project","sl-pr-u1":"User Fields — Project Info","sl-pr-u2":"User Fields — Internship Period","sl-pr-u3":"User Fields — Mentor","sl-pr-u4":"User Fields — Matching Tags","sl-pr-s":"System Fields",
+  "u-j1":"User","u-j2":"User","u-j3":"User","u-j4":"User","u-j5":"User","u-j6":"User","u-j7":"User","u-j8":"User","u-j9":"User","u-j10":"User","u-j11":"User","u-j12":"User","u-j13":"User","u-j14":"User","u-j15":"User","u-j16":"User",
+  "s-j1":"System","s-j2":"System","s-j3":"System","s-j4":"System","s-j5":"System","s-j6":"System",
+  "b-j1":"Required","b-j2":"Required","b-j3":"Required","b-j4":"Required","b-j5":"Required","ft-j1":"MONTH/YEAR","ft-j2":"MONTH/YEAR","b-j6":"Required","b-j7":"Required","b-j8":"Required","b-j9":"Required","b-j10":"Required","b-j11":"Required","b-j12":"Optional","b-j13":"Multi-select","b-j14":"Multi-select","b-j15":"Single select","b-j16":"Single select","b-j17":"Nullable FK → Intake","b-j18":"System-set","b-j19":"FK → User (AD)","b-j20":"FK → User (IO Admin)","b-j21":"Auto",
+  "nb-tags":"Predefined lists required for consistent matching. In Excel: discipline_of_study and skills use comma-separated values.",
+  "nb-proj-sys":"No FK to Project Request — reconciled via pc_code + education_level · intake_id null until attached",
+  "sf1-t":"Project Review Status","sp-pend":"⏳ Pending Review","sp-appr":"✅ Approved","sp-rej":"❌ Rejected","s-ifa":"→ if approved","sp-una":"🔵 Unassigned","sp-asgn":"🟣 Assigned","sf1-nb":"Submitted by AD(P&C) · Approved by IO Admin · Unassigned = in pool, intake_id null · Assigned = attached to an intake",
+  "sf2-t":"Project Request Fulfilment","sp-fpend":"📋 Pending","sp-sfall":"⚠️ Shortfall","sp-over":"🔺 Over-allocated","sp-ful":"✅ Fulfilled","sf2-nb":"Auto-calculated · Shortfall = submitted &lt; requested · Over-allocated = submitted &gt; requested · Fulfilled = exact match",
+  "sf3-t":"Intake Status","sp-dft":"📋 Draft","sp-opn":"🔵 Open","sp-cls":"🔒 Closed","sp-cmp":"✅ Completed","sf3-nb":"Draft = not visible to applicants · Open = application window live · Closed = past close date · Completed = internship concluded",
+  "sf4-t":"Applicant Application Status","sp-sub":"📝 Submitted","sp-shl":"🔵 Shortlisted","sp-off":"💬 Offered","sp-acc":"✅ Accepted","sp-rjc":"❌ Rejected","sp-wdr":"↩ Withdrawn"
+},
+zh: {
+  "ht":"实习门户 — 数据模型 v6","hs":"项目计划 · 招募批次 · 项目 · 项目需求 · 申请人",
+  "tl-er":"ER 关系图","tl-logic":"应用逻辑","tl-ent":"实体字段","tl-status":"状态流程",
+  "er-title":"实体关系",
+  "ern-p1":"项目计划","ern-i1":"招募批次","lbl-linked":"关联方式：","er-r1":"一个项目计划（例如：大学 2025）可以有多个招募批次（例如：1月–6月、6月–12月）。招募批次继承其上级项目计划的 education_level。",
+  "ern-p2":"项目计划","ern-rq1":"项目需求","lbl-linked2":"关联方式：","er-r2":"IO 管理员每年为每个 PC 发送一个需求。无硬外键 — 通过匹配教育层级和年份进行核对。一个需求以子明细行的形式涵盖所有教育层级。",
+  "ern-rq2":"项目需求","ern-pr1":"项目","lbl-linked3":"关联方式：","er-r3":"AD(P&C) 针对一个需求提交多个项目。系统按 pc_code + education_level 汇总名额数量以跟踪完成情况。项目可以在没有需求的情况下存在。",
+  "ern-i2":"招募批次","ern-pr2":"项目","lbl-linked4":"关联方式：","er-r4":"一个招募批次可以附加多个项目。项目最初处于未附加状态（intake_id = null），由 IO 管理员进行关联。该关联是可选的 — 项目可以独立存在。",
+  "lbl-match":"将项目附加到招募批次的条件：","er-match":"① education_level 必须匹配 &nbsp;② review_status = 已批准 &nbsp;③ 项目实习期落在招募批次期间内",
+  "map-ttl":"实体地图",
+  "sv-p":"项目计划","sv-pf1":"education_level · year","sv-pf2":"programme_title","sv-pf3":"programme_desc",
+  "sv-i":"招募批次","sv-if1":"programme_id (FK)","sv-if2":"internship_start / end","sv-if3":"application_open / close","sv-if4":"status",
+  "sv-r":"项目需求","sv-rf1":"pc_code · to · cc","sv-rf2":"行：education_level","sv-rf3":"placements_requested","sv-rf4":"fulfilment_status",
+  "sv-j":"项目","sv-jf1":"education_level · pc_code · placement","sv-jf2":"internship_start / end · duration · intake_id",
+  "sv-lg1":"硬 / 可空外键","sv-lg2":"软匹配（无外键）",
+  "al-title":"应用逻辑 — 端到端",
+  "fl1-t":"项目需求流程","r-ioadmin":"IO 管理员","fl1-s1":"在系统中创建项目需求，指定 PC 代码、收件人（PC 主管）、抄送（AD(P&C)），以及每个教育层级所需的名额数量（例如 PC11：3 大学，4 初级学院，2 理工学院）。","r-pc":"PC 主管","fl1-s2":"接收需求（通过系统通知或邮件输出）。分发给团队以整合项目提交。","r-ad":"AD(P&C)","fl1-s3":"将项目提交到系统 — 可手动逐个提交或通过 Excel 上传。每个项目包括教育层级、实习期、时长、名额数量、导师信息和匹配标签。","r-ioadmin2":"IO 管理员","fl1-s4":"审核已提交的项目并逐一批准或拒绝。系统自动跟踪完成情况：按 PC + 教育层级比较已提交名额总数与需求数量。","fl1-n4":"⚠️ 系统自动标记名额不足或超额分配。",
+  "fl2-t":"项目计划与招募批次设置（与流程 ① 顺序无关）","r-io1":"IO / IO 管理员","fl2-s1":"通过选择教育层级、添加标题和可选描述来创建项目计划。年份自动填充。每年每个教育层级只允许一个项目计划。","r-io2":"IO / IO 管理员","fl2-s2":"为项目计划添加招募批次。每个批次有一个标题（自动生成）、实习期（月/年）和申请开放/截止日期。每个项目计划允许多个批次；期间可以重叠。","r-io3":"IO / IO 管理员","fl2-s3":"可选地将已批准的项目附加到招募批次。系统仅显示符合条件的项目：教育层级匹配、状态为已批准，且实习期落在批次期间内。","fl2-n3":"此步骤为可选 — 可稍后在批次页面或项目自身页面进行。","r-io4":"IO 管理员","fl2-s4":"准备好接收申请人时，将批次状态设为开放。状态：草稿 → 开放 → 关闭 → 完成。",
+  "fl3-t":"申请人流程","r-app1":"申请人","fl3-s1":"查看符合其教育层级的开放批次。申请窗口必须处于活动状态（在 application_open 和 application_close 日期之间）。","r-app2":"申请人","fl3-s2":"提交申请，包含个人信息、学术背景和可选的项目偏好（从该批次可用项目中排序的列表）。","r-io5":"IO / IO 管理员","fl3-s3":"审核申请并筛选候选人。向入围申请人发出录取。","r-app3":"申请人","fl3-s4":"接受或拒绝录取。接受后，项目标记为已分配，申请人状态更新为已接受。",
+  "kl-t":"关键系统规则",
+  "kl-1":"项目计划与项目流程<strong>顺序无关</strong> — IO 管理员可以按任意顺序创建项目计划或批准项目；它们在招募批次设置时关联。",
+  "kl-2":"只有满足以下条件，项目才能附加到批次：<strong>education_level 匹配 · review_status = 已批准 · 实习期落在批次期间内。</strong>",
+  "kl-3":"项目有<strong>托管期</strong>（导师可用的时间窗口）和单独的<strong>时长</strong>（实习生停留多久）— 时长为手动输入，不由期间计算得出。",
+  "kl-4":"项目需求完成情况自动跟踪：<strong>placements_submitted</strong>（按 PC + 教育层级汇总的项目人数）对比 <strong>placements_requested</strong>。标记名额不足或超额分配。",
+  "kl-5":"AD(P&C) 可通过<strong>手动表单</strong>或 <strong>Excel 上传</strong>提交项目。Excel 字段名称必须与表单完全一致。多选字段使用逗号分隔的值。",
+  "kl-6":"申请人仅看到 <strong>education_level 匹配</strong>且<strong>申请窗口开放</strong>的批次。",
+  "lg-u":"用户填写字段","lg-s":"系统字段（自动捕获）",
+  "e-prog":"项目计划","sl-prog-u":"用户字段","sl-prog-s":"系统字段",
+  "u-p1":"用户","u-p2":"用户","u-p3":"用户","s-p1":"系统","s-p2":"系统","s-p3":"系统","s-p4":"系统",
+  "b-p1":"必填","b-p2":"必填","b-p3":"可选","b-p4":"自动","b-p5":"FK → User","b-p6":"自动",
+  "nb-prog":"唯一：每年每个 education_level 一个 · 每年最多 5 个",
+  "e-intake":"招募批次","sl-int-u":"用户字段","sl-int-s":"系统字段",
+  "u-i1":"用户","u-i2":"用户","u-i3":"用户","u-i4":"用户","u-i5":"用户","u-i6":"用户","s-i1":"系统","s-i2":"系统","s-i3":"系统","s-i4":"系统","s-i5":"系统",
+  "b-i1":"自动，可编辑","ft-i1":"月/年","ft-i2":"月/年","b-i2":"必填","b-i3":"必填","b-i4":"必填","b-i5":"必填","b-i6":"必填","b-i7":"FK → Programme","b-i8":"计算得出","b-i9":"FK → User","b-i10":"自动",
+  "nb-int":"intake_title 根据期间自动生成（例如 \"6月–12月 2025\"）但可编辑 · 允许重叠批次 · internship_start/end 存储为当月的第一天/最后一天",
+  "e-req":"项目需求","sl-rq-uh":"用户字段 — 表头","sl-rq-ul":"用户字段 — 明细行","sl-rq-s":"系统字段",
+  "u-r1":"用户","u-r2":"用户","u-r3":"用户","u-r4":"用户","u-r5":"用户","s-r1":"系统","s-r2":"系统","s-r3":"系统","s-r4":"系统","s-r5":"系统","s-r6":"系统","s-r7":"系统","s-r8":"系统",
+  "b-r1":"必填","b-r2":"必填","b-r3":"可选","b-r4":"必填","b-r5":"必填","b-r6":"自动","b-r7":"计算得出","b-r8":"计算得出","b-r9":"计算得出","b-r10":"FK → User","b-r11":"自动",
+  "nb-req":"每个 PC 一个需求，以子明细行形式涵盖所有教育层级 · 输出渲染为邮件 · 通过 pc_code + education_level 与项目核对（软匹配，无外键）",
+  "e-proj":"项目","sl-pr-u1":"用户字段 — 项目信息","sl-pr-u2":"用户字段 — 实习期","sl-pr-u3":"用户字段 — 导师","sl-pr-u4":"用户字段 — 匹配标签","sl-pr-s":"系统字段",
+  "u-j1":"用户","u-j2":"用户","u-j3":"用户","u-j4":"用户","u-j5":"用户","u-j6":"用户","u-j7":"用户","u-j8":"用户","u-j9":"用户","u-j10":"用户","u-j11":"用户","u-j12":"用户","u-j13":"用户","u-j14":"用户","u-j15":"用户","u-j16":"用户",
+  "s-j1":"系统","s-j2":"系统","s-j3":"系统","s-j4":"系统","s-j5":"系统","s-j6":"系统",
+  "b-j1":"必填","b-j2":"必填","b-j3":"必填","b-j4":"必填","b-j5":"必填","ft-j1":"月/年","ft-j2":"月/年","b-j6":"必填","b-j7":"必填","b-j8":"必填","b-j9":"必填","b-j10":"必填","b-j11":"必填","b-j12":"可选","b-j13":"多选","b-j14":"多选","b-j15":"单选","b-j16":"单选","b-j17":"可空 FK → Intake","b-j18":"系统设置","b-j19":"FK → User (AD)","b-j20":"FK → User (IO 管理员)","b-j21":"自动",
+  "nb-tags":"需要预定义列表以保持一致匹配。在 Excel 中：discipline_of_study 和 skills 使用逗号分隔的值。",
+  "nb-proj-sys":"无外键指向项目需求 — 通过 pc_code + education_level 核对 · 附加前 intake_id 为 null",
+  "sf1-t":"项目审核状态","sp-pend":"⏳ 待审核","sp-appr":"✅ 已批准","sp-rej":"❌ 已拒绝","s-ifa":"→ 若已批准","sp-una":"🔵 未分配","sp-asgn":"🟣 已分配","sf1-nb":"由 AD(P&C) 提交 · 由 IO 管理员批准 · 未分配 = 在池中，intake_id 为 null · 已分配 = 已附加到批次",
+  "sf2-t":"项目需求完成情况","sp-fpend":"📋 待处理","sp-sfall":"⚠️ 名额不足","sp-over":"🔺 超额分配","sp-ful":"✅ 已完成","sf2-nb":"自动计算 · 名额不足 = 已提交 &lt; 已需求 · 超额分配 = 已提交 &gt; 已需求 · 已完成 = 完全匹配",
+  "sf3-t":"招募批次状态","sp-dft":"📋 草稿","sp-opn":"🔵 开放","sp-cls":"🔒 关闭","sp-cmp":"✅ 完成","sf3-nb":"草稿 = 申请人不可见 · 开放 = 申请窗口生效 · 关闭 = 已过截止日期 · 完成 = 实习已结束",
+  "sf4-t":"申请人申请状态","sp-sub":"📝 已提交","sp-shl":"🔵 已入围","sp-off":"💬 已录取","sp-acc":"✅ 已接受","sp-rjc":"❌ 已拒绝","sp-wdr":"↩ 已撤回"
+}
+};
+</script>
+</body>
+</html>
