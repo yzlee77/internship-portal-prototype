@@ -275,71 +275,20 @@ body{font-family:system-ui,sans-serif;font-size:14px;line-height:1.5;background:
   <!-- SVG entity map -->
   <div class="card" style="padding:16px">
     <div style="font-size:11px;font-weight:600;color:var(--mu);text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px" id="map-ttl">Entity map</div>
-    <svg width="100%" viewBox="0 0 600 420" style="overflow:visible;display:block">
-      <defs>
-        <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-          <path d="M1 1L9 5L1 9" fill="none" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </marker>
-        <marker id="ahs" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-          <path d="M1 1L9 5L1 9" fill="none" stroke="#D1D5DB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </marker>
-      </defs>
-
-      <!-- Programme -->
-      <rect x="60" y="20" width="190" height="84" rx="10" fill="#E6F4EE" stroke="#1D8A5A" stroke-width="1.5"/>
-      <text x="155" y="44" text-anchor="middle" font-size="12" font-weight="600" fill="#0F5C3A" id="sv-p">Programme</text>
-      <text x="155" y="62" text-anchor="middle" font-size="10" fill="#6B7280" id="sv-pf1">education_level · year</text>
-      <text x="155" y="78" text-anchor="middle" font-size="10" fill="#6B7280" id="sv-pf2">programme_title</text>
-      <text x="155" y="94" text-anchor="middle" font-size="10" fill="#6B7280" id="sv-pf3">programme_desc</text>
-
-      <!-- Intake -->
-      <rect x="60" y="160" width="190" height="104" rx="10" fill="#FEF9EC" stroke="#CA8A04" stroke-width="1.5"/>
-      <text x="155" y="184" text-anchor="middle" font-size="12" font-weight="600" fill="#854D0E" id="sv-i">Intake</text>
-      <text x="155" y="202" text-anchor="middle" font-size="10" fill="#6B7280" id="sv-if1">programme_id (FK)</text>
-      <text x="155" y="218" text-anchor="middle" font-size="10" fill="#6B7280" id="sv-if2">internship_start / end</text>
-      <text x="155" y="234" text-anchor="middle" font-size="10" fill="#6B7280" id="sv-if3">application_open / close</text>
-      <text x="155" y="250" text-anchor="middle" font-size="10" fill="#6B7280" id="sv-if4">status</text>
-
-      <!-- Project Request -->
-      <rect x="360" y="20" width="200" height="104" rx="10" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
-      <text x="460" y="44" text-anchor="middle" font-size="12" font-weight="600" fill="#1D4ED8" id="sv-r">Project Request</text>
-      <text x="460" y="62" text-anchor="middle" font-size="10" fill="#6B7280" id="sv-rf1">pc_code · to · cc</text>
-      <text x="460" y="78" text-anchor="middle" font-size="10" fill="#6B7280" id="sv-rf2">Line: education_level</text>
-      <text x="460" y="94" text-anchor="middle" font-size="10" fill="#6B7280" id="sv-rf3">placements_requested</text>
-      <text x="460" y="110" text-anchor="middle" font-size="10" fill="#6B7280" id="sv-rf4">fulfilment_status</text>
-
-      <!-- Project -->
-      <rect x="210" y="298" width="220" height="66" rx="10" fill="#FEF0E8" stroke="#C2440E" stroke-width="1.5"/>
-      <text x="320" y="322" text-anchor="middle" font-size="12" font-weight="600" fill="#7C2D12" id="sv-j">Project</text>
-      <text x="320" y="340" text-anchor="middle" font-size="10" fill="#6B7280" id="sv-jf1">education_level · pc_code · placement</text>
-      <text x="320" y="356" text-anchor="middle" font-size="10" fill="#6B7280" id="sv-jf2">internship_start / end · duration · intake_id</text>
-
-      <!-- Lines: Programme → Intake (hard FK) -->
-      <line x1="155" y1="104" x2="155" y2="158" stroke="#9CA3AF" stroke-width="1.5" marker-end="url(#ah)"/>
-      <rect x="127" y="119" width="56" height="24" rx="5" fill="white" stroke="#E5E7EB" stroke-width="0.5"/>
-      <text x="155" y="130" text-anchor="middle" font-size="9" font-style="italic" fill="#6B7280" id="sv-rel1">has</text>
-      <text x="155" y="140" text-anchor="middle" font-size="9" font-weight="700" fill="#6B7280">1 : N</text>
-
-      <!-- Lines: Intake → Project (nullable FK) -->
-      <line x1="185" y1="264" x2="286" y2="296" stroke="#9CA3AF" stroke-width="1.5" marker-end="url(#ah)"/>
-      <rect x="203" y="268" width="64" height="24" rx="5" fill="white" stroke="#E5E7EB" stroke-width="0.5"/>
-      <text x="235" y="279" text-anchor="middle" font-size="9" font-style="italic" fill="#6B7280" id="sv-rel2">contains</text>
-      <text x="235" y="289" text-anchor="middle" font-size="9" font-weight="700" fill="#6B7280">1 : N</text>
-
-      <!-- Lines: Project Request → Project (soft match) -->
-      <line x1="445" y1="124" x2="392" y2="296" stroke="#D1D5DB" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ahs)"/>
-      <rect x="379" y="198" width="78" height="24" rx="5" fill="white" stroke="#E5E7EB" stroke-width="0.5"/>
-      <text x="418" y="209" text-anchor="middle" font-size="9" font-style="italic" fill="#9CA3AF" id="sv-rel3">fulfilled by</text>
-      <text x="418" y="219" text-anchor="middle" font-size="9" font-weight="700" fill="#9CA3AF">1 : N</text>
-
-      <!-- Programme ↔ Project Request: intentionally NOT drawn (incidental, no relationship) -->
-
-      <!-- Legend -->
-      <line x1="60" y1="392" x2="88" y2="392" stroke="#9CA3AF" stroke-width="1.5" marker-end="url(#ah)"/>
-      <text x="94" y="396" font-size="10" fill="#6B7280" id="sv-lg1">Hard / nullable FK</text>
-      <line x1="270" y1="392" x2="298" y2="392" stroke="#D1D5DB" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ahs)"/>
-      <text x="304" y="396" font-size="10" fill="#9CA3AF" id="sv-lg2">Soft match (no FK)</text>
-    </svg>
+    <svg width="100%" viewBox="0 0 720 470" style="overflow:visible;display:block">
+<defs>
+  <g id="cfOneOne" stroke="currentColor" stroke-width="1.4" fill="none"><line x1="6" y1="-6" x2="6" y2="6"/><line x1="12" y1="-6" x2="12" y2="6"/></g>
+  <g id="cfZeroOne" stroke="currentColor" stroke-width="1.4" fill="none"><line x1="8" y1="-6" x2="8" y2="6"/><circle cx="17" cy="0" r="3.5"/></g>
+  <g id="cfZeroMany" stroke="currentColor" stroke-width="1.4" fill="none"><path d="M12 0 L0 -7 M12 0 L0 0 M12 0 L0 7"/><circle cx="18" cy="0" r="3.5"/></g>
+</defs>
+<line x1="150" y1="134" x2="150" y2="270" stroke="#6B7280" stroke-width="1.5"/><use href="#cfOneOne" transform="translate(150,134) rotate(90)" style="color:#6B7280"/><use href="#cfZeroMany" transform="translate(150,270) rotate(270)" style="color:#6B7280"/><rect x="135.6" y="193" width="28.799999999999997" height="18" rx="5" fill="#fff" stroke="#E5E7EB" stroke-width="0.5"/><text x="150" y="205" text-anchor="middle" font-size="9.5" font-style="italic" fill="#6B7280" id="sv-rel1">has</text><line x1="260" y1="327" x2="470" y2="327" stroke="#6B7280" stroke-width="1.5"/><use href="#cfZeroOne" transform="translate(260,327) rotate(0)" style="color:#6B7280"/><use href="#cfZeroMany" transform="translate(470,327) rotate(180)" style="color:#6B7280"/><rect x="336.6" y="309" width="56.8" height="18" rx="5" fill="#fff" stroke="#E5E7EB" stroke-width="0.5"/><text x="365" y="321" text-anchor="middle" font-size="9.5" font-style="italic" fill="#6B7280" id="sv-rel2">contains</text><line x1="585" y1="152" x2="585" y2="270" stroke="#9CA3AF" stroke-width="1.5" stroke-dasharray="5 4"/><use href="#cfZeroOne" transform="translate(585,152) rotate(90)" style="color:#9CA3AF"/><use href="#cfZeroMany" transform="translate(585,270) rotate(270)" style="color:#9CA3AF"/><rect x="545.4" y="196" width="79.19999999999999" height="18" rx="5" fill="#fff" stroke="#E5E7EB" stroke-width="0.5"/><text x="585" y="208" text-anchor="middle" font-size="9.5" font-style="italic" fill="#9CA3AF" id="sv-rel3">fulfilled by</text>
+<g><rect x="40" y="20" width="220" height="114" rx="8" fill="#fff" stroke="#1D8A5A" stroke-width="1.5"/><path d="M40 44 L40 28 Q40 20 48 20 L252 20 Q260 20 260 28 L260 44 Z" fill="#E6F4EE"/><text x="150" y="36" text-anchor="middle" font-size="12" font-weight="700" fill="#1D8A5A" id="sv-p">Programme</text><text x="50" y="57" font-size="10.5" font-family="ui-monospace,monospace" fill="#374151">programme_id</text><rect x="232.8" y="47" width="19.2" height="13" rx="3" fill="#FEF3C7"/><text x="248" y="56.5" text-anchor="end" font-size="8.5" font-weight="700" fill="#92400E">PK</text><line x1="40" y1="62" x2="260" y2="62" stroke="#F1F3F5" stroke-width="1"/><text x="50" y="75" font-size="10.5" font-family="ui-monospace,monospace" fill="#374151">education_level</text><line x1="40" y1="80" x2="260" y2="80" stroke="#F1F3F5" stroke-width="1"/><text x="50" y="93" font-size="10.5" font-family="ui-monospace,monospace" fill="#374151">year</text><line x1="40" y1="98" x2="260" y2="98" stroke="#F1F3F5" stroke-width="1"/><text x="50" y="111" font-size="10.5" font-family="ui-monospace,monospace" fill="#374151">programme_title</text><line x1="40" y1="116" x2="260" y2="116" stroke="#F1F3F5" stroke-width="1"/><text x="50" y="129" font-size="10.5" font-family="ui-monospace,monospace" fill="#374151">programme_desc</text></g>
+<g><rect x="40" y="270" width="220" height="114" rx="8" fill="#fff" stroke="#CA8A04" stroke-width="1.5"/><path d="M40 294 L40 278 Q40 270 48 270 L252 270 Q260 270 260 278 L260 294 Z" fill="#FEF9EC"/><text x="150" y="286" text-anchor="middle" font-size="12" font-weight="700" fill="#CA8A04" id="sv-i">Intake</text><text x="50" y="307" font-size="10.5" font-family="ui-monospace,monospace" fill="#374151">intake_id</text><rect x="232.8" y="297" width="19.2" height="13" rx="3" fill="#FEF3C7"/><text x="248" y="306.5" text-anchor="end" font-size="8.5" font-weight="700" fill="#92400E">PK</text><line x1="40" y1="312" x2="260" y2="312" stroke="#F1F3F5" stroke-width="1"/><text x="50" y="325" font-size="10.5" font-family="ui-monospace,monospace" fill="#374151">programme_id</text><rect x="232.8" y="315" width="19.2" height="13" rx="3" fill="#E0E7FF"/><text x="248" y="324.5" text-anchor="end" font-size="8.5" font-weight="700" fill="#3730A3">FK</text><line x1="40" y1="330" x2="260" y2="330" stroke="#F1F3F5" stroke-width="1"/><text x="50" y="343" font-size="10.5" font-family="ui-monospace,monospace" fill="#374151">internship_start/end</text><line x1="40" y1="348" x2="260" y2="348" stroke="#F1F3F5" stroke-width="1"/><text x="50" y="361" font-size="10.5" font-family="ui-monospace,monospace" fill="#374151">application_open/close</text><line x1="40" y1="366" x2="260" y2="366" stroke="#F1F3F5" stroke-width="1"/><text x="50" y="379" font-size="10.5" font-family="ui-monospace,monospace" fill="#374151">status</text></g>
+<g><rect x="470" y="20" width="230" height="132" rx="8" fill="#fff" stroke="#2563EB" stroke-width="1.5"/><path d="M470 44 L470 28 Q470 20 478 20 L692 20 Q700 20 700 28 L700 44 Z" fill="#EFF6FF"/><text x="585" y="36" text-anchor="middle" font-size="12" font-weight="700" fill="#2563EB" id="sv-r">Project Request</text><text x="480" y="57" font-size="10.5" font-family="ui-monospace,monospace" fill="#374151">request_id</text><rect x="672.8" y="47" width="19.2" height="13" rx="3" fill="#FEF3C7"/><text x="688" y="56.5" text-anchor="end" font-size="8.5" font-weight="700" fill="#92400E">PK</text><line x1="470" y1="62" x2="700" y2="62" stroke="#F1F3F5" stroke-width="1"/><text x="480" y="75" font-size="10.5" font-family="ui-monospace,monospace" fill="#374151">line_id</text><line x1="470" y1="80" x2="700" y2="80" stroke="#F1F3F5" stroke-width="1"/><text x="480" y="93" font-size="10.5" font-family="ui-monospace,monospace" fill="#374151">pc_code</text><line x1="470" y1="98" x2="700" y2="98" stroke="#F1F3F5" stroke-width="1"/><text x="480" y="111" font-size="10.5" font-family="ui-monospace,monospace" fill="#374151">education_level</text><line x1="470" y1="116" x2="700" y2="116" stroke="#F1F3F5" stroke-width="1"/><text x="480" y="129" font-size="10.5" font-family="ui-monospace,monospace" fill="#374151">placements_requested</text><line x1="470" y1="134" x2="700" y2="134" stroke="#F1F3F5" stroke-width="1"/><text x="480" y="147" font-size="10.5" font-family="ui-monospace,monospace" fill="#374151">fulfilment_status</text></g>
+<g><rect x="470" y="270" width="230" height="132" rx="8" fill="#fff" stroke="#C2440E" stroke-width="1.5"/><path d="M470 294 L470 278 Q470 270 478 270 L692 270 Q700 270 700 278 L700 294 Z" fill="#FEF0E8"/><text x="585" y="286" text-anchor="middle" font-size="12" font-weight="700" fill="#C2440E" id="sv-j">Project</text><text x="480" y="307" font-size="10.5" font-family="ui-monospace,monospace" fill="#374151">project_id</text><rect x="672.8" y="297" width="19.2" height="13" rx="3" fill="#FEF3C7"/><text x="688" y="306.5" text-anchor="end" font-size="8.5" font-weight="700" fill="#92400E">PK</text><line x1="470" y1="312" x2="700" y2="312" stroke="#F1F3F5" stroke-width="1"/><text x="480" y="325" font-size="10.5" font-family="ui-monospace,monospace" fill="#374151">intake_id</text><rect x="644.8" y="315" width="47.199999999999996" height="13" rx="3" fill="#E0E7FF"/><text x="688" y="324.5" text-anchor="end" font-size="8.5" font-weight="700" fill="#3730A3">FK null</text><line x1="470" y1="330" x2="700" y2="330" stroke="#F1F3F5" stroke-width="1"/><text x="480" y="343" font-size="10.5" font-family="ui-monospace,monospace" fill="#374151">pc_code</text><line x1="470" y1="348" x2="700" y2="348" stroke="#F1F3F5" stroke-width="1"/><text x="480" y="361" font-size="10.5" font-family="ui-monospace,monospace" fill="#374151">education_level</text><line x1="470" y1="366" x2="700" y2="366" stroke="#F1F3F5" stroke-width="1"/><text x="480" y="379" font-size="10.5" font-family="ui-monospace,monospace" fill="#374151">review_status</text><line x1="470" y1="384" x2="700" y2="384" stroke="#F1F3F5" stroke-width="1"/><text x="480" y="397" font-size="10.5" font-family="ui-monospace,monospace" fill="#374151">internship_start/end</text></g>
+<!-- Programme ↔ Project Request: intentionally NOT drawn (incidental, no relationship) -->
+<g stroke="#6B7280" stroke-width="1.4" fill="none"><line x1="40" y1="431" x2="64" y2="431"/><line x1="52" y1="425" x2="52" y2="437"/><line x1="58" y1="425" x2="58" y2="437"/></g><text x="80" y="434" font-size="10" fill="#6B7280" id="sv-cf1">one &amp; only one</text><g stroke="#6B7280" stroke-width="1.4" fill="none"><line x1="240" y1="431" x2="258" y2="431"/><path d="M258 431 L270 425 M258 431 L270 431 M258 431 L270 437"/><circle cx="236" cy="431" r="3.5"/></g><text x="284" y="434" font-size="10" fill="#6B7280" id="sv-cf2">zero or many</text><g stroke="#6B7280" stroke-width="1.4" fill="none"><line x1="430" y1="431" x2="454" y2="431"/><line x1="450" y1="425" x2="450" y2="437"/><circle cx="438" cy="431" r="3.5"/></g><text x="466" y="434" font-size="10" fill="#6B7280" id="sv-cf3">zero or one</text><line x1="40" y1="453" x2="68" y2="453" stroke="#9CA3AF" stroke-width="1.5" stroke-dasharray="5 4"/><text x="80" y="456" font-size="10" fill="#9CA3AF" id="sv-lg2">soft link · no FK (dashed)</text><rect x="240" y="446" width="20" height="13" rx="3" fill="#FEF3C7"/><text x="250" y="455.5" text-anchor="middle" font-size="8.5" font-weight="700" fill="#92400E">PK</text><rect x="266" y="446" width="20" height="13" rx="3" fill="#E0E7FF"/><text x="276" y="455.5" text-anchor="middle" font-size="8.5" font-weight="700" fill="#3730A3">FK</text><text x="292" y="456" font-size="10" fill="#6B7280" id="sv-lg1">primary / foreign key</text>
+</svg>
   </div>
 </div>
 
@@ -664,7 +613,7 @@ en: {
   "sv-i":"Intake","sv-if1":"programme_id (FK)","sv-if2":"internship_start / end","sv-if3":"application_open / close","sv-if4":"status",
   "sv-r":"Project Request","sv-rf1":"pc_code · to · cc","sv-rf2":"Line: education_level","sv-rf3":"placements_requested","sv-rf4":"fulfilment_status",
   "sv-j":"Project","sv-jf1":"education_level · pc_code · placement","sv-jf2":"internship_start / end · duration · intake_id",
-  "sv-lg1":"Hard / nullable FK","sv-lg2":"Soft match (no FK)","sv-rel1":"has","sv-rel2":"contains","sv-rel3":"fulfilled by",
+  "sv-lg1":"primary / foreign key","sv-lg2":"soft link · no FK (dashed)","sv-cf1":"one & only one","sv-cf2":"zero or many","sv-cf3":"zero or one","sv-rel1":"has","sv-rel2":"contains","sv-rel3":"fulfilled by",
   "al-title":"Application Logic — End to End",
   "fl1-t":"Project Request Flow","r-ioadmin":"IO Admin","fl1-s1":"creates a Project Request in the system, specifying the PC code, recipient (PC Head), CC (AD(P&C)), and the number of placements needed per education level (e.g. PC11: 3 Uni, 4 JC, 2 Poly).","r-pc":"PC Head","fl1-s2":"receives the request (via system notification or email output). Disseminates to their team to consolidate project submissions.","r-ad":"AD(P&C)","fl1-s3":"submits projects into the system — either manually (one by one) or via Excel upload. Each project includes education level, internship period, duration, placement count, mentor info, and matching tags.","r-ioadmin2":"IO Admin","fl1-s4":"reviews submitted projects and approves or rejects each one. System automatically tracks fulfilment: compares total submitted placement count vs requested count per PC + education level.","fl1-n4":"⚠️ System flags Shortfall or Over-allocation automatically.",
   "fl2-t":"Programme & Intake Setup (order-independent with Flow ①)","r-io1":"IO / IO Admin","fl2-s1":"creates a Programme by selecting education level, adding a title and optional description. Year is auto-filled. Multiple programmes can be created for the same education level and year — no restriction.","r-io2":"IO / IO Admin","fl2-s2":"adds Intakes to the programme. Each intake has a title (auto-generated), internship period (month/year), and application open/close dates. Multiple intakes per programme allowed; periods can overlap.","r-io3":"IO / IO Admin","fl2-s3":"optionally attaches approved projects to an intake. The system shows only eligible projects: matching education level, Approved status, and internship period falls within intake period.","fl2-n3":"This step is optional — can be done later from the intake page or from a project's own page.","r-io4":"IO Admin","fl2-s4":"sets the intake status to Open when ready to receive applicants. Status: Draft → Open → Closed → Completed.",
@@ -722,7 +671,7 @@ zh: {
   "sv-i":"招募批次","sv-if1":"programme_id (FK)","sv-if2":"internship_start / end","sv-if3":"application_open / close","sv-if4":"status",
   "sv-r":"项目需求","sv-rf1":"pc_code · to · cc","sv-rf2":"行：education_level","sv-rf3":"placements_requested","sv-rf4":"fulfilment_status",
   "sv-j":"项目","sv-jf1":"education_level · pc_code · placement","sv-jf2":"internship_start / end · duration · intake_id",
-  "sv-lg1":"硬 / 可空外键","sv-lg2":"软匹配（无外键）","sv-rel1":"拥有","sv-rel2":"包含","sv-rel3":"由项目完成",
+  "sv-lg1":"主键 / 外键","sv-lg2":"软关联 · 无外键（虚线）","sv-cf1":"有且仅有一个","sv-cf2":"零或多个","sv-cf3":"零或一个","sv-rel1":"拥有","sv-rel2":"包含","sv-rel3":"由项目完成",
   "al-title":"应用逻辑 — 端到端",
   "fl1-t":"项目需求流程","r-ioadmin":"IO 管理员","fl1-s1":"在系统中创建项目需求，指定 PC 代码、收件人（PC 主管）、抄送（AD(P&C)），以及每个教育层级所需的名额数量（例如 PC11：3 大学，4 初级学院，2 理工学院）。","r-pc":"PC 主管","fl1-s2":"接收需求（通过系统通知或邮件输出）。分发给团队以整合项目提交。","r-ad":"AD(P&C)","fl1-s3":"将项目提交到系统 — 可手动逐个提交或通过 Excel 上传。每个项目包括教育层级、实习期、时长、名额数量、导师信息和匹配标签。","r-ioadmin2":"IO 管理员","fl1-s4":"审核已提交的项目并逐一批准或拒绝。系统自动跟踪完成情况：按 PC + 教育层级比较已提交名额总数与需求数量。","fl1-n4":"⚠️ 系统自动标记名额不足或超额分配。",
   "fl2-t":"项目计划与招募批次设置（与流程 ① 顺序无关）","r-io1":"IO / IO 管理员","fl2-s1":"通过选择教育层级、添加标题和可选描述来创建项目计划。年份自动填充。同一教育层级和年份可创建多个项目计划 — 没有限制。","r-io2":"IO / IO 管理员","fl2-s2":"为项目计划添加招募批次。每个批次有一个标题（自动生成）、实习期（月/年）和申请开放/截止日期。每个项目计划允许多个批次；期间可以重叠。","r-io3":"IO / IO 管理员","fl2-s3":"可选地将已批准的项目附加到招募批次。系统仅显示符合条件的项目：教育层级匹配、状态为已批准，且实习期落在批次期间内。","fl2-n3":"此步骤为可选 — 可稍后在批次页面或项目自身页面进行。","r-io4":"IO 管理员","fl2-s4":"准备好接收申请人时，将批次状态设为开放。状态：草稿 → 开放 → 关闭 → 完成。",
