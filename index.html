@@ -88,6 +88,14 @@ body{font-family:system-ui,sans-serif;font-size:14px;line-height:1.5;background:
 /* status */
 .sf{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 0}
 .sp{padding:5px 14px;border-radius:20px;font-size:12px;font-weight:500}
+.sp.status-step{padding:2px 0;border-radius:0;background:transparent;color:var(--tx);font-weight:500}
+.st-badge{display:inline-block;margin-left:5px;padding:4px 12px;border-radius:20px;font-weight:600;white-space:nowrap}
+.st-neutral{background:#F3F4F6;color:#374151}
+.st-open{background:#DBEAFE;color:#1E40AF}
+.st-good{background:#DCFCE7;color:#166534}
+.st-warn{background:#FEF9C3;color:#854D0E}
+.st-bad{background:#FEE2E2;color:#991B1B}
+.st-purple{background:#F3E8FF;color:#6B21A8}
 .sa{color:var(--mu);font-size:16px}
 .sg{display:flex;gap:6px;flex-wrap:wrap}
 .rl{list-style:none}
@@ -504,6 +512,7 @@ body{font-family:system-ui,sans-serif;font-size:14px;line-height:1.5;background:
         <div class="frow"><span class="flbl u" id="u-j2">User</span><div class="fn">project_scope</div><div class="ft">TEXT</div><span class="b req" id="b-j2">Required</span></div>
         <div class="frow"><span class="flbl u" id="u-j3">User</span><div class="fn">pc_code</div><div class="ft">VARCHAR</div><span class="b req" id="b-j3">Required</span></div>
         <div class="frow"><span class="flbl u" id="u-j4">User</span><div class="fn">education_level</div><div class="ft">ENUM</div><span class="b req" id="b-j4">Required</span></div>
+        <div class="nb" style="background:#FFF8F5;border-top:none" id="nb-proj-edu">If one project supports multiple education levels, placements must be entered separately for each education level.</div>
         <div class="frow"><span class="flbl u" id="u-j5">User</span><div class="fn">placement</div><div class="ft">INT</div><span class="b req" id="b-j5">Required</span></div>
         <div class="slbl" id="sl-pr-u2">User Fields — Internship Period</div>
         <div class="frow hl"><span class="flbl u" id="u-j6">User</span><div class="fn">internship_start</div><div class="ft" id="ft-j1">MONTH/YEAR</div><span class="b req" id="b-j6">Required</span></div>
@@ -540,48 +549,49 @@ body{font-family:system-ui,sans-serif;font-size:14px;line-height:1.5;background:
 <div class="pane" id="pane-status">
   <div style="padding:11px 14px;margin-bottom:14px;background:#FEF9C3;border:1px solid #FDE68A;border-radius:10px;font-size:12px;color:#854D0E;line-height:1.6" id="wip-status">🚧 <strong>Work in Progress</strong> — the status flows below are still being refined and are not finalised. Please disregard for now.</div>
   <div class="flow-card">
-    <div class="flow-title" id="sf1-t">Project Review Status</div>
+    <div class="flow-title" id="sf1-t">Programme & Intake Status</div>
+    <div class="nb" id="sf1-prog-l">Programme status</div>
     <div class="sf">
-      <div class="sp" style="background:#FEF9C3;color:#854D0E"><span id="sp-pend">⏳ Pending Review</span></div>
+      <div class="sp status-step"><span id="sp-prog-dft">Save as draft → <span class="st-badge st-neutral">DRAFT</span></span></div>
       <span class="sa">→</span>
-      <div class="sg">
-        <div class="sp" style="background:#DCFCE7;color:#166534"><span id="sp-appr">✅ Approved</span></div>
-        <div class="sp" style="background:#FEE2E2;color:#991B1B"><span id="sp-rej">❌ Rejected</span></div>
-      </div>
-      <span class="sa" id="s-ifa">→ if approved</span>
-      <div class="sg">
-        <div class="sp" style="background:#DBEAFE;color:#1E40AF"><span id="sp-una">🔵 Unassigned</span></div>
-        <span class="sa">→</span>
-        <div class="sp" style="background:#F3E8FF;color:#6B21A8"><span id="sp-asgn">🟣 Assigned</span></div>
-      </div>
+      <div class="sp status-step"><span id="sp-prog-act">Create → <span class="st-badge st-open">ACTIVE</span></span></div>
+      <span class="sa">→</span>
+      <div class="sp status-step"><span id="sp-prog-cmp">Mark completed → <span class="st-badge st-good">COMPLETED</span></span></div>
     </div>
-    <div class="nb" id="sf1-nb">Submitted by AD(P&C) · Approved by IO Admin · Unassigned = in pool, intake_id null · Assigned = attached to an intake</div>
+    <div class="nb" id="sf1-intake-l">Intake application status</div>
+    <div class="sf">
+      <div class="sp status-step"><span id="sp-int-opn">System time in application period → <span class="st-badge st-open">OPEN</span></span></div>
+      <span class="sa">/</span>
+      <div class="sp status-step"><span id="sp-int-cls">System time not in application period → <span class="st-badge st-warn">CLOSED</span></span></div>
+    </div>
+    <div class="nb" id="sf1-nb">Programme is the parent container and can contain multiple intakes. Intake application status controls whether candidates can apply.</div>
   </div>
   <div class="flow-card">
     <div class="flow-title" id="sf2-t">Project Request Fulfilment</div>
     <div class="sf">
-      <div class="sp" style="background:#F3F4F6;color:#374151"><span id="sp-fpend">📋 Pending</span></div>
+      <div class="sp status-step"><span id="sp-fpend">Send request → <span class="st-badge st-neutral">PENDING</span></span></div>
       <span class="sa">→</span>
-      <div class="sg">
-        <div class="sp" style="background:#FEF9C3;color:#854D0E"><span id="sp-sfall">⚠️ Shortfall</span></div>
-        <div class="sp" style="background:#FEE2E2;color:#991B1B"><span id="sp-over">🔺 Over-allocated</span></div>
-        <div class="sp" style="background:#DCFCE7;color:#166534"><span id="sp-ful">✅ Fulfilled</span></div>
-      </div>
+      <div class="sp status-step"><span id="sp-incomp">Partial placement submitted → <span class="st-badge st-warn">INCOMPLETE</span></span></div>
+      <span class="sa">→</span>
+      <div class="sp status-step"><span id="sp-ful">All placements submitted → <span class="st-badge st-good">FULFILLED</span></span></div>
     </div>
-    <div class="nb" id="sf2-nb">Auto-calculated · Shortfall = submitted &lt; requested · Over-allocated = submitted &gt; requested · Fulfilled = exact match</div>
+    <div class="nb" id="sf2-nb">Tracked both overall and per education line. Over-submission is blocked by validation, so submitted placements cannot exceed requested placements.</div>
   </div>
   <div class="flow-card">
-    <div class="flow-title" id="sf3-t">Intake Status</div>
-    <div class="sf">
-      <div class="sp" style="background:#F3F4F6;color:#374151"><span id="sp-dft">📋 Draft</span></div>
+    <div class="flow-title" id="sf3-t">Project Review & Attachment Status</div>
+    <div class="sf" style="flex-wrap:wrap">
+      <div class="sp status-step"><span id="sp-pend">Submitted / re-submitted → <span class="st-badge st-warn">PENDING REVIEW</span></span></div>
       <span class="sa">→</span>
-      <div class="sp" style="background:#DBEAFE;color:#1E40AF"><span id="sp-opn">🔵 Open</span></div>
+      <div class="sg">
+        <div class="sp status-step"><span id="sp-ret">Rejected → <span class="st-badge st-bad">RETURNED</span></span></div>
+        <div class="sp status-step"><span id="sp-active-un">Approved → <span class="st-badge st-open">ACTIVE + Unassigned</span></span></div>
+      </div>
       <span class="sa">→</span>
-      <div class="sp" style="background:#FEF9C3;color:#854D0E"><span id="sp-cls">🔒 Closed</span></div>
+      <div class="sp status-step"><span id="sp-active-as">Attach to intake/programme → <span class="st-badge st-purple">ACTIVE + Assigned</span></span></div>
       <span class="sa">→</span>
-      <div class="sp" style="background:#DCFCE7;color:#166534"><span id="sp-cmp">✅ Completed</span></div>
+      <div class="sp status-step"><span id="sp-proj-cls">Fulfilled / archived → <span class="st-badge st-good">CLOSED</span></span></div>
     </div>
-    <div class="nb" id="sf3-nb">Draft = not visible to applicants · Open = application window live · Closed = past close date · Completed = internship concluded</div>
+    <div class="nb" id="sf3-nb">Assigned is triggered by attaching a project to an intake/programme, not by publishing the application. Returned projects can be re-submitted for review.</div>
   </div>
   <div class="flow-card">
     <div class="flow-title" id="sf4-t">Applicant Application Status</div>
@@ -676,11 +686,12 @@ en: {
   "u-j1":"User","u-j2":"User","u-j3":"User","u-j4":"User","u-j5":"User","u-j6":"User","u-j7":"User","u-j8":"User","u-j9":"User","u-j10":"User","u-j11":"User","u-j12":"User","u-j13":"User","u-j14":"User","u-j15":"User","u-j16":"User",
   "s-j1":"System","s-j2":"System","s-j3":"System","s-j4":"System","s-j5":"System","s-j6":"System",
   "b-j1":"Required","b-j2":"Required","b-j3":"Required","b-j4":"Required","b-j5":"Required","ft-j1":"MONTH/YEAR","ft-j2":"MONTH/YEAR","b-j6":"Required","b-j7":"Required","b-j8":"Required","b-j9":"Required","b-j10":"Required","b-j11":"Required","b-j12":"Optional","b-j13":"Multi-select","b-j14":"Multi-select","b-j15":"Single select","b-j16":"Single select","b-j17":"Nullable FK → Intake","b-j18":"System-set","b-j19":"FK → User (AD)","b-j20":"FK → User (IO Admin)","b-j21":"Auto",
+  "nb-proj-edu":"If one project supports multiple education levels, placements must be entered separately for each education level.",
   "nb-tags":"Predefined lists required for consistent matching. In Excel: discipline_of_study and skills use comma-separated values.",
   "nb-proj-sys":"No FK to Project Request — reconciled via pc_code + education_level · intake_id null until attached",
-  "sf1-t":"Project Review Status","sp-pend":"⏳ Pending Review","sp-appr":"✅ Approved","sp-rej":"❌ Rejected","s-ifa":"→ if approved","sp-una":"🔵 Unassigned","sp-asgn":"🟣 Assigned","sf1-nb":"Submitted by AD(P&C) · Approved by IO Admin · Unassigned = in pool, intake_id null · Assigned = attached to an intake",
-  "sf2-t":"Project Request Fulfilment","sp-fpend":"📋 Pending","sp-sfall":"⚠️ Shortfall","sp-over":"🔺 Over-allocated","sp-ful":"✅ Fulfilled","sf2-nb":"Auto-calculated · Shortfall = submitted &lt; requested · Over-allocated = submitted &gt; requested · Fulfilled = exact match",
-  "sf3-t":"Intake Status","sp-dft":"📋 Draft","sp-opn":"🔵 Open","sp-cls":"🔒 Closed","sp-cmp":"✅ Completed","sf3-nb":"Draft = not visible to applicants · Open = application window live · Closed = past close date · Completed = internship concluded",
+  "sf1-t":"Programme & Intake Status","sf1-prog-l":"Programme status","sp-prog-dft":"Save as draft → <span class=\"st-badge st-neutral\">DRAFT</span>","sp-prog-act":"Create → <span class=\"st-badge st-open\">ACTIVE</span>","sp-prog-cmp":"Mark completed → <span class=\"st-badge st-good\">COMPLETED</span>","sf1-intake-l":"Intake application status","sp-int-opn":"System time in application period → <span class=\"st-badge st-open\">OPEN</span>","sp-int-cls":"System time not in application period → <span class=\"st-badge st-warn\">CLOSED</span>","sf1-nb":"Programme is the parent container and can contain multiple intakes. Intake application status controls whether candidates can apply.",
+  "sf2-t":"Project Request Fulfilment","sp-fpend":"Send request → <span class=\"st-badge st-neutral\">PENDING</span>","sp-incomp":"Partial placement submitted → <span class=\"st-badge st-warn\">INCOMPLETE</span>","sp-ful":"All placements submitted → <span class=\"st-badge st-good\">FULFILLED</span>","sf2-nb":"Tracked both overall and per education line. Over-submission is blocked by validation, so submitted placements cannot exceed requested placements.",
+  "sf3-t":"Project Review & Attachment Status","sp-pend":"Submitted / re-submitted → <span class=\"st-badge st-warn\">PENDING REVIEW</span>","sp-ret":"Rejected → <span class=\"st-badge st-bad\">RETURNED</span>","sp-active-un":"Approved → <span class=\"st-badge st-open\">ACTIVE + Unassigned</span>","sp-active-as":"Attach to intake/programme → <span class=\"st-badge st-purple\">ACTIVE + Assigned</span>","sp-proj-cls":"Fulfilled / archived → <span class=\"st-badge st-good\">CLOSED</span>","sf3-nb":"Assigned is triggered by attaching a project to an intake/programme, not by publishing the application. Returned projects can be re-submitted for review.",
   "sf4-t":"Applicant Application Status","sp-sub":"📝 Submitted","sp-shl":"🔵 Shortlisted","sp-off":"💬 Offered","sp-acc":"✅ Accepted","sp-rjc":"❌ Rejected","sp-wdr":"↩ Withdrawn",
   "ex-h":"A worked example — how it nests together",
   "ex-lead":"In plain words: one <strong>Programme</strong> → many <strong>Intakes</strong> → many <strong>Projects</strong>. Approved projects wait in a shared pool until they are placed into an intake whose education level and dates match.",
@@ -743,11 +754,12 @@ zh: {
   "u-j1":"用户","u-j2":"用户","u-j3":"用户","u-j4":"用户","u-j5":"用户","u-j6":"用户","u-j7":"用户","u-j8":"用户","u-j9":"用户","u-j10":"用户","u-j11":"用户","u-j12":"用户","u-j13":"用户","u-j14":"用户","u-j15":"用户","u-j16":"用户",
   "s-j1":"系统","s-j2":"系统","s-j3":"系统","s-j4":"系统","s-j5":"系统","s-j6":"系统",
   "b-j1":"必填","b-j2":"必填","b-j3":"必填","b-j4":"必填","b-j5":"必填","ft-j1":"月/年","ft-j2":"月/年","b-j6":"必填","b-j7":"必填","b-j8":"必填","b-j9":"必填","b-j10":"必填","b-j11":"必填","b-j12":"可选","b-j13":"多选","b-j14":"多选","b-j15":"单选","b-j16":"单选","b-j17":"可空 FK → Intake","b-j18":"系统设置","b-j19":"FK → User (AD)","b-j20":"FK → User (IO 管理员)","b-j21":"自动",
+  "nb-proj-edu":"如果一个项目适配多个 education level，需要分别为每个 education level 输入对应的 placements 数量。",
   "nb-tags":"需要预定义列表以保持一致匹配。在 Excel 中：discipline_of_study 和 skills 使用逗号分隔的值。",
   "nb-proj-sys":"无外键指向项目需求 — 通过 pc_code + education_level 核对 · 附加前 intake_id 为 null",
-  "sf1-t":"项目审核状态","sp-pend":"⏳ 待审核","sp-appr":"✅ 已批准","sp-rej":"❌ 已拒绝","s-ifa":"→ 若已批准","sp-una":"🔵 未分配","sp-asgn":"🟣 已分配","sf1-nb":"由 AD(P&C) 提交 · 由 IO 管理员批准 · 未分配 = 在池中，intake_id 为 null · 已分配 = 已附加到批次",
-  "sf2-t":"项目需求完成情况","sp-fpend":"📋 待处理","sp-sfall":"⚠️ 名额不足","sp-over":"🔺 超额分配","sp-ful":"✅ 已完成","sf2-nb":"自动计算 · 名额不足 = 已提交 &lt; 已需求 · 超额分配 = 已提交 &gt; 已需求 · 已完成 = 完全匹配",
-  "sf3-t":"招募批次状态","sp-dft":"📋 草稿","sp-opn":"🔵 开放","sp-cls":"🔒 关闭","sp-cmp":"✅ 完成","sf3-nb":"草稿 = 申请人不可见 · 开放 = 申请窗口生效 · 关闭 = 已过截止日期 · 完成 = 实习已结束",
+  "sf1-t":"项目计划与招募批次状态","sf1-prog-l":"项目计划状态","sp-prog-dft":"保存草稿 → <span class=\"st-badge st-neutral\">DRAFT</span>","sp-prog-act":"创建 → <span class=\"st-badge st-open\">ACTIVE</span>","sp-prog-cmp":"标记完成 → <span class=\"st-badge st-good\">COMPLETED</span>","sf1-intake-l":"招募批次申请状态","sp-int-opn":"系统时间在申请期内 → <span class=\"st-badge st-open\">OPEN</span>","sp-int-cls":"系统时间不在申请期内 → <span class=\"st-badge st-warn\">CLOSED</span>","sf1-nb":"Programme 是父级容器，可包含多个 Intake。Intake application status 决定候选人是否可以申请。",
+  "sf2-t":"项目需求完成情况","sp-fpend":"发送需求 → <span class=\"st-badge st-neutral\">PENDING</span>","sp-incomp":"部分名额已提交 → <span class=\"st-badge st-warn\">INCOMPLETE</span>","sp-ful":"全部名额已提交 → <span class=\"st-badge st-good\">FULFILLED</span>","sf2-nb":"同时跟踪整体状态和每个 education line 状态。系统会校验并阻止超额提交，因此 submitted placements 不能超过 requested placements。",
+  "sf3-t":"项目审核与附加状态","sp-pend":"提交 / 重新提交 → <span class=\"st-badge st-warn\">PENDING REVIEW</span>","sp-ret":"拒绝 → <span class=\"st-badge st-bad\">RETURNED</span>","sp-active-un":"批准 → <span class=\"st-badge st-open\">ACTIVE + Unassigned</span>","sp-active-as":"附加到 intake/programme → <span class=\"st-badge st-purple\">ACTIVE + Assigned</span>","sp-proj-cls":"已满足 / 已归档 → <span class=\"st-badge st-good\">CLOSED</span>","sf3-nb":"Assigned 由项目被附加到 intake/programme 触发，不由发布申请触发。Returned 项目可以重新提交审核。",
   "sf4-t":"申请人申请状态","sp-sub":"📝 已提交","sp-shl":"🔵 已入围","sp-off":"💬 已录取","sp-acc":"✅ 已接受","sp-rjc":"❌ 已拒绝","sp-wdr":"↩ 已撤回",
   "ex-h":"实例演示 — 它们如何层层嵌套",
   "ex-lead":"用大白话说：一个<strong>项目计划（Programme）</strong> → 多个<strong>招募批次（Intake）</strong> → 多个<strong>项目（Project）</strong>。已批准的项目先放在共享池中，直到被放入教育层级和日期都匹配的招募批次。",
