@@ -442,7 +442,7 @@ body{font-family:system-ui,sans-serif;font-size:14px;line-height:1.5;background:
         <div class="frow"><span class="flbl u" id="u-el5">User</span><div class="fn">grade_value</div><div class="ft">VARCHAR</div><span class="b opt" id="b-el5">Optional</span></div>
         <div class="frow"><span class="flbl u" id="u-el6">User</span><div class="fn">institutions</div><div class="ft">VARCHAR[]</div><span class="b opt" id="b-el6">Optional</span></div>
         <div class="frow"><span class="flbl u" id="u-el7">User</span><div class="fn">option_id</div><div class="ft">UUID</div><span class="b opt" id="b-el8">Optional</span></div>
-        <div class="nb" style="background:#F8FAFC;border-top:none" id="nb-elig-inline">Eligibility criteria are configurable rules for applicant filtering. match_type defines how rules are combined (ALL / ANY). criteria_type selects what applicant attribute to check, such as GPA, institution, citizenship, or education background. operator defines the comparison logic, such as equals, contains, greater than, or between. value stores the configured target value(s). grade_value is used when the rule checks grades or GPA. institutions stores selected schools when the rule is institution-based. option_id groups alternative options under an ANY rule.</div>
+        <div class="nb" style="background:#F8FAFC;border-top:none" id="nb-elig-inline">Eligibility criteria are configurable rules for applicant filtering.<br>1. match_type defines how rules are combined (ALL / ANY).<br>2. criteria_type selects what applicant attribute to check, such as GPA, institution, citizenship, or education background.<br>3. operator defines the comparison logic, such as equals, contains, greater than, or between.<br>4. value stores the configured target value(s).<br>5. grade_value is used when the rule checks grades or GPA.<br>6. institutions stores selected schools when the rule is institution-based.<br>7. option_id groups alternative options under an ANY rule.</div>
         <div class="slbl" id="sl-setup-projects">Attached Projects</div>
         <div class="frow"><span class="flbl u" id="u-ap1">User</span><div class="fn">project_id</div><div class="ft">UUID</div><span class="b req" id="b-ap1">Required</span></div>
         <div class="frow"><span class="flbl u" id="u-ap2">User</span><div class="fn">project_intake_id</div><div class="ft">UUID</div><span class="b ae" id="b-ap2">Auto, editable</span></div>
@@ -574,8 +574,10 @@ body{font-family:system-ui,sans-serif;font-size:14px;line-height:1.5;background:
       <div class="sp status-step"><span id="sp-incomp">Partial placement submitted → <span class="st-badge st-warn">INCOMPLETE</span></span></div>
       <span class="sa">→</span>
       <div class="sp status-step"><span id="sp-ful">All placements submitted → <span class="st-badge st-good">FULFILLED</span></span></div>
+      <span class="sa">/</span>
+      <div class="sp status-step"><span id="sp-over">Extra placements submitted → <span class="st-badge st-bad">OVER-SUBMITTED</span></span></div>
     </div>
-    <div class="nb" id="sf2-nb">Tracked both overall and per education line. Over-submission is blocked by validation, so submitted placements cannot exceed requested placements.</div>
+    <div class="nb" id="sf2-nb">Tracked both overall and per education line. Over-submission is allowed and flagged when submitted placements exceed requested placements.</div>
   </div>
   <div class="flow-card">
     <div class="flow-title" id="sf3-t">Project Review & Attachment Status</div>
@@ -596,16 +598,17 @@ body{font-family:system-ui,sans-serif;font-size:14px;line-height:1.5;background:
   <div class="flow-card">
     <div class="flow-title" id="sf4-t">Applicant Application Status</div>
     <div class="sf" style="flex-wrap:wrap">
-      <div class="sp" style="background:#F3F4F6;color:#374151"><span id="sp-sub">📝 Submitted</span></div>
+      <div class="sp status-step"><span id="sp-sub">Application submitted → <span class="st-badge st-neutral">SUBMITTED</span></span></div>
       <span class="sa">→</span>
-      <div class="sp" style="background:#DBEAFE;color:#1E40AF"><span id="sp-shl">🔵 Shortlisted</span></div>
+      <div class="sp status-step"><span id="sp-shl">Shortlisted → <span class="st-badge st-open">SHORTLISTED</span></span></div>
       <span class="sa">→</span>
-      <div class="sp" style="background:#FEF9C3;color:#854D0E"><span id="sp-off">💬 Offered</span></div>
+      <div class="sp status-step"><span id="sp-off">Offer sent → <span class="st-badge st-warn">OFFERED</span></span></div>
       <span class="sa">→</span>
       <div class="sg">
-        <div class="sp" style="background:#DCFCE7;color:#166534"><span id="sp-acc">✅ Accepted</span></div>
-        <div class="sp" style="background:#FEE2E2;color:#991B1B"><span id="sp-rjc">❌ Rejected</span></div>
-        <div class="sp" style="background:#F3F4F6;color:#374151"><span id="sp-wdr">↩ Withdrawn</span></div>
+        <div class="sp status-step"><span id="sp-acc">Accept offer → <span class="st-badge st-good">ACCEPTED</span></span></div>
+        <div class="sp status-step"><span id="sp-rjc">Reject offer → <span class="st-badge st-bad">REJECTED</span></span></div>
+        <div class="sp status-step"><span id="sp-exp">Offer deadline passed → <span class="st-badge st-warn">OFFER EXPIRED</span></span></div>
+        <div class="sp status-step"><span id="sp-wdr">Withdraw → <span class="st-badge st-neutral">WITHDRAWN</span></span></div>
       </div>
     </div>
   </div>
@@ -673,7 +676,7 @@ en: {
   "e-elig":"Eligibility Criteria","sl-el-u":"User Fields","sl-el-s":"System Fields",
   "u-el1":"User","u-el2":"User","u-el3":"User","u-el4":"User","u-el5":"User","u-el6":"User","u-el7":"User","s-el1":"System","s-el2":"System","s-el3":"System","s-el4":"System","s-el5":"System","s-el6":"System","s-el7":"System",
   "b-el1":"Required","b-el2":"Required","b-el3":"Required","b-el4":"Required","b-el5":"Optional","b-el6":"Optional","b-el7":"FK → Programme","b-el8":"Optional","b-el9":"Child ID","b-el10":"Child ID","b-el11":"Auto",
-  "nb-elig-inline":"Eligibility criteria are configurable rules for applicant filtering. match_type defines how rules are combined (ALL / ANY). criteria_type selects what applicant attribute to check, such as GPA, institution, citizenship, or education background. operator defines the comparison logic, such as equals, contains, greater than, or between. value stores the configured target value(s). grade_value is used when the rule checks grades or GPA. institutions stores selected schools when the rule is institution-based. option_id groups alternative options under an ANY rule.",
+  "nb-elig-inline":"Eligibility criteria are configurable rules for applicant filtering.<br>1. match_type defines how rules are combined (ALL / ANY).<br>2. criteria_type selects what applicant attribute to check, such as GPA, institution, citizenship, or education background.<br>3. operator defines the comparison logic, such as equals, contains, greater than, or between.<br>4. value stores the configured target value(s).<br>5. grade_value is used when the rule checks grades or GPA.<br>6. institutions stores selected schools when the rule is institution-based.<br>7. option_id groups alternative options under an ANY rule.",
   "nb-elig":"Eligibility criteria are stored as CriteriaGroup[] · ALL groups use direct rules · ANY groups use option_id to group OR alternatives · applicants who fail criteria may be auto-rejected or routed for review",
   "u-ap1":"User","u-ap2":"User","u-ap3":"User","s-ap1":"System","s-ap2":"System","s-ap3":"System","s-ap4":"System",
   "b-ap1":"Required","b-ap2":"Auto, editable","b-ap3":"Required","b-ap4":"Calculated","b-ap5":"Calculated","b-ap6":"Calculated","b-ap7":"System-set",
@@ -690,9 +693,9 @@ en: {
   "nb-tags":"Predefined lists required for consistent matching. In Excel: discipline_of_study and skills use comma-separated values.",
   "nb-proj-sys":"No FK to Project Request — reconciled via pc_code + education_level · intake_id null until attached",
   "sf1-t":"Programme & Intake Status","sf1-prog-l":"Programme status","sp-prog-dft":"Save as draft → <span class=\"st-badge st-neutral\">DRAFT</span>","sp-prog-act":"Create → <span class=\"st-badge st-open\">ACTIVE</span>","sp-prog-cmp":"Mark completed → <span class=\"st-badge st-good\">COMPLETED</span>","sf1-intake-l":"Intake application status","sp-int-opn":"System time in application period → <span class=\"st-badge st-open\">OPEN</span>","sp-int-cls":"System time not in application period → <span class=\"st-badge st-warn\">CLOSED</span>","sf1-nb":"Programme is the parent container and can contain multiple intakes. Intake application status controls whether candidates can apply.",
-  "sf2-t":"Project Request Fulfilment","sp-fpend":"Send request → <span class=\"st-badge st-neutral\">PENDING</span>","sp-incomp":"Partial placement submitted → <span class=\"st-badge st-warn\">INCOMPLETE</span>","sp-ful":"All placements submitted → <span class=\"st-badge st-good\">FULFILLED</span>","sf2-nb":"Tracked both overall and per education line. Over-submission is blocked by validation, so submitted placements cannot exceed requested placements.",
+  "sf2-t":"Project Request Fulfilment","sp-fpend":"Send request → <span class=\"st-badge st-neutral\">PENDING</span>","sp-incomp":"Partial placement submitted → <span class=\"st-badge st-warn\">INCOMPLETE</span>","sp-ful":"All placements submitted → <span class=\"st-badge st-good\">FULFILLED</span>","sp-over":"Extra placements submitted → <span class=\"st-badge st-bad\">OVER-SUBMITTED</span>","sf2-nb":"Tracked both overall and per education line. Over-submission is allowed and flagged when submitted placements exceed requested placements.",
   "sf3-t":"Project Review & Attachment Status","sp-pend":"Submitted / re-submitted → <span class=\"st-badge st-warn\">PENDING REVIEW</span>","sp-ret":"Rejected → <span class=\"st-badge st-bad\">RETURNED</span>","sp-active-un":"Approved → <span class=\"st-badge st-open\">ACTIVE + Unassigned</span>","sp-active-as":"Attach to intake/programme → <span class=\"st-badge st-purple\">ACTIVE + Assigned</span>","sp-proj-cls":"Fulfilled / archived → <span class=\"st-badge st-good\">CLOSED</span>","sf3-nb":"Assigned is triggered by attaching a project to an intake/programme, not by publishing the application. Returned projects can be re-submitted for review.",
-  "sf4-t":"Applicant Application Status","sp-sub":"📝 Submitted","sp-shl":"🔵 Shortlisted","sp-off":"💬 Offered","sp-acc":"✅ Accepted","sp-rjc":"❌ Rejected","sp-wdr":"↩ Withdrawn",
+  "sf4-t":"Applicant Application Status","sp-sub":"Application submitted → <span class=\"st-badge st-neutral\">SUBMITTED</span>","sp-shl":"Shortlisted → <span class=\"st-badge st-open\">SHORTLISTED</span>","sp-off":"Offer sent → <span class=\"st-badge st-warn\">OFFERED</span>","sp-acc":"Accept offer → <span class=\"st-badge st-good\">ACCEPTED</span>","sp-rjc":"Reject offer → <span class=\"st-badge st-bad\">REJECTED</span>","sp-exp":"Offer deadline passed → <span class=\"st-badge st-warn\">OFFER EXPIRED</span>","sp-wdr":"Withdraw → <span class=\"st-badge st-neutral\">WITHDRAWN</span>",
   "ex-h":"A worked example — how it nests together",
   "ex-lead":"In plain words: one <strong>Programme</strong> → many <strong>Intakes</strong> → many <strong>Projects</strong>. Approved projects wait in a shared pool until they are placed into an intake whose education level and dates match.",
   "ex-prog-l":"PROGRAMME","ex-prog-sub":"Education level: University · Year: 2025 (auto-filled)",
@@ -741,7 +744,7 @@ zh: {
   "e-elig":"资格条件","sl-el-u":"用户字段","sl-el-s":"系统字段",
   "u-el1":"用户","u-el2":"用户","u-el3":"用户","u-el4":"用户","u-el5":"用户","u-el6":"用户","u-el7":"用户","s-el1":"系统","s-el2":"系统","s-el3":"系统","s-el4":"系统","s-el5":"系统","s-el6":"系统","s-el7":"系统",
   "b-el1":"必填","b-el2":"必填","b-el3":"必填","b-el4":"必填","b-el5":"可选","b-el6":"可选","b-el7":"FK → Programme","b-el8":"可选","b-el9":"子 ID","b-el10":"子 ID","b-el11":"自动",
-  "nb-elig-inline":"资格条件是用于筛选申请人的可配置规则。match_type 定义规则如何组合（ALL / ANY）。criteria_type 选择要检查的申请人属性，例如 GPA、学校、国籍或教育背景。operator 定义比较逻辑，例如等于、包含、大于或介于。value 保存配置的目标值。grade_value 用于成绩或 GPA 相关规则。institutions 保存学校类规则中选择的院校。option_id 用于把 ANY 规则下的多个可替代选项分组。",
+  "nb-elig-inline":"资格条件是用于筛选申请人的可配置规则。<br>1. match_type 定义规则如何组合（ALL / ANY）。<br>2. criteria_type 选择要检查的申请人属性，例如 GPA、学校、国籍或教育背景。<br>3. operator 定义比较逻辑，例如等于、包含、大于或介于。<br>4. value 保存配置的目标值。<br>5. grade_value 用于成绩或 GPA 相关规则。<br>6. institutions 保存学校类规则中选择的院校。<br>7. option_id 用于把 ANY 规则下的多个可替代选项分组。",
   "nb-elig":"资格条件存储为 CriteriaGroup[] · ALL 组直接使用规则 · ANY 组使用 option_id 对 OR 选项分组 · 不符合条件的申请人可被自动拒绝或转入人工审核",
   "u-ap1":"用户","u-ap2":"用户","u-ap3":"用户","s-ap1":"系统","s-ap2":"系统","s-ap3":"系统","s-ap4":"系统",
   "b-ap1":"必填","b-ap2":"自动，可编辑","b-ap3":"必填","b-ap4":"计算得出","b-ap5":"计算得出","b-ap6":"计算得出","b-ap7":"系统设置",
@@ -758,9 +761,9 @@ zh: {
   "nb-tags":"需要预定义列表以保持一致匹配。在 Excel 中：discipline_of_study 和 skills 使用逗号分隔的值。",
   "nb-proj-sys":"无外键指向项目需求 — 通过 pc_code + education_level 核对 · 附加前 intake_id 为 null",
   "sf1-t":"项目计划与招募批次状态","sf1-prog-l":"项目计划状态","sp-prog-dft":"保存草稿 → <span class=\"st-badge st-neutral\">DRAFT</span>","sp-prog-act":"创建 → <span class=\"st-badge st-open\">ACTIVE</span>","sp-prog-cmp":"标记完成 → <span class=\"st-badge st-good\">COMPLETED</span>","sf1-intake-l":"招募批次申请状态","sp-int-opn":"系统时间在申请期内 → <span class=\"st-badge st-open\">OPEN</span>","sp-int-cls":"系统时间不在申请期内 → <span class=\"st-badge st-warn\">CLOSED</span>","sf1-nb":"Programme 是父级容器，可包含多个 Intake。Intake application status 决定候选人是否可以申请。",
-  "sf2-t":"项目需求完成情况","sp-fpend":"发送需求 → <span class=\"st-badge st-neutral\">PENDING</span>","sp-incomp":"部分名额已提交 → <span class=\"st-badge st-warn\">INCOMPLETE</span>","sp-ful":"全部名额已提交 → <span class=\"st-badge st-good\">FULFILLED</span>","sf2-nb":"同时跟踪整体状态和每个 education line 状态。系统会校验并阻止超额提交，因此 submitted placements 不能超过 requested placements。",
+  "sf2-t":"项目需求完成情况","sp-fpend":"发送需求 → <span class=\"st-badge st-neutral\">PENDING</span>","sp-incomp":"部分名额已提交 → <span class=\"st-badge st-warn\">INCOMPLETE</span>","sp-ful":"全部名额已提交 → <span class=\"st-badge st-good\">FULFILLED</span>","sp-over":"额外名额已提交 → <span class=\"st-badge st-bad\">OVER-SUBMITTED</span>","sf2-nb":"同时跟踪整体状态和每个 education line 状态。允许超额提交；当 submitted placements 超过 requested placements 时系统标记为超额。",
   "sf3-t":"项目审核与附加状态","sp-pend":"提交 / 重新提交 → <span class=\"st-badge st-warn\">PENDING REVIEW</span>","sp-ret":"拒绝 → <span class=\"st-badge st-bad\">RETURNED</span>","sp-active-un":"批准 → <span class=\"st-badge st-open\">ACTIVE + Unassigned</span>","sp-active-as":"附加到 intake/programme → <span class=\"st-badge st-purple\">ACTIVE + Assigned</span>","sp-proj-cls":"已满足 / 已归档 → <span class=\"st-badge st-good\">CLOSED</span>","sf3-nb":"Assigned 由项目被附加到 intake/programme 触发，不由发布申请触发。Returned 项目可以重新提交审核。",
-  "sf4-t":"申请人申请状态","sp-sub":"📝 已提交","sp-shl":"🔵 已入围","sp-off":"💬 已录取","sp-acc":"✅ 已接受","sp-rjc":"❌ 已拒绝","sp-wdr":"↩ 已撤回",
+  "sf4-t":"申请人申请状态","sp-sub":"提交申请 → <span class=\"st-badge st-neutral\">SUBMITTED</span>","sp-shl":"进入 shortlist → <span class=\"st-badge st-open\">SHORTLISTED</span>","sp-off":"发送 offer → <span class=\"st-badge st-warn\">OFFERED</span>","sp-acc":"接受 offer → <span class=\"st-badge st-good\">ACCEPTED</span>","sp-rjc":"拒绝 offer → <span class=\"st-badge st-bad\">REJECTED</span>","sp-exp":"Offer 截止未回应 → <span class=\"st-badge st-warn\">OFFER EXPIRED</span>","sp-wdr":"撤回申请 → <span class=\"st-badge st-neutral\">WITHDRAWN</span>",
   "ex-h":"实例演示 — 它们如何层层嵌套",
   "ex-lead":"用大白话说：一个<strong>项目计划（Programme）</strong> → 多个<strong>招募批次（Intake）</strong> → 多个<strong>项目（Project）</strong>。已批准的项目先放在共享池中，直到被放入教育层级和日期都匹配的招募批次。",
   "ex-prog-l":"项目计划","ex-prog-sub":"教育层级：大学 · 年份：2025（自动填充）",
