@@ -462,27 +462,35 @@ body{font-family:system-ui,sans-serif;font-size:14px;line-height:1.5;background:
     <div class="card-hdr" style="background:var(--crl);color:var(--cr)"><div class="dot" style="background:var(--crb)"></div><span id="e-req">Project Request</span></div>
     <div class="g2" style="gap:0">
       <div>
-        <div class="slbl" id="sl-rq-uh">User Fields — Header</div>
-        <div class="frow"><span class="flbl u" id="u-r1">User</span><div class="fn">pc_code</div><div class="ft">VARCHAR</div><span class="b req" id="b-r1">Required</span></div>
-        <div class="frow"><span class="flbl u" id="u-r2">User</span><div class="fn">to (recipients)</div><div class="ft">UUID[]</div><span class="b req" id="b-r2">Required</span></div>
-        <div class="frow"><span class="flbl u" id="u-r3">User</span><div class="fn">cc (recipients)</div><div class="ft">UUID[]</div><span class="b opt" id="b-r3">Optional</span></div>
-        <div class="slbl" id="sl-rq-ul">User Fields — Lines</div>
-        <div class="frow"><span class="flbl u" id="u-r4">User</span><div class="fn">education_level</div><div class="ft">ENUM</div><span class="b req" id="b-r4">Required</span></div>
-        <div class="frow"><span class="flbl u" id="u-r5">User</span><div class="fn">placements_requested</div><div class="ft">INT</div><span class="b req" id="b-r5">Required</span></div>
+        <div class="slbl" id="sl-rq-uh">Request Setup</div>
+        <div class="frow"><span class="flbl u" id="u-r1">User</span><div class="fn">send_mode</div><div class="ft">ENUM</div><span class="b req" id="b-r1">Required</span></div>
+        <div class="frow"><span class="flbl u" id="u-r2">User</span><div class="fn">email_template_id</div><div class="ft">UUID</div><span class="b req" id="b-r2">Required</span></div>
+        <div class="frow"><span class="flbl u" id="u-r3">User</span><div class="fn">deadline</div><div class="ft">DATE</div><span class="b req" id="b-r3">Required</span></div>
+        <div class="slbl" id="sl-rq-rc">Recipients</div>
+        <div class="frow"><span class="flbl u" id="u-r4">User</span><div class="fn">pc</div><div class="ft">VARCHAR</div><span class="b req" id="b-r4">Required</span></div>
+        <div class="frow"><span class="flbl u" id="u-r5">User</span><div class="fn">head_name</div><div class="ft">VARCHAR</div><span class="b calc" id="b-r5">Derived</span></div>
+        <div class="frow"><span class="flbl u" id="u-r6">User</span><div class="fn">cc_recipients</div><div class="ft">UUID[]</div><span class="b opt" id="b-r6">Optional</span></div>
+        <div class="slbl" id="sl-rq-ul">Requested Placements</div>
+        <div class="frow"><span class="flbl u" id="u-r7">User</span><div class="fn">education_level</div><div class="ft">ENUM</div><span class="b req" id="b-r17">Required</span></div>
+        <div class="frow"><span class="flbl u" id="u-r8">User</span><div class="fn">placements_requested</div><div class="ft">INT</div><span class="b req" id="b-r18">Required</span></div>
       </div>
       <div>
         <div class="slbl sys" id="sl-rq-s">System Fields</div>
         <div class="frow sr"><span class="flbl s" id="s-r1">System</span><div class="fn">request_id</div><div class="ft">UUID</div><span class="b pk">PK</span></div>
         <div class="frow sr"><span class="flbl s" id="s-r2">System</span><div class="fn">line_id</div><div class="ft">UUID</div><span class="b pk">PK (line)</span></div>
-        <div class="frow sr"><span class="flbl s" id="s-r3">System</span><div class="fn">year</div><div class="ft">INT(4)</div><span class="b aut" id="b-r6">Auto</span></div>
-        <div class="frow sr"><span class="flbl s" id="s-r4">System</span><div class="fn">placements_submitted</div><div class="ft">INT</div><span class="b calc" id="b-r7">Calculated</span></div>
-        <div class="frow sr"><span class="flbl s" id="s-r5">System</span><div class="fn">placements_gap</div><div class="ft">INT</div><span class="b calc" id="b-r8">Calculated</span></div>
-        <div class="frow sr"><span class="flbl s" id="s-r6">System</span><div class="fn">fulfilment_status</div><div class="ft">ENUM</div><span class="b calc" id="b-r9">Calculated</span></div>
-        <div class="frow sr"><span class="flbl s" id="s-r7">System</span><div class="fn">requested_by</div><div class="ft">UUID</div><span class="b fk" id="b-r10">FK → User</span></div>
-        <div class="frow sr"><span class="flbl s" id="s-r8">System</span><div class="fn">created_at</div><div class="ft">TIMESTAMP</div><span class="b aut" id="b-r11">Auto</span></div>
+        <div class="frow sr"><span class="flbl s" id="s-r3">System</span><div class="fn">upload_token</div><div class="ft">VARCHAR</div><span class="b aut" id="b-r7">Auto</span></div>
+        <div class="frow sr"><span class="flbl s" id="s-r4">System</span><div class="fn">sender_name</div><div class="ft">VARCHAR</div><span class="b aut" id="b-r8">Auto</span></div>
+        <div class="frow sr"><span class="flbl s" id="s-r5">System</span><div class="fn">sent_date</div><div class="ft">DATE</div><span class="b aut" id="b-r9">Auto</span></div>
+        <div class="frow sr"><span class="flbl s" id="s-r6">System</span><div class="fn">status</div><div class="ft">ENUM</div><span class="b calc" id="b-r10">System-set</span></div>
+        <div class="frow sr"><span class="flbl s" id="s-r7">System</span><div class="fn">created_count</div><div class="ft">INT</div><span class="b calc" id="b-r11">Calculated</span></div>
+        <div class="frow sr"><span class="flbl s" id="s-r8">System</span><div class="fn">uploaded_count</div><div class="ft">INT</div><span class="b calc" id="b-r12">Calculated</span></div>
+        <div class="frow sr"><span class="flbl s" id="s-r9">System</span><div class="fn">placements_submitted</div><div class="ft">INT</div><span class="b calc" id="b-r13">Calculated</span></div>
+        <div class="frow sr"><span class="flbl s" id="s-r10">System</span><div class="fn">placements_gap</div><div class="ft">INT</div><span class="b calc" id="b-r14">Calculated</span></div>
+        <div class="frow sr"><span class="flbl s" id="s-r11">System</span><div class="fn">requested_by</div><div class="ft">UUID</div><span class="b fk" id="b-r15">FK → User</span></div>
+        <div class="frow sr"><span class="flbl s" id="s-r12">System</span><div class="fn">created_at</div><div class="ft">TIMESTAMP</div><span class="b aut" id="b-r16">Auto</span></div>
       </div>
     </div>
-    <div class="nb" id="nb-req">A PC can have multiple requests; each covers education levels as child line rows · Output rendered as email · Reconciled against projects via pc_code + education_level (soft match, no FK)</div>
+    <div class="nb" id="nb-req">A PC can have multiple requests; each covers education levels as child line rows · Output rendered as email · Reconciled against projects via pc + education_level (soft match, no FK)</div>
   </div>
 
   <!-- PROJECT -->
@@ -497,8 +505,7 @@ body{font-family:system-ui,sans-serif;font-size:14px;line-height:1.5;background:
         <div class="frow"><span class="flbl u" id="u-j4">User</span><div class="fn">education_level</div><div class="ft">ENUM</div><span class="b req" id="b-j4">Required</span></div>
         <div class="frow"><span class="flbl u" id="u-j5">User</span><div class="fn">placement</div><div class="ft">INT</div><span class="b req" id="b-j5">Required</span></div>
         <div class="slbl" id="sl-pr-u2">User Fields — Internship Period</div>
-        <div class="frow hl"><span class="flbl u" id="u-j6">User</span><div class="fn">internship_start</div><div class="ft" id="ft-j1">MONTH/YEAR</div><span class="b req" id="b-j6">Required</span></div>
-        <div class="frow hl"><span class="flbl u" id="u-j7">User</span><div class="fn">internship_end</div><div class="ft" id="ft-j2">MONTH/YEAR</div><span class="b req" id="b-j7">Required</span></div>
+        <div class="frow hl"><span class="flbl u" id="u-j6">User</span><div class="fn">preferred_start_date</div><div class="ft" id="ft-j1">DATE[]</div><span class="b mul" id="b-j6">Multi-select</span></div>
         <div class="frow"><span class="flbl u" id="u-j8">User</span><div class="fn">duration_months</div><div class="ft">INT</div><span class="b req" id="b-j8">Required</span></div>
         <div class="slbl" id="sl-pr-u3">User Fields — Mentor</div>
         <div class="frow"><span class="flbl u" id="u-j9">User</span><div class="fn">mentor_name</div><div class="ft">VARCHAR</div><span class="b req" id="b-j9">Required</span></div>
@@ -658,14 +665,14 @@ en: {
   "u-ap1":"User","u-ap2":"User","u-ap3":"User","s-ap1":"System","s-ap2":"System","s-ap3":"System","s-ap4":"System",
   "b-ap1":"Required","b-ap2":"Auto, editable","b-ap3":"Required","b-ap4":"Calculated","b-ap5":"Calculated","b-ap6":"Calculated","b-ap7":"System-set",
   "nb-setup":"Programme Setup groups programme details, intake windows, eligibility criteria, and attached projects · shared system fields are listed once · child IDs identify repeated intakes and criteria rules",
-  "e-req":"Project Request","sl-rq-uh":"User Fields — Header","sl-rq-ul":"User Fields — Lines","sl-rq-s":"System Fields",
-  "u-r1":"User","u-r2":"User","u-r3":"User","u-r4":"User","u-r5":"User","s-r1":"System","s-r2":"System","s-r3":"System","s-r4":"System","s-r5":"System","s-r6":"System","s-r7":"System","s-r8":"System",
-  "b-r1":"Required","b-r2":"Required","b-r3":"Optional","b-r4":"Required","b-r5":"Required","b-r6":"Auto","b-r7":"Calculated","b-r8":"Calculated","b-r9":"Calculated","b-r10":"FK → User","b-r11":"Auto",
-  "nb-req":"A PC can have multiple requests; each covers education levels as child line rows · Output rendered as email · Reconciled against projects via pc_code + education_level (soft match, no FK)",
+  "e-req":"Project Request","sl-rq-uh":"Request Setup","sl-rq-rc":"Recipients","sl-rq-ul":"Requested Placements","sl-rq-s":"System Fields",
+  "u-r1":"User","u-r2":"User","u-r3":"User","u-r4":"User","u-r5":"User","u-r6":"User","u-r7":"User","u-r8":"User","s-r1":"System","s-r2":"System","s-r3":"System","s-r4":"System","s-r5":"System","s-r6":"System","s-r7":"System","s-r8":"System","s-r9":"System","s-r10":"System","s-r11":"System","s-r12":"System",
+  "b-r1":"Required","b-r2":"Required","b-r3":"Required","b-r4":"Required","b-r5":"Derived","b-r6":"Optional","b-r7":"Auto","b-r8":"Auto","b-r9":"Auto","b-r10":"System-set","b-r11":"Calculated","b-r12":"Calculated","b-r13":"Calculated","b-r14":"Calculated","b-r15":"FK → User","b-r16":"Auto","b-r17":"Required","b-r18":"Required",
+  "nb-req":"A PC can have multiple requests; each covers education levels as child line rows · Output rendered as email · Reconciled against projects via pc + education_level (soft match, no FK)",
   "e-proj":"Project","sl-pr-u1":"User Fields — Project Info","sl-pr-u2":"User Fields — Internship Period","sl-pr-u3":"User Fields — Mentor","sl-pr-u4":"User Fields — Matching Tags","sl-pr-s":"System Fields",
   "u-j1":"User","u-j2":"User","u-j3":"User","u-j4":"User","u-j5":"User","u-j6":"User","u-j7":"User","u-j8":"User","u-j9":"User","u-j10":"User","u-j11":"User","u-j12":"User","u-j13":"User","u-j14":"User","u-j15":"User","u-j16":"User",
   "s-j1":"System","s-j2":"System","s-j3":"System","s-j4":"System","s-j5":"System","s-j6":"System",
-  "b-j1":"Required","b-j2":"Required","b-j3":"Required","b-j4":"Required","b-j5":"Required","ft-j1":"MONTH/YEAR","ft-j2":"MONTH/YEAR","b-j6":"Required","b-j7":"Required","b-j8":"Required","b-j9":"Required","b-j10":"Required","b-j11":"Required","b-j12":"Optional","b-j13":"Multi-select","b-j14":"Multi-select","b-j15":"Single select","b-j16":"Single select","b-j17":"Nullable FK → Intake","b-j18":"System-set","b-j19":"FK → User (AD)","b-j20":"FK → User (IO Admin)","b-j21":"Auto",
+  "b-j1":"Required","b-j2":"Required","b-j3":"Required","b-j4":"Required","b-j5":"Required","ft-j1":"DATE[]","b-j6":"Multi-select","b-j8":"Required","b-j9":"Required","b-j10":"Required","b-j11":"Required","b-j12":"Optional","b-j13":"Multi-select","b-j14":"Multi-select","b-j15":"Single select","b-j16":"Single select","b-j17":"Nullable FK → Intake","b-j18":"System-set","b-j19":"FK → User (AD)","b-j20":"FK → User (IO Admin)","b-j21":"Auto",
   "nb-tags":"Predefined lists required for consistent matching. In Excel: discipline_of_study and skills use comma-separated values.",
   "nb-proj-sys":"No FK to Project Request — reconciled via pc_code + education_level · intake_id null until attached",
   "sf1-t":"Project Review Status","sp-pend":"⏳ Pending Review","sp-appr":"✅ Approved","sp-rej":"❌ Rejected","s-ifa":"→ if approved","sp-una":"🔵 Unassigned","sp-asgn":"🟣 Assigned","sf1-nb":"Submitted by AD(P&C) · Approved by IO Admin · Unassigned = in pool, intake_id null · Assigned = attached to an intake",
@@ -724,14 +731,14 @@ zh: {
   "u-ap1":"用户","u-ap2":"用户","u-ap3":"用户","s-ap1":"系统","s-ap2":"系统","s-ap3":"系统","s-ap4":"系统",
   "b-ap1":"必填","b-ap2":"自动，可编辑","b-ap3":"必填","b-ap4":"计算得出","b-ap5":"计算得出","b-ap6":"计算得出","b-ap7":"系统设置",
   "nb-setup":"项目计划设置包含项目计划详情、招募批次窗口、资格条件和已附加项目 · 共享系统字段只列一次 · 子 ID 用于标识重复的批次和规则",
-  "e-req":"项目需求","sl-rq-uh":"用户字段 — 表头","sl-rq-ul":"用户字段 — 明细行","sl-rq-s":"系统字段",
-  "u-r1":"用户","u-r2":"用户","u-r3":"用户","u-r4":"用户","u-r5":"用户","s-r1":"系统","s-r2":"系统","s-r3":"系统","s-r4":"系统","s-r5":"系统","s-r6":"系统","s-r7":"系统","s-r8":"系统",
-  "b-r1":"必填","b-r2":"必填","b-r3":"可选","b-r4":"必填","b-r5":"必填","b-r6":"自动","b-r7":"计算得出","b-r8":"计算得出","b-r9":"计算得出","b-r10":"FK → User","b-r11":"自动",
-  "nb-req":"一个 PC 可以有多个需求；每个需求以子明细行形式涵盖各教育层级 · 输出渲染为邮件 · 通过 pc_code + education_level 与项目核对（软匹配，无外键）",
+  "e-req":"项目需求","sl-rq-uh":"需求设置","sl-rq-rc":"收件人","sl-rq-ul":"需求名额","sl-rq-s":"系统字段",
+  "u-r1":"用户","u-r2":"用户","u-r3":"用户","u-r4":"用户","u-r5":"用户","u-r6":"用户","u-r7":"用户","u-r8":"用户","s-r1":"系统","s-r2":"系统","s-r3":"系统","s-r4":"系统","s-r5":"系统","s-r6":"系统","s-r7":"系统","s-r8":"系统","s-r9":"系统","s-r10":"系统","s-r11":"系统","s-r12":"系统",
+  "b-r1":"必填","b-r2":"必填","b-r3":"必填","b-r4":"必填","b-r5":"派生","b-r6":"可选","b-r7":"自动","b-r8":"自动","b-r9":"自动","b-r10":"系统设置","b-r11":"计算得出","b-r12":"计算得出","b-r13":"计算得出","b-r14":"计算得出","b-r15":"FK → User","b-r16":"自动","b-r17":"必填","b-r18":"必填",
+  "nb-req":"一个 PC 可以有多个需求；每个需求以子明细行形式涵盖各教育层级 · 输出渲染为邮件 · 通过 pc + education_level 与项目核对（软匹配，无外键）",
   "e-proj":"项目","sl-pr-u1":"用户字段 — 项目信息","sl-pr-u2":"用户字段 — 实习期","sl-pr-u3":"用户字段 — 导师","sl-pr-u4":"用户字段 — 匹配标签","sl-pr-s":"系统字段",
   "u-j1":"用户","u-j2":"用户","u-j3":"用户","u-j4":"用户","u-j5":"用户","u-j6":"用户","u-j7":"用户","u-j8":"用户","u-j9":"用户","u-j10":"用户","u-j11":"用户","u-j12":"用户","u-j13":"用户","u-j14":"用户","u-j15":"用户","u-j16":"用户",
   "s-j1":"系统","s-j2":"系统","s-j3":"系统","s-j4":"系统","s-j5":"系统","s-j6":"系统",
-  "b-j1":"必填","b-j2":"必填","b-j3":"必填","b-j4":"必填","b-j5":"必填","ft-j1":"月/年","ft-j2":"月/年","b-j6":"必填","b-j7":"必填","b-j8":"必填","b-j9":"必填","b-j10":"必填","b-j11":"必填","b-j12":"可选","b-j13":"多选","b-j14":"多选","b-j15":"单选","b-j16":"单选","b-j17":"可空 FK → Intake","b-j18":"系统设置","b-j19":"FK → User (AD)","b-j20":"FK → User (IO 管理员)","b-j21":"自动",
+  "b-j1":"必填","b-j2":"必填","b-j3":"必填","b-j4":"必填","b-j5":"必填","ft-j1":"日期[]","b-j6":"多选","b-j8":"必填","b-j9":"必填","b-j10":"必填","b-j11":"必填","b-j12":"可选","b-j13":"多选","b-j14":"多选","b-j15":"单选","b-j16":"单选","b-j17":"可空 FK → Intake","b-j18":"系统设置","b-j19":"FK → User (AD)","b-j20":"FK → User (IO 管理员)","b-j21":"自动",
   "nb-tags":"需要预定义列表以保持一致匹配。在 Excel 中：discipline_of_study 和 skills 使用逗号分隔的值。",
   "nb-proj-sys":"无外键指向项目需求 — 通过 pc_code + education_level 核对 · 附加前 intake_id 为 null",
   "sf1-t":"项目审核状态","sp-pend":"⏳ 待审核","sp-appr":"✅ 已批准","sp-rej":"❌ 已拒绝","s-ifa":"→ 若已批准","sp-una":"🔵 未分配","sp-asgn":"🟣 已分配","sf1-nb":"由 AD(P&C) 提交 · 由 IO 管理员批准 · 未分配 = 在池中，intake_id 为 null · 已分配 = 已附加到批次",
