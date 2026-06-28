@@ -417,8 +417,6 @@ body{font-family:system-ui,sans-serif;font-size:14px;line-height:1.5;background:
         <div class="frow"><span class="flbl u" id="u-p2">User</span><div class="fn">programme_title</div><div class="ft">VARCHAR</div><span class="b req" id="b-p2">Required</span></div>
         <div class="frow"><span class="flbl u" id="u-p3">User</span><div class="fn">programme_desc</div><div class="ft">TEXT</div><span class="b opt" id="b-p3">Optional</span></div>
         <div class="frow"><span class="flbl u" id="u-p4">User</span><div class="fn">form_template</div><div class="ft">VARCHAR</div><span class="b calc" id="b-p4">Derived</span></div>
-        <div class="frow"><span class="flbl u" id="u-p5">User</span><div class="fn">status</div><div class="ft">ENUM</div><span class="b req" id="b-p5">Required</span></div>
-        <div class="frow"><span class="flbl u" id="u-p6">User</span><div class="fn">placements</div><div class="ft">INT</div><span class="b req" id="b-p10">Required</span></div>
         <div class="slbl" id="sl-setup-intake">Intake Windows</div>
         <div class="frow"><span class="flbl u" id="u-i1">User</span><div class="fn">intake_title</div><div class="ft">VARCHAR</div><span class="b ae" id="b-i1">Auto, editable</span></div>
         <div class="frow"><span class="flbl u" id="u-i4">User</span><div class="fn">application_open</div><div class="ft">DATE</div><span class="b req" id="b-i4">Required</span></div>
@@ -436,6 +434,7 @@ body{font-family:system-ui,sans-serif;font-size:14px;line-height:1.5;background:
         <div class="frow"><span class="flbl u" id="u-el5">User</span><div class="fn">grade_value</div><div class="ft">VARCHAR</div><span class="b opt" id="b-el5">Optional</span></div>
         <div class="frow"><span class="flbl u" id="u-el6">User</span><div class="fn">institutions</div><div class="ft">VARCHAR[]</div><span class="b opt" id="b-el6">Optional</span></div>
         <div class="frow"><span class="flbl u" id="u-el7">User</span><div class="fn">option_id</div><div class="ft">UUID</div><span class="b opt" id="b-el8">Optional</span></div>
+        <div class="nb" style="background:#F8FAFC;border-top:none" id="nb-elig-inline">Eligibility criteria are configurable rules for applicant filtering. match_type defines how rules are combined (ALL / ANY). criteria_type selects what applicant attribute to check, such as GPA, institution, citizenship, or education background. operator defines the comparison logic, such as equals, contains, greater than, or between. value stores the configured target value(s). grade_value is used when the rule checks grades or GPA. institutions stores selected schools when the rule is institution-based. option_id groups alternative options under an ANY rule.</div>
         <div class="slbl" id="sl-setup-projects">Attached Projects</div>
         <div class="frow"><span class="flbl u" id="u-ap1">User</span><div class="fn">project_id</div><div class="ft">UUID</div><span class="b req" id="b-ap1">Required</span></div>
         <div class="frow"><span class="flbl u" id="u-ap2">User</span><div class="fn">project_intake_id</div><div class="ft">UUID</div><span class="b ae" id="b-ap2">Auto, editable</span></div>
@@ -446,6 +445,8 @@ body{font-family:system-ui,sans-serif;font-size:14px;line-height:1.5;background:
         <div class="frow sr"><span class="flbl s" id="s-ap4">System</span><div class="fn">project_approval_status</div><div class="ft">ENUM</div><span class="b calc" id="b-ap7">System-set</span></div>
         <div class="slbl sys" id="sl-setup-sys">System Fields</div>
         <div class="frow sr"><span class="flbl s" id="s-p1">System</span><div class="fn">programme_id</div><div class="ft">UUID</div><span class="b pk">PK</span></div>
+        <div class="frow sr"><span class="flbl s" id="s-p2">System</span><div class="fn">status</div><div class="ft">ENUM</div><span class="b calc" id="b-p5">System-set</span></div>
+        <div class="frow sr"><span class="flbl s" id="s-p6">System</span><div class="fn">placements</div><div class="ft">INT</div><span class="b calc" id="b-p10">Calculated</span></div>
         <div class="frow sr"><span class="flbl s" id="s-i1">System</span><div class="fn">intake_id</div><div class="ft">UUID</div><span class="b calc" id="b-i7">Child ID</span></div>
         <div class="frow sr"><span class="flbl s" id="s-el1">System</span><div class="fn">criteria_group_id</div><div class="ft">UUID</div><span class="b calc" id="b-el9">Child ID</span></div>
         <div class="frow sr"><span class="flbl s" id="s-el2">System</span><div class="fn">criteria_rule_id</div><div class="ft">UUID</div><span class="b calc" id="b-el10">Child ID</span></div>
@@ -505,7 +506,8 @@ body{font-family:system-ui,sans-serif;font-size:14px;line-height:1.5;background:
         <div class="frow"><span class="flbl u" id="u-j4">User</span><div class="fn">education_level</div><div class="ft">ENUM</div><span class="b req" id="b-j4">Required</span></div>
         <div class="frow"><span class="flbl u" id="u-j5">User</span><div class="fn">placement</div><div class="ft">INT</div><span class="b req" id="b-j5">Required</span></div>
         <div class="slbl" id="sl-pr-u2">User Fields — Internship Period</div>
-        <div class="frow hl"><span class="flbl u" id="u-j6">User</span><div class="fn">preferred_start_date</div><div class="ft" id="ft-j1">DATE[]</div><span class="b mul" id="b-j6">Multi-select</span></div>
+        <div class="frow hl"><span class="flbl u" id="u-j6">User</span><div class="fn">internship_start</div><div class="ft" id="ft-j1">MONTH/YEAR</div><span class="b req" id="b-j6">Required</span></div>
+        <div class="frow hl"><span class="flbl u" id="u-j7">User</span><div class="fn">internship_end</div><div class="ft" id="ft-j2">MONTH/YEAR</div><span class="b req" id="b-j7">Required</span></div>
         <div class="frow"><span class="flbl u" id="u-j8">User</span><div class="fn">duration_months</div><div class="ft">INT</div><span class="b req" id="b-j8">Required</span></div>
         <div class="slbl" id="sl-pr-u3">User Fields — Mentor</div>
         <div class="frow"><span class="flbl u" id="u-j9">User</span><div class="fn">mentor_name</div><div class="ft">VARCHAR</div><span class="b req" id="b-j9">Required</span></div>
@@ -651,8 +653,8 @@ en: {
   "lg-u":"User-facing field","lg-s":"System field (auto-captured)",
   "e-setup":"Programme Setup","sl-setup-details":"Programme Details","sl-setup-intake":"Intake Windows","sl-setup-elig":"Eligibility Criteria","sl-setup-projects":"Attached Projects","sl-setup-sys":"System Fields",
   "e-prog":"Programme","sl-prog-u":"User Fields","sl-prog-s":"System Fields",
-  "u-p1":"User","u-p2":"User","u-p3":"User","u-p4":"User","u-p5":"User","u-p6":"User","s-p1":"System","s-p2":"System","s-p3":"System","s-p4":"System","s-p5":"System",
-  "b-p1":"Required","b-p2":"Required","b-p3":"Optional","b-p4":"Derived","b-p5":"Required","b-p6":"Calculated","b-p7":"FK → User","b-p8":"Auto","b-p9":"Auto","b-p10":"Required",
+  "u-p1":"User","u-p2":"User","u-p3":"User","u-p4":"User","s-p1":"System","s-p2":"System","s-p3":"System","s-p4":"System","s-p5":"System","s-p6":"System",
+  "b-p1":"Required","b-p2":"Required","b-p3":"Optional","b-p4":"Derived","b-p5":"System-set","b-p6":"Calculated","b-p7":"FK → User","b-p8":"Auto","b-p9":"Auto","b-p10":"Calculated",
   "nb-prog":"form_template derived from education_level · days_left calculated from the first intake end date · one programme can have multiple intakes",
   "e-intake":"Intake","sl-int-u":"User Fields","sl-int-s":"System Fields",
   "u-i1":"User","u-i2":"User","u-i3":"User","u-i4":"User","u-i5":"User","u-i6":"User","s-i1":"System","s-i2":"System","s-i3":"System","s-i4":"System","s-i5":"System",
@@ -661,6 +663,7 @@ en: {
   "e-elig":"Eligibility Criteria","sl-el-u":"User Fields","sl-el-s":"System Fields",
   "u-el1":"User","u-el2":"User","u-el3":"User","u-el4":"User","u-el5":"User","u-el6":"User","u-el7":"User","s-el1":"System","s-el2":"System","s-el3":"System","s-el4":"System","s-el5":"System","s-el6":"System","s-el7":"System",
   "b-el1":"Required","b-el2":"Required","b-el3":"Required","b-el4":"Required","b-el5":"Optional","b-el6":"Optional","b-el7":"FK → Programme","b-el8":"Optional","b-el9":"Child ID","b-el10":"Child ID","b-el11":"Auto",
+  "nb-elig-inline":"Eligibility criteria are configurable rules for applicant filtering. match_type defines how rules are combined (ALL / ANY). criteria_type selects what applicant attribute to check, such as GPA, institution, citizenship, or education background. operator defines the comparison logic, such as equals, contains, greater than, or between. value stores the configured target value(s). grade_value is used when the rule checks grades or GPA. institutions stores selected schools when the rule is institution-based. option_id groups alternative options under an ANY rule.",
   "nb-elig":"Eligibility criteria are stored as CriteriaGroup[] · ALL groups use direct rules · ANY groups use option_id to group OR alternatives · applicants who fail criteria may be auto-rejected or routed for review",
   "u-ap1":"User","u-ap2":"User","u-ap3":"User","s-ap1":"System","s-ap2":"System","s-ap3":"System","s-ap4":"System",
   "b-ap1":"Required","b-ap2":"Auto, editable","b-ap3":"Required","b-ap4":"Calculated","b-ap5":"Calculated","b-ap6":"Calculated","b-ap7":"System-set",
@@ -672,7 +675,7 @@ en: {
   "e-proj":"Project","sl-pr-u1":"User Fields — Project Info","sl-pr-u2":"User Fields — Internship Period","sl-pr-u3":"User Fields — Mentor","sl-pr-u4":"User Fields — Matching Tags","sl-pr-s":"System Fields",
   "u-j1":"User","u-j2":"User","u-j3":"User","u-j4":"User","u-j5":"User","u-j6":"User","u-j7":"User","u-j8":"User","u-j9":"User","u-j10":"User","u-j11":"User","u-j12":"User","u-j13":"User","u-j14":"User","u-j15":"User","u-j16":"User",
   "s-j1":"System","s-j2":"System","s-j3":"System","s-j4":"System","s-j5":"System","s-j6":"System",
-  "b-j1":"Required","b-j2":"Required","b-j3":"Required","b-j4":"Required","b-j5":"Required","ft-j1":"DATE[]","b-j6":"Multi-select","b-j8":"Required","b-j9":"Required","b-j10":"Required","b-j11":"Required","b-j12":"Optional","b-j13":"Multi-select","b-j14":"Multi-select","b-j15":"Single select","b-j16":"Single select","b-j17":"Nullable FK → Intake","b-j18":"System-set","b-j19":"FK → User (AD)","b-j20":"FK → User (IO Admin)","b-j21":"Auto",
+  "b-j1":"Required","b-j2":"Required","b-j3":"Required","b-j4":"Required","b-j5":"Required","ft-j1":"MONTH/YEAR","ft-j2":"MONTH/YEAR","b-j6":"Required","b-j7":"Required","b-j8":"Required","b-j9":"Required","b-j10":"Required","b-j11":"Required","b-j12":"Optional","b-j13":"Multi-select","b-j14":"Multi-select","b-j15":"Single select","b-j16":"Single select","b-j17":"Nullable FK → Intake","b-j18":"System-set","b-j19":"FK → User (AD)","b-j20":"FK → User (IO Admin)","b-j21":"Auto",
   "nb-tags":"Predefined lists required for consistent matching. In Excel: discipline_of_study and skills use comma-separated values.",
   "nb-proj-sys":"No FK to Project Request — reconciled via pc_code + education_level · intake_id null until attached",
   "sf1-t":"Project Review Status","sp-pend":"⏳ Pending Review","sp-appr":"✅ Approved","sp-rej":"❌ Rejected","s-ifa":"→ if approved","sp-una":"🔵 Unassigned","sp-asgn":"🟣 Assigned","sf1-nb":"Submitted by AD(P&C) · Approved by IO Admin · Unassigned = in pool, intake_id null · Assigned = attached to an intake",
@@ -717,8 +720,8 @@ zh: {
   "lg-u":"用户填写字段","lg-s":"系统字段（自动捕获）",
   "e-setup":"项目计划设置","sl-setup-details":"项目计划详情","sl-setup-intake":"招募批次窗口","sl-setup-elig":"资格条件","sl-setup-projects":"已附加项目","sl-setup-sys":"系统字段",
   "e-prog":"项目计划","sl-prog-u":"用户字段","sl-prog-s":"系统字段",
-  "u-p1":"用户","u-p2":"用户","u-p3":"用户","u-p4":"用户","u-p5":"用户","u-p6":"用户","s-p1":"系统","s-p2":"系统","s-p3":"系统","s-p4":"系统","s-p5":"系统",
-  "b-p1":"必填","b-p2":"必填","b-p3":"可选","b-p4":"派生","b-p5":"必填","b-p6":"计算得出","b-p7":"FK → User","b-p8":"自动","b-p9":"自动","b-p10":"必填",
+  "u-p1":"用户","u-p2":"用户","u-p3":"用户","u-p4":"用户","s-p1":"系统","s-p2":"系统","s-p3":"系统","s-p4":"系统","s-p5":"系统","s-p6":"系统",
+  "b-p1":"必填","b-p2":"必填","b-p3":"可选","b-p4":"派生","b-p5":"系统设置","b-p6":"计算得出","b-p7":"FK → User","b-p8":"自动","b-p9":"自动","b-p10":"计算得出",
   "nb-prog":"form_template 根据 education_level 派生 · days_left 根据第一个招募批次的结束日期计算 · 一个项目计划可以包含多个招募批次",
   "e-intake":"招募批次","sl-int-u":"用户字段","sl-int-s":"系统字段",
   "u-i1":"用户","u-i2":"用户","u-i3":"用户","u-i4":"用户","u-i5":"用户","u-i6":"用户","s-i1":"系统","s-i2":"系统","s-i3":"系统","s-i4":"系统","s-i5":"系统",
@@ -727,6 +730,7 @@ zh: {
   "e-elig":"资格条件","sl-el-u":"用户字段","sl-el-s":"系统字段",
   "u-el1":"用户","u-el2":"用户","u-el3":"用户","u-el4":"用户","u-el5":"用户","u-el6":"用户","u-el7":"用户","s-el1":"系统","s-el2":"系统","s-el3":"系统","s-el4":"系统","s-el5":"系统","s-el6":"系统","s-el7":"系统",
   "b-el1":"必填","b-el2":"必填","b-el3":"必填","b-el4":"必填","b-el5":"可选","b-el6":"可选","b-el7":"FK → Programme","b-el8":"可选","b-el9":"子 ID","b-el10":"子 ID","b-el11":"自动",
+  "nb-elig-inline":"资格条件是用于筛选申请人的可配置规则。match_type 定义规则如何组合（ALL / ANY）。criteria_type 选择要检查的申请人属性，例如 GPA、学校、国籍或教育背景。operator 定义比较逻辑，例如等于、包含、大于或介于。value 保存配置的目标值。grade_value 用于成绩或 GPA 相关规则。institutions 保存学校类规则中选择的院校。option_id 用于把 ANY 规则下的多个可替代选项分组。",
   "nb-elig":"资格条件存储为 CriteriaGroup[] · ALL 组直接使用规则 · ANY 组使用 option_id 对 OR 选项分组 · 不符合条件的申请人可被自动拒绝或转入人工审核",
   "u-ap1":"用户","u-ap2":"用户","u-ap3":"用户","s-ap1":"系统","s-ap2":"系统","s-ap3":"系统","s-ap4":"系统",
   "b-ap1":"必填","b-ap2":"自动，可编辑","b-ap3":"必填","b-ap4":"计算得出","b-ap5":"计算得出","b-ap6":"计算得出","b-ap7":"系统设置",
@@ -738,7 +742,7 @@ zh: {
   "e-proj":"项目","sl-pr-u1":"用户字段 — 项目信息","sl-pr-u2":"用户字段 — 实习期","sl-pr-u3":"用户字段 — 导师","sl-pr-u4":"用户字段 — 匹配标签","sl-pr-s":"系统字段",
   "u-j1":"用户","u-j2":"用户","u-j3":"用户","u-j4":"用户","u-j5":"用户","u-j6":"用户","u-j7":"用户","u-j8":"用户","u-j9":"用户","u-j10":"用户","u-j11":"用户","u-j12":"用户","u-j13":"用户","u-j14":"用户","u-j15":"用户","u-j16":"用户",
   "s-j1":"系统","s-j2":"系统","s-j3":"系统","s-j4":"系统","s-j5":"系统","s-j6":"系统",
-  "b-j1":"必填","b-j2":"必填","b-j3":"必填","b-j4":"必填","b-j5":"必填","ft-j1":"日期[]","b-j6":"多选","b-j8":"必填","b-j9":"必填","b-j10":"必填","b-j11":"必填","b-j12":"可选","b-j13":"多选","b-j14":"多选","b-j15":"单选","b-j16":"单选","b-j17":"可空 FK → Intake","b-j18":"系统设置","b-j19":"FK → User (AD)","b-j20":"FK → User (IO 管理员)","b-j21":"自动",
+  "b-j1":"必填","b-j2":"必填","b-j3":"必填","b-j4":"必填","b-j5":"必填","ft-j1":"月/年","ft-j2":"月/年","b-j6":"必填","b-j7":"必填","b-j8":"必填","b-j9":"必填","b-j10":"必填","b-j11":"必填","b-j12":"可选","b-j13":"多选","b-j14":"多选","b-j15":"单选","b-j16":"单选","b-j17":"可空 FK → Intake","b-j18":"系统设置","b-j19":"FK → User (AD)","b-j20":"FK → User (IO 管理员)","b-j21":"自动",
   "nb-tags":"需要预定义列表以保持一致匹配。在 Excel 中：discipline_of_study 和 skills 使用逗号分隔的值。",
   "nb-proj-sys":"无外键指向项目需求 — 通过 pc_code + education_level 核对 · 附加前 intake_id 为 null",
   "sf1-t":"项目审核状态","sp-pend":"⏳ 待审核","sp-appr":"✅ 已批准","sp-rej":"❌ 已拒绝","s-ifa":"→ 若已批准","sp-una":"🔵 未分配","sp-asgn":"🟣 已分配","sf1-nb":"由 AD(P&C) 提交 · 由 IO 管理员批准 · 未分配 = 在池中，intake_id 为 null · 已分配 = 已附加到批次",
