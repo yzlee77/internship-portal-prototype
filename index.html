@@ -407,39 +407,54 @@ body{font-family:system-ui,sans-serif;font-size:14px;line-height:1.5;background:
     <div class="li"><div class="ld" style="background:#0F5C3A"></div><span id="lg-u">User-facing field</span></div>
     <div class="li"><div class="ld" style="background:#3730A3"></div><span id="lg-s">System field (auto-captured)</span></div>
   </div>
-  <div class="g2">
-    <!-- PROGRAMME -->
-    <div class="card">
-      <div class="card-hdr" style="background:var(--cpl);color:var(--cp)"><div class="dot" style="background:var(--cpb)"></div><span id="e-prog">Programme</span></div>
-      <div class="slbl" id="sl-prog-u">User Fields</div>
-      <div class="frow"><span class="flbl u" id="u-p1">User</span><div class="fn">education_level</div><div class="ft">ENUM</div><span class="b req" id="b-p1">Required</span></div>
-      <div class="frow"><span class="flbl u" id="u-p2">User</span><div class="fn">programme_title</div><div class="ft">VARCHAR</div><span class="b req" id="b-p2">Required</span></div>
-      <div class="frow"><span class="flbl u" id="u-p3">User</span><div class="fn">programme_desc</div><div class="ft">TEXT</div><span class="b opt" id="b-p3">Optional</span></div>
-      <div class="slbl sys" id="sl-prog-s">System Fields</div>
-      <div class="frow sr"><span class="flbl s" id="s-p1">System</span><div class="fn">programme_id</div><div class="ft">UUID</div><span class="b pk">PK</span></div>
-      <div class="frow sr"><span class="flbl s" id="s-p2">System</span><div class="fn">year</div><div class="ft">INT(4)</div><span class="b aut" id="b-p4">Auto</span></div>
-      <div class="frow sr"><span class="flbl s" id="s-p3">System</span><div class="fn">created_by</div><div class="ft">UUID</div><span class="b fk" id="b-p5">FK → User</span></div>
-      <div class="frow sr"><span class="flbl s" id="s-p4">System</span><div class="fn">created_at</div><div class="ft">TIMESTAMP</div><span class="b aut" id="b-p6">Auto</span></div>
-      <div class="nb" id="nb-prog">year auto-filled · multiple programmes per education_level / year allowed — no cap</div>
+  <!-- PROGRAMME SETUP -->
+  <div class="card">
+    <div class="card-hdr" style="background:var(--cpl);color:var(--cp)"><div class="dot" style="background:var(--cpb)"></div><span id="e-setup">Programme Setup</span></div>
+    <div class="g2" style="gap:0">
+      <div>
+        <div class="slbl" id="sl-setup-details">Programme Details</div>
+        <div class="frow"><span class="flbl u" id="u-p1">User</span><div class="fn">education_level</div><div class="ft">ENUM</div><span class="b req" id="b-p1">Required</span></div>
+        <div class="frow"><span class="flbl u" id="u-p2">User</span><div class="fn">programme_title</div><div class="ft">VARCHAR</div><span class="b req" id="b-p2">Required</span></div>
+        <div class="frow"><span class="flbl u" id="u-p3">User</span><div class="fn">programme_desc</div><div class="ft">TEXT</div><span class="b opt" id="b-p3">Optional</span></div>
+        <div class="frow"><span class="flbl u" id="u-p4">User</span><div class="fn">form_template</div><div class="ft">VARCHAR</div><span class="b calc" id="b-p4">Derived</span></div>
+        <div class="frow"><span class="flbl u" id="u-p5">User</span><div class="fn">status</div><div class="ft">ENUM</div><span class="b req" id="b-p5">Required</span></div>
+        <div class="frow"><span class="flbl u" id="u-p6">User</span><div class="fn">placements</div><div class="ft">INT</div><span class="b req" id="b-p10">Required</span></div>
+        <div class="slbl" id="sl-setup-intake">Intake Windows</div>
+        <div class="frow"><span class="flbl u" id="u-i1">User</span><div class="fn">intake_title</div><div class="ft">VARCHAR</div><span class="b ae" id="b-i1">Auto, editable</span></div>
+        <div class="frow"><span class="flbl u" id="u-i4">User</span><div class="fn">application_open</div><div class="ft">DATE</div><span class="b req" id="b-i4">Required</span></div>
+        <div class="frow"><span class="flbl u" id="u-i5">User</span><div class="fn">application_close</div><div class="ft">DATE</div><span class="b req" id="b-i5">Required</span></div>
+        <div class="frow hl"><span class="flbl u" id="u-i2">User</span><div class="fn">internship_start</div><div class="ft" id="ft-i1">MONTH/YEAR</div><span class="b opt" id="b-i2">Optional</span></div>
+        <div class="frow hl"><span class="flbl u" id="u-i3">User</span><div class="fn">internship_end</div><div class="ft" id="ft-i2">MONTH/YEAR</div><span class="b opt" id="b-i3">Optional</span></div>
+        <div class="frow sr"><span class="flbl s" id="s-i3">System</span><div class="fn">duration_months</div><div class="ft">INT</div><span class="b calc" id="b-i8">Calculated</span></div>
+      </div>
+      <div>
+        <div class="slbl" id="sl-setup-elig">Eligibility Criteria</div>
+        <div class="frow"><span class="flbl u" id="u-el1">User</span><div class="fn">match_type</div><div class="ft">ENUM</div><span class="b req" id="b-el1">Required</span></div>
+        <div class="frow"><span class="flbl u" id="u-el2">User</span><div class="fn">criteria_type</div><div class="ft">ENUM</div><span class="b req" id="b-el2">Required</span></div>
+        <div class="frow"><span class="flbl u" id="u-el3">User</span><div class="fn">operator</div><div class="ft">ENUM</div><span class="b req" id="b-el3">Required</span></div>
+        <div class="frow"><span class="flbl u" id="u-el4">User</span><div class="fn">value</div><div class="ft">JSON</div><span class="b req" id="b-el4">Required</span></div>
+        <div class="frow"><span class="flbl u" id="u-el5">User</span><div class="fn">grade_value</div><div class="ft">VARCHAR</div><span class="b opt" id="b-el5">Optional</span></div>
+        <div class="frow"><span class="flbl u" id="u-el6">User</span><div class="fn">institutions</div><div class="ft">VARCHAR[]</div><span class="b opt" id="b-el6">Optional</span></div>
+        <div class="frow"><span class="flbl u" id="u-el7">User</span><div class="fn">option_id</div><div class="ft">UUID</div><span class="b opt" id="b-el8">Optional</span></div>
+        <div class="slbl" id="sl-setup-projects">Attached Projects</div>
+        <div class="frow"><span class="flbl u" id="u-ap1">User</span><div class="fn">project_id</div><div class="ft">UUID</div><span class="b req" id="b-ap1">Required</span></div>
+        <div class="frow"><span class="flbl u" id="u-ap2">User</span><div class="fn">project_intake_id</div><div class="ft">UUID</div><span class="b ae" id="b-ap2">Auto, editable</span></div>
+        <div class="frow"><span class="flbl u" id="u-ap3">User</span><div class="fn">attach_selected</div><div class="ft">BOOLEAN</div><span class="b req" id="b-ap3">Required</span></div>
+        <div class="frow sr"><span class="flbl s" id="s-ap1">System</span><div class="fn">eligible_project_pool</div><div class="ft">UUID[]</div><span class="b calc" id="b-ap4">Calculated</span></div>
+        <div class="frow sr"><span class="flbl s" id="s-ap2">System</span><div class="fn">education_level_match</div><div class="ft">BOOLEAN</div><span class="b calc" id="b-ap5">Calculated</span></div>
+        <div class="frow sr"><span class="flbl s" id="s-ap3">System</span><div class="fn">period_within_intake</div><div class="ft">BOOLEAN</div><span class="b calc" id="b-ap6">Calculated</span></div>
+        <div class="frow sr"><span class="flbl s" id="s-ap4">System</span><div class="fn">project_approval_status</div><div class="ft">ENUM</div><span class="b calc" id="b-ap7">System-set</span></div>
+        <div class="slbl sys" id="sl-setup-sys">System Fields</div>
+        <div class="frow sr"><span class="flbl s" id="s-p1">System</span><div class="fn">programme_id</div><div class="ft">UUID</div><span class="b pk">PK</span></div>
+        <div class="frow sr"><span class="flbl s" id="s-i1">System</span><div class="fn">intake_id</div><div class="ft">UUID</div><span class="b calc" id="b-i7">Child ID</span></div>
+        <div class="frow sr"><span class="flbl s" id="s-el1">System</span><div class="fn">criteria_group_id</div><div class="ft">UUID</div><span class="b calc" id="b-el9">Child ID</span></div>
+        <div class="frow sr"><span class="flbl s" id="s-el2">System</span><div class="fn">criteria_rule_id</div><div class="ft">UUID</div><span class="b calc" id="b-el10">Child ID</span></div>
+        <div class="frow sr"><span class="flbl s" id="s-p3">System</span><div class="fn">created_by</div><div class="ft">UUID</div><span class="b fk" id="b-p7">FK → User</span></div>
+        <div class="frow sr"><span class="flbl s" id="s-p4">System</span><div class="fn">created_at</div><div class="ft">TIMESTAMP</div><span class="b aut" id="b-p8">Auto</span></div>
+        <div class="frow sr"><span class="flbl s" id="s-p5">System</span><div class="fn">updated_at</div><div class="ft">TIMESTAMP</div><span class="b aut" id="b-p9">Auto</span></div>
+      </div>
     </div>
-    <!-- INTAKE -->
-    <div class="card">
-      <div class="card-hdr" style="background:var(--cil);color:var(--ci)"><div class="dot" style="background:var(--cib)"></div><span id="e-intake">Intake</span></div>
-      <div class="slbl" id="sl-int-u">User Fields</div>
-      <div class="frow"><span class="flbl u" id="u-i1">User</span><div class="fn">intake_title</div><div class="ft">VARCHAR</div><span class="b ae" id="b-i1">Auto, editable</span></div>
-      <div class="frow hl"><span class="flbl u" id="u-i2">User</span><div class="fn">internship_start</div><div class="ft" id="ft-i1">MONTH/YEAR</div><span class="b req" id="b-i2">Required</span></div>
-      <div class="frow hl"><span class="flbl u" id="u-i3">User</span><div class="fn">internship_end</div><div class="ft" id="ft-i2">MONTH/YEAR</div><span class="b req" id="b-i3">Required</span></div>
-      <div class="frow"><span class="flbl u" id="u-i4">User</span><div class="fn">application_open</div><div class="ft">DATE</div><span class="b req" id="b-i4">Required</span></div>
-      <div class="frow"><span class="flbl u" id="u-i5">User</span><div class="fn">application_close</div><div class="ft">DATE</div><span class="b req" id="b-i5">Required</span></div>
-      <div class="frow"><span class="flbl u" id="u-i6">User</span><div class="fn">status</div><div class="ft">ENUM</div><span class="b req" id="b-i6">Required</span></div>
-      <div class="slbl sys" id="sl-int-s">System Fields</div>
-      <div class="frow sr"><span class="flbl s" id="s-i1">System</span><div class="fn">intake_id</div><div class="ft">UUID</div><span class="b pk">PK</span></div>
-      <div class="frow sr"><span class="flbl s" id="s-i2">System</span><div class="fn">programme_id</div><div class="ft">UUID</div><span class="b fk" id="b-i7">FK → Programme</span></div>
-      <div class="frow sr"><span class="flbl s" id="s-i3">System</span><div class="fn">duration_months</div><div class="ft">INT</div><span class="b calc" id="b-i8">Calculated</span></div>
-      <div class="frow sr"><span class="flbl s" id="s-i4">System</span><div class="fn">created_by</div><div class="ft">UUID</div><span class="b fk" id="b-i9">FK → User</span></div>
-      <div class="frow sr"><span class="flbl s" id="s-i5">System</span><div class="fn">created_at</div><div class="ft">TIMESTAMP</div><span class="b aut" id="b-i10">Auto</span></div>
-      <div class="nb" id="nb-int">intake_title auto-generated from period (e.g. "Jun–Dec 2025") but editable · Overlapping intakes allowed · internship_start/end stored as first/last day of month</div>
-    </div>
+    <div class="nb" id="nb-setup">Programme Setup groups programme details, intake windows, and eligibility criteria · shared system fields are listed once · child IDs identify repeated intakes and criteria rules</div>
   </div>
 
   <!-- PROJECT REQUEST -->
@@ -509,6 +524,7 @@ body{font-family:system-ui,sans-serif;font-size:14px;line-height:1.5;background:
       </div>
     </div>
   </div>
+
 </div>
 
 <!-- STATUS FLOWS -->
@@ -626,14 +642,22 @@ en: {
   "kl-5":"AD(P&C) can submit projects via <strong>manual form</strong> or <strong>Excel upload</strong>. Excel field names must exactly match the form. Multi-select fields use comma-separated values.",
   "kl-6":"Applicants only see intakes where <strong>education_level matches</strong> and <strong>application window is open</strong>.",
   "lg-u":"User-facing field","lg-s":"System field (auto-captured)",
+  "e-setup":"Programme Setup","sl-setup-details":"Programme Details","sl-setup-intake":"Intake Windows","sl-setup-elig":"Eligibility Criteria","sl-setup-projects":"Attached Projects","sl-setup-sys":"System Fields",
   "e-prog":"Programme","sl-prog-u":"User Fields","sl-prog-s":"System Fields",
-  "u-p1":"User","u-p2":"User","u-p3":"User","s-p1":"System","s-p2":"System","s-p3":"System","s-p4":"System",
-  "b-p1":"Required","b-p2":"Required","b-p3":"Optional","b-p4":"Auto","b-p5":"FK → User","b-p6":"Auto",
-  "nb-prog":"year auto-filled · multiple programmes per education_level / year allowed — no cap",
+  "u-p1":"User","u-p2":"User","u-p3":"User","u-p4":"User","u-p5":"User","u-p6":"User","s-p1":"System","s-p2":"System","s-p3":"System","s-p4":"System","s-p5":"System",
+  "b-p1":"Required","b-p2":"Required","b-p3":"Optional","b-p4":"Derived","b-p5":"Required","b-p6":"Calculated","b-p7":"FK → User","b-p8":"Auto","b-p9":"Auto","b-p10":"Required",
+  "nb-prog":"form_template derived from education_level · days_left calculated from the first intake end date · one programme can have multiple intakes",
   "e-intake":"Intake","sl-int-u":"User Fields","sl-int-s":"System Fields",
   "u-i1":"User","u-i2":"User","u-i3":"User","u-i4":"User","u-i5":"User","u-i6":"User","s-i1":"System","s-i2":"System","s-i3":"System","s-i4":"System","s-i5":"System",
-  "b-i1":"Auto, editable","ft-i1":"MONTH/YEAR","ft-i2":"MONTH/YEAR","b-i2":"Required","b-i3":"Required","b-i4":"Required","b-i5":"Required","b-i6":"Required","b-i7":"FK → Programme","b-i8":"Calculated","b-i9":"FK → User","b-i10":"Auto",
+  "b-i1":"Auto, editable","ft-i1":"MONTH/YEAR","ft-i2":"MONTH/YEAR","b-i2":"Optional","b-i3":"Optional","b-i4":"Required","b-i5":"Required","b-i6":"Required","b-i7":"Child ID","b-i8":"Calculated","b-i9":"FK → User","b-i10":"Auto",
   "nb-int":"intake_title auto-generated from period (e.g. \"Jun–Dec 2025\") but editable · Overlapping intakes allowed · internship_start/end stored as first/last day of month",
+  "e-elig":"Eligibility Criteria","sl-el-u":"User Fields","sl-el-s":"System Fields",
+  "u-el1":"User","u-el2":"User","u-el3":"User","u-el4":"User","u-el5":"User","u-el6":"User","u-el7":"User","s-el1":"System","s-el2":"System","s-el3":"System","s-el4":"System","s-el5":"System","s-el6":"System","s-el7":"System",
+  "b-el1":"Required","b-el2":"Required","b-el3":"Required","b-el4":"Required","b-el5":"Optional","b-el6":"Optional","b-el7":"FK → Programme","b-el8":"Optional","b-el9":"Child ID","b-el10":"Child ID","b-el11":"Auto",
+  "nb-elig":"Eligibility criteria are stored as CriteriaGroup[] · ALL groups use direct rules · ANY groups use option_id to group OR alternatives · applicants who fail criteria may be auto-rejected or routed for review",
+  "u-ap1":"User","u-ap2":"User","u-ap3":"User","s-ap1":"System","s-ap2":"System","s-ap3":"System","s-ap4":"System",
+  "b-ap1":"Required","b-ap2":"Auto, editable","b-ap3":"Required","b-ap4":"Calculated","b-ap5":"Calculated","b-ap6":"Calculated","b-ap7":"System-set",
+  "nb-setup":"Programme Setup groups programme details, intake windows, eligibility criteria, and attached projects · shared system fields are listed once · child IDs identify repeated intakes and criteria rules",
   "e-req":"Project Request","sl-rq-uh":"User Fields — Header","sl-rq-ul":"User Fields — Lines","sl-rq-s":"System Fields",
   "u-r1":"User","u-r2":"User","u-r3":"User","u-r4":"User","u-r5":"User","s-r1":"System","s-r2":"System","s-r3":"System","s-r4":"System","s-r5":"System","s-r6":"System","s-r7":"System","s-r8":"System",
   "b-r1":"Required","b-r2":"Required","b-r3":"Optional","b-r4":"Required","b-r5":"Required","b-r6":"Auto","b-r7":"Calculated","b-r8":"Calculated","b-r9":"Calculated","b-r10":"FK → User","b-r11":"Auto",
@@ -684,14 +708,22 @@ zh: {
   "kl-5":"AD(P&C) 可通过<strong>手动表单</strong>或 <strong>Excel 上传</strong>提交项目。Excel 字段名称必须与表单完全一致。多选字段使用逗号分隔的值。",
   "kl-6":"申请人仅看到 <strong>education_level 匹配</strong>且<strong>申请窗口开放</strong>的批次。",
   "lg-u":"用户填写字段","lg-s":"系统字段（自动捕获）",
+  "e-setup":"项目计划设置","sl-setup-details":"项目计划详情","sl-setup-intake":"招募批次窗口","sl-setup-elig":"资格条件","sl-setup-projects":"已附加项目","sl-setup-sys":"系统字段",
   "e-prog":"项目计划","sl-prog-u":"用户字段","sl-prog-s":"系统字段",
-  "u-p1":"用户","u-p2":"用户","u-p3":"用户","s-p1":"系统","s-p2":"系统","s-p3":"系统","s-p4":"系统",
-  "b-p1":"必填","b-p2":"必填","b-p3":"可选","b-p4":"自动","b-p5":"FK → User","b-p6":"自动",
-  "nb-prog":"year 自动填充 · 同一 education_level / year 可创建多个项目计划 — 无上限",
+  "u-p1":"用户","u-p2":"用户","u-p3":"用户","u-p4":"用户","u-p5":"用户","u-p6":"用户","s-p1":"系统","s-p2":"系统","s-p3":"系统","s-p4":"系统","s-p5":"系统",
+  "b-p1":"必填","b-p2":"必填","b-p3":"可选","b-p4":"派生","b-p5":"必填","b-p6":"计算得出","b-p7":"FK → User","b-p8":"自动","b-p9":"自动","b-p10":"必填",
+  "nb-prog":"form_template 根据 education_level 派生 · days_left 根据第一个招募批次的结束日期计算 · 一个项目计划可以包含多个招募批次",
   "e-intake":"招募批次","sl-int-u":"用户字段","sl-int-s":"系统字段",
   "u-i1":"用户","u-i2":"用户","u-i3":"用户","u-i4":"用户","u-i5":"用户","u-i6":"用户","s-i1":"系统","s-i2":"系统","s-i3":"系统","s-i4":"系统","s-i5":"系统",
-  "b-i1":"自动，可编辑","ft-i1":"月/年","ft-i2":"月/年","b-i2":"必填","b-i3":"必填","b-i4":"必填","b-i5":"必填","b-i6":"必填","b-i7":"FK → Programme","b-i8":"计算得出","b-i9":"FK → User","b-i10":"自动",
+  "b-i1":"自动，可编辑","ft-i1":"月/年","ft-i2":"月/年","b-i2":"可选","b-i3":"可选","b-i4":"必填","b-i5":"必填","b-i6":"必填","b-i7":"子 ID","b-i8":"计算得出","b-i9":"FK → User","b-i10":"自动",
   "nb-int":"intake_title 根据期间自动生成（例如 \"6月–12月 2025\"）但可编辑 · 允许重叠批次 · internship_start/end 存储为当月的第一天/最后一天",
+  "e-elig":"资格条件","sl-el-u":"用户字段","sl-el-s":"系统字段",
+  "u-el1":"用户","u-el2":"用户","u-el3":"用户","u-el4":"用户","u-el5":"用户","u-el6":"用户","u-el7":"用户","s-el1":"系统","s-el2":"系统","s-el3":"系统","s-el4":"系统","s-el5":"系统","s-el6":"系统","s-el7":"系统",
+  "b-el1":"必填","b-el2":"必填","b-el3":"必填","b-el4":"必填","b-el5":"可选","b-el6":"可选","b-el7":"FK → Programme","b-el8":"可选","b-el9":"子 ID","b-el10":"子 ID","b-el11":"自动",
+  "nb-elig":"资格条件存储为 CriteriaGroup[] · ALL 组直接使用规则 · ANY 组使用 option_id 对 OR 选项分组 · 不符合条件的申请人可被自动拒绝或转入人工审核",
+  "u-ap1":"用户","u-ap2":"用户","u-ap3":"用户","s-ap1":"系统","s-ap2":"系统","s-ap3":"系统","s-ap4":"系统",
+  "b-ap1":"必填","b-ap2":"自动，可编辑","b-ap3":"必填","b-ap4":"计算得出","b-ap5":"计算得出","b-ap6":"计算得出","b-ap7":"系统设置",
+  "nb-setup":"项目计划设置包含项目计划详情、招募批次窗口、资格条件和已附加项目 · 共享系统字段只列一次 · 子 ID 用于标识重复的批次和规则",
   "e-req":"项目需求","sl-rq-uh":"用户字段 — 表头","sl-rq-ul":"用户字段 — 明细行","sl-rq-s":"系统字段",
   "u-r1":"用户","u-r2":"用户","u-r3":"用户","u-r4":"用户","u-r5":"用户","s-r1":"系统","s-r2":"系统","s-r3":"系统","s-r4":"系统","s-r5":"系统","s-r6":"系统","s-r7":"系统","s-r8":"系统",
   "b-r1":"必填","b-r2":"必填","b-r3":"可选","b-r4":"必填","b-r5":"必填","b-r6":"自动","b-r7":"计算得出","b-r8":"计算得出","b-r9":"计算得出","b-r10":"FK → User","b-r11":"自动",
